@@ -5,25 +5,68 @@
  * Concept	: Matrix
  */
 
+session_start();
 
-$sourceFolder = "";
+$_SESSION["userid"] = 1;
 
+
+//Set the Constant LABYRINTH
+define("LABYRINTH_CONST", "BOOPATHI RAJAA");
+
+//Get the PATH
 $needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
 $request = substr($_SERVER["REQUEST_URI"],strlen($needle));
+
+//Required Details
+$answer = "";
+if(isset($_POST["labyrinth_answer"]))
+	$answer = $_POST["labyrinth_answer"];
+else
+	$answer = $request;
+
+$userid = $_SESSION["userid"];
 
 //Includes
 require_once("./config.inc.php");
 require_once("./common.lib.php");
 
-if(empty($request)):
-	//Get the user level from database
-	echo "home";
-	
+//declare global var
+$CONTENT = "";
 
+//connect to the database
+connectDB();
+
+if(empty($answer)):
+	//Get the user level from database
+
+	//from the user's current level
+	$userLevel = getUserCurrentLevel();
+	//get the question for the userlevel
+	$CONTENT = getQuestion($userLevel);
+	
 else:
 	//Check if the user has access to the particular level
 	//$level = $request
-	echo $request;
+	
+	$userCurrentLevel = getUserCurrentLevel();
+	$requestLevelArray = getNodes($answer);
+	
+	//might be correct answer / trying to access a different level / the same level
+	
+	if($userCurrentLevel == $requestLevelArray['from']){
+		//then user entered a correct answer
+		$CONTENT = "Correct Answer";
+	}
+	else if($userCurrentLevel == $requestLevelArray['to']) {
+		//then user is trying to access the same level
+		$CONTENT = "You are still here";
+	}
+	else {
+		//user entered an answer that was not allowed
+		$CONTENT = "trying to access a different level";
+	}
+	
+	//$CONTENT = "checking if the user has access to this particular level";
 	
 endif;
 
@@ -35,21 +78,8 @@ $FORM = <<<FORM
 			<input type="submit" />
 		</form>
 	</div>
-	<script type="text/javascript">
-		function labyrinth_submit_form(target){
-			if(typeof labyrinth_submit === "undefined")
-				labyrinth_submit.apply(target,event);
-		}
-	</script>
 FORM;
 
-echo $FORM;
-?>
-<script type="text/javascript">
-window.onload=function(){
-document.forms.labyrinth_submit.addEventListener("submit", function(evt){
-evt.preventDefault();
+require_once("./template/index.php");
 
-}, true);
-}
-</script>
+?>

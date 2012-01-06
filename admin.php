@@ -68,10 +68,12 @@ window.onload = function(event){
 	width: 25px;
 	height: 25px;
 	background: #56fe12;
+	font-size: 10px;
 }
 .path{
 	width: 25px;
 	height: 12px;
+	font-size: 8px;
 }
 .path-up,.path-left{
 	background: #3c7ebd;
@@ -102,15 +104,20 @@ float:right;
 		for($j=0;$j<MATRIX_SIZE;$j++){
 			if($i%2 == 0){
 				if($j%2 ==1) {
+					$node1 = (MATRIX_SIZE*$i/4)+($j-1)/2;
+					$node2 = (MATRIX_SIZE*$i/4)+($j+1)/2;
+					if($j==MATRIX_SIZE-1)
+					$node2 = (MATRIX_SIZE*$i/4);
 					echo "<td class=\"pathh-container path-container\">";
 					echo <<<BOX2
-					<div class="path-up path"></div>
-					<div class="path-down path"></div>
+					<div class="path-up path" id="$node1-$node2">$node1-$node2</div>
+					<div class="path-down path" id="$node2-$node1">$node2-$node1</div>
 BOX2;
 				}
 				else if($j != MATRIX_SIZE){
+					$node1 = (MATRIX_SIZE*$i/4)+($j)/2;
 				  	echo "<td class=\"node-container\">"; 
-					echo "<div class=\"node\"></div>";
+					echo "<div class=\"node\" id=\".$node1.\">".$node1."</div>";
 				}
 				else {
 					echo "<td>";
@@ -118,10 +125,14 @@ BOX2;
 			}
 			else {
 				if($j%2==0){
-					echo "<td class=\"pathv-container path-container\">";
+					$node1 = ($i-1)*MATRIX_SIZE/4+$j/2;
+					$node2 = ($i+1)*MATRIX_SIZE/4+$j/2;
+					if($i==MATRIX_SIZE-1)
+					$node2 = $j/2;
+ 					echo "<td class=\"pathv-container path-container\">";
 					echo <<<BOX2
-					<div class="path-left path"></div>
-					<div class="path-right path"></div>
+					<div class="path-left path" id="$node1-$node2">$node1-$node2</div>
+					<div class="path-right path" id="$node2-$node1">$node2-$node1</div>
 BOX2;
 				}
 				/*else if($j!=MATRIX_SIZE && $i != MATRIX_SIZE){
@@ -141,7 +152,7 @@ BOX2;
 </table>
 </div>
 <div id="labyrinth_admin_form">
-	<input type="text" name="labyrinth_input" id="labyrinth_input" />
+	<input type="text" name="labyrinth_input" id="labyrinth_input" size="50"/>
 	<input type="hidden" name="interface" value="" id="labyrinth_interface" />
 </div>
 </body>

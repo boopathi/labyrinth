@@ -1,7 +1,7 @@
 <?php
 
 /* Project	: Labyrinth
- * Author 	: Boopathi Rajaa
+ * Author 	: Boopathi Rajaa , Vignesh
  * Concept	: Matrix
  * Description:
  * Configuration File - stores database login details and admin authentication

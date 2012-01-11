@@ -6,7 +6,8 @@
  */
 
 session_start();
-
+//is this correct??
+//generate a dynamic user id
 $_SESSION["userid"] = 1;
 
 

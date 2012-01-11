@@ -1,7 +1,7 @@
 <?php
 
 /* Project	: Labyrinth
- * Author 	: Boopathi Rajaa
+ * Author 	: Boopathi Rajaa , Vignesh
  * Concept	: Matrix
  */
 
@@ -11,7 +11,7 @@ $_SESSION["userid"] = 1;
 
 
 //Set the Constant LABYRINTH
-define("LABYRINTH_CONST", "BOOPATHI RAJAA");
+define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
 
 //Get the PATH
 $needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);

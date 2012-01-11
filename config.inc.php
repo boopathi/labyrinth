@@ -1,7 +1,7 @@
 <?php
 
 /* Project	: Labyrinth
- * Author 	: Boopathi Rajaa
+ * Author 	: Boopathi Rajaa , Vignesh
  * Concept	: Matrix
  * Description:
  * Configuration File - stores database login details and admin authentication
@@ -17,5 +17,5 @@ endif;
 
 define("DB_HOST","localhost");
 define("DB_USER","root");
-define("DB_PASS","root");
+define("DB_PASS","password");
 define("DB_NAME","labyrinth");

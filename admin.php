@@ -15,7 +15,59 @@ define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
 	connectDB();
 	
 	if(isset($_FILES['file'])){
-		
+		if((($_FILES['file']['type']=='image/gif')||($_FILES['file']['type']=='image/jpeg')||($_FILES['file']['type']=='image/pjpeg')||($_FILES['file']['type']=='image/png')||($_FILES['file']['type']=='image/x-png'))&&($_FILES['file']['size']<=(5*1024*1024)))
+		{
+			if($_FILES['file']['error']>0)
+			echo "ERRORS FOUND<br/>".$_FILES['file']['error']."<br/>";
+			else{
+				if(file_exists("images/questions/".$_FILES['file']['name'])){
+					echo "file already exists";
+				}
+				else {
+					if(($_FILES['file']['type']=='image/jpeg')||($_FILES['file']['type']=='image/pjpeg')){
+						$new_img=imagecreatefromjpeg($_FILES['file']['tmp_name']);
+					}
+					elseif (($_FILES['file']['type']=='image/gif')) {
+						$new_img=imagecreatefromgif($_FILES['file']['tmp_name']);
+					}
+					elseif (($_FILES['file']['type']=='image/png')||($_FILES['file']['type']=='image/x-png')) {
+						$new_img=imagecreatefrompng($_FILES['file']['tmp_name']);
+					}
+					
+					list($width, $height) = getimagesize($_FILES['file']['tmp_name']);
+					$imgratio=$width/$height;
+					
+					if ($imgratio>=(640/480) && $width >= 640){
+						$newwidth = 640 ; 
+						$newheight = 640/$imgratio; 
+					}
+					elseif ($imgratio >=(640/480) && $width < 640) {
+						$newwidth = $width ; 
+						$newheight = $height;
+					}
+					elseif ($imgratio <(640/480) && $height >= 480) {
+						$newheight = 480;
+						$newwidth = 480 * $imgratio ;
+					}
+					elseif ($imgratio <(640/480) && $height < 480) {
+						$newheight = $height;
+						$newwidth = $width ;
+					}
+					
+					if (function_exists('imagecreatetruecolor')){ $resized_img = imagecreatetruecolor($newwidth,$newheight);}
+					else { die("Error: Please make sure you have GD library ver 2+"); }
+					
+					imagecopyresampled($resized_img, $new_img, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+					//$resized_img = UnsharpMask($resized_img,80,0.5,3);
+					ImageJpeg ($resized_img,"images/questions/".$_FILES['file']['name']);
+					ImageDestroy ($resized_img);
+					ImageDestroy ($new_img);
+					
+					move_uploaded_file( $_FILES['file']['tmp_name'] , "uploaded_files/original/".$_FILES['file']['name'] );
+					echo "Successfully moved to http://localhost/images/questions/".$_FILES['file']['name'];
+				}
+			}
+		}
 	}
 	
 	if(isset($_POST['interface'])){

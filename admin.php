@@ -1,11 +1,23 @@
 <?php
+
+/* Project	: Labyrinth
+ * Author 	: Boopathi Rajaa , Vignesh
+ * Concept	: Matrix
+ * Description:
+ */
+
+
 if(isset($_GET["_a"])){
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
 	include_once("config.inc.php");
 	include_once("common.lib.php");
 	connectDB();
+	
+	if(isset($_FILES['file'])){
 		
+	}
+	
 	if(isset($_POST['interface'])){
 		if($_POST['interface']=='key'){
 			$query = "INSERT INTO `labyrinth`.`answers` (`from`, `to`, `key`) VALUES ('".$_POST['from']."', '".$_POST['to']."', '".$_POST['input']."')";
@@ -48,6 +60,8 @@ window.onload = function(event){
 	var points = document.getElementsByClassName("node");
 	var paths = document.getElementsByClassName("path");
 	var msg = document.getElementById("msg");
+	var key_form = document.getElementById("key_form");
+	var question_form = document.getElementById("question_form");
 	var from , to , node ;
 	
 	var inp = document.getElementById("labyrinth_input");
@@ -88,7 +102,9 @@ window.onload = function(event){
 			//open form
 			//console.log(node)
 			inf.value = "question";
-			inp.focus();
+			key_form.style.display="none";
+			question_form.style.display="block";
+			//inp.focus();
 		}, false);
 	}
 	
@@ -102,6 +118,8 @@ window.onload = function(event){
 			//console.log("from:"+from+" to:"+to);
 			msg.innerHTML = "Path Selected:<br/>From: "+from+" To: "+to+"<br/><br/>"+msg.innerHTML;
 			inf.value = "key";
+			key_form.style.display="block";
+			question_form.style.display="none";
 			inp.focus();
 		},false);
 	}
@@ -145,6 +163,9 @@ float:right;
 	position:fixed;
 	left: 700px;
 	top: 20px;
+	width : 467px;
+	height : 30 px;
+	overflow : hidden;
 	background: #aaa;
 	font-size: 12px;
 	padding: 20px;
@@ -170,6 +191,10 @@ float:right;
 
 #msg{
 	
+}
+
+#question_form{
+	display:none;
 }
 
 </style>
@@ -234,9 +259,18 @@ BOX2;
 </div>
 <div id="msg_board">Messages:<br/><br/><div id="msg"></div></div>
 <div id="labyrinth_admin_form">
+	<div id="key_form">
 	<label for="labyrinth_input">Enter value:</label>
 	<input type="text" name="labyrinth_input" id="labyrinth_input" size="50"/>
 	<input type="hidden" name="interface" value="" id="labyrinth_interface" />
+	</div>
+	<div id="question_form">
+	<form action="#" method="post" enctype="multipart/form-data">
+		<label for="file">File name :</label>
+		<input type="file" name="file"/>
+		<input type="submit" name="submit" value="Upload" />
+	</form>
+	</div>
 </div>
 </body>
 </html>

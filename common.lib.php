@@ -1,5 +1,5 @@
 <?php
-
+ 
 /* Project	: Labyrinth
  * Author 	: Boopathi Rajaa , Vignesh
  * Concept	: Matrix
@@ -56,6 +56,14 @@ function getNodes($key){
 function getUserRequestLevel(){
 	global $answer;
 	$requestQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$answer' ") or die(mysql_error());
+	if(mysql_num_rows($requestQuery)){
+		$requestQueryArray = mysql_fetch_array($requestQuery);
+		//return info
+		//add info to user_level table
+	}
+	else {
+		//failed access
+	}
 }
 
 

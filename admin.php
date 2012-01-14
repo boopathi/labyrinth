@@ -7,6 +7,8 @@
  */
 
 
+
+
 if(isset($_GET["_a"])){
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
@@ -14,7 +16,23 @@ define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
 	include_once("common.lib.php");
 	connectDB();
 	
+	if(isset($_POST['interface'])){
+		if($_POST['interface']=='key'){
+			$query = "INSERT INTO `labyrinth`.`answers` (`from`, `to`, `key`) VALUES ('".$_POST['from']."', '".$_POST['to']."', '".$_POST['input']."')";
+			$result = mysql_query($query) or die(mysql_error());
+			echo "key added successfully <br/><br/>";
+			exit(0);
+		}
+	}
+exit(1);
+}
+
 	if(isset($_FILES['file'])){
+		define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
+		include_once("config.inc.php");
+		include_once("common.lib.php");
+		connectDB();
+	
 		if((($_FILES['file']['type']=='image/gif')||($_FILES['file']['type']=='image/jpeg')||($_FILES['file']['type']=='image/pjpeg')||($_FILES['file']['type']=='image/png')||($_FILES['file']['type']=='image/x-png'))&&($_FILES['file']['size']<=(5*1024*1024)))
 		{
 			if($_FILES['file']['error']>0)
@@ -63,32 +81,17 @@ define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
 					ImageDestroy ($resized_img);
 					ImageDestroy ($new_img);
 					
-					move_uploaded_file( $_FILES['file']['tmp_name'] , "uploaded_files/original/".$_FILES['file']['name'] );
-					echo "Successfully moved to http://localhost/images/questions/".$_FILES['file']['name'];
+					//move_uploaded_file( $_FILES['file']['tmp_name'] , "images/questions/".$_FILES['file']['name'] );
+					echo "Successfully moved to http://localhost/labyrinth/images/questions/".$_FILES['file']['name'];
+					
+					$query = "INSERT INTO `labyrinth`.`questions` (`level`, `ans_type`, `answers`, `question`) VALUES ('".$_POST['node']."', 'POST', '4', '".$_FILES['file']['name']."')";
+					$result = mysql_query($query) or die(mysql_error());
+					echo "<br/>question added successfully";
 				}
 			}
 		}
+		exit (0);
 	}
-	
-	if(isset($_POST['interface'])){
-		if($_POST['interface']=='key'){
-			$query = "INSERT INTO `labyrinth`.`answers` (`from`, `to`, `key`) VALUES ('".$_POST['from']."', '".$_POST['to']."', '".$_POST['input']."')";
-			$result = mysql_query($query) or die(mysql_error());
-			echo "key added successfully <br/><br/>";
-			exit(0);
-		}
-		elseif ($_POST['interface']=='question') {
-			$query = "INSERT INTO `labyrinth`.`questions` (`level`, `ans_type`, `answers`, `question`) VALUES ('".$_POST['node']."', 'POST', '4', '".$_POST['input']."')";
-			$result = mysql_query($query) or die(mysql_error());
-			echo "question added successfully <br/><br/>";
-			exit(0);
-		}
-	}
-	else {
-		echo "Go away b******";
-	}
-exit(1);
-}
 
 /*Admin interface for labyrinth*/
 
@@ -101,7 +104,15 @@ if(isset($_SESSION["user"]))
 /*Configuration settings for number of levels*/
 
 /*Initial setting*/
-define("MATRIX_SIZE",20);
+if(isset($_POST['size']) && !isset($_FILES['file'])){
+	define("MATRIX_SIZE",2*$_POST['size']);
+}
+else if(!isset($_POST['size']) && !isset($_FILES['file'])){
+	$html= '<html><head></head><body><form action="admin.php" method="post">	<lable for="size">Enter size of the matrix:</lable>	<input type="text" name="size"/>	<input type="submit" value="Go" name="submit" />	</form></body></html>';
+	echo $html;
+	exit(1);
+}
+
 
 ?>
 <html>
@@ -117,7 +128,11 @@ window.onload = function(event){
 	var from , to , node ;
 	
 	var inp = document.getElementById("labyrinth_input");
-	var inf = document.getElementById("labyrinth_interface");
+	var inf = document.getElementsByClassName("labyrinth_interface");
+	
+	document.getElementById('file_upload_form').onsubmit=function() {
+		document.getElementById('file_upload_form').target = 'upload_target'; //'upload_target' is the name of the iframe
+	}
 	
 	inp.addEventListener("keydown", function(event){
 		if(event.keyCode != 13)
@@ -129,7 +144,7 @@ window.onload = function(event){
 			type: "POST",
 			data: {
 				input: inp.value,
-				"interface": inf.value,
+				"interface": inf[0].value,
 				from: from,
 				to: to,
 				node: node
@@ -150,26 +165,21 @@ window.onload = function(event){
 			event.preventDefault();
 			node = this.getAttribute("id");
 			msg.innerHTML = "Node Selected:<br/>"+node+"<br/><br/>"+msg.innerHTML;
-			//console.log("Node Selected:");
-			//open form
-			//console.log(node)
-			inf.value = "question";
+			document.getElementsByClassName("node_name")[0].value = this.getAttribute("id"); 
+			inf[1].value = "question";
 			key_form.style.display="none";
 			question_form.style.display="block";
-			//inp.focus();
 		}, false);
 	}
 	
 	for(i=0;i<paths.length;i++){
 		paths[i].addEventListener("click",function(event){
 			event.preventDefault();
-			//console.log("Path Selected:");
 			//open form
 			var id = this.getAttribute("id").split('-');
 			from = id[0] ; to = id[1];
-			//console.log("from:"+from+" to:"+to);
 			msg.innerHTML = "Path Selected:<br/>From: "+from+" To: "+to+"<br/><br/>"+msg.innerHTML;
-			inf.value = "key";
+			inf[0].value = "key";
 			key_form.style.display="block";
 			question_form.style.display="none";
 			inp.focus();
@@ -249,6 +259,10 @@ float:right;
 	display:none;
 }
 
+iframe{
+	font-size : 10px;
+	
+}
 </style>
 </head>
 <body>
@@ -309,18 +323,20 @@ BOX2;
 </tbody>
 </table>
 </div>
-<div id="msg_board">Messages:<br/><br/><div id="msg"></div></div>
+<div id="msg_board">Messages:<br/><iframe id="upload_target" name="upload_target" src="" style="width:480;height:80;border:1px solid #fff;font: 10px; position: absolute; bottom: 2px;"></iframe><br/><br/><div id="msg"></div></div>
 <div id="labyrinth_admin_form">
 	<div id="key_form">
 	<label for="labyrinth_input">Enter value:</label>
 	<input type="text" name="labyrinth_input" id="labyrinth_input" size="50"/>
-	<input type="hidden" name="interface" value="" id="labyrinth_interface" />
+	<input type="hidden" name="interface" value="" class="labyrinth_interface" />
 	</div>
 	<div id="question_form">
-	<form action="#" method="post" enctype="multipart/form-data">
+	<form action="admin.php" method="post" enctype="multipart/form-data" id="file_upload_form">
 		<label for="file">File name :</label>
 		<input type="file" name="file"/>
 		<input type="submit" name="submit" value="Upload" />
+		<input type="hidden" name="interface" value="" class="labyrinth_interface" />
+		<input type="hidden" name="node" value="" class="node_name" />
 	</form>
 	</div>
 </div>

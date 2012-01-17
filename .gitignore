@@ -1,4 +1,5 @@
 *~
 \.ftpquota
 error_log
+config.inc.php
 

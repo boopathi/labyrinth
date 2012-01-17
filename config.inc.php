@@ -16,6 +16,6 @@ ERROR;
 endif;
 
 define("DB_HOST","localhost");
-define("DB_USER","root");
-define("DB_PASS","password");
-define("DB_NAME","labyrinth");
+define("DB_USER","boopathi_laby");
+define("DB_PASS","mazelaby");
+define("DB_NAME","boopathi_labyrinth");

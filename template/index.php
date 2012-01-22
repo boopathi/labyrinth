@@ -20,6 +20,7 @@ endif;
 		</script>
 	</head>
 	<body>
+	JUST A TEST
 		<?php echo $CONTENT; ?>
 		<?php echo $FORM; ?>
 	</body>

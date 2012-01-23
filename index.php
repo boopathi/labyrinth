@@ -5,6 +5,14 @@
  * Concept	: Matrix
  */
 
+//Check if installation is done
+$conf = include("./config.inc.php");
+if($conf == 0):
+	//then installation is not done
+	header("Location: ./install.php");
+	exit(1);
+endif;
+ 
 session_start();
 //TODO:
 //generate a dynamic user id

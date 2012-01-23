@@ -1,9 +1,10 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-#RewriteBase /
+RewriteBase /labyrinth/
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ./* ./
-#RewriteRule . ./labyrinth/ [L]
+#RewriteCond %{REQUEST_URI} !(.*)/$
+#RewriteRule ^(.*)$ ./$1/
+#RewriteRule . ./ [L]
+RewriteRule . ./index.php
 </IfModule>
 

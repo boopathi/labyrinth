@@ -24,6 +24,3 @@ notedown the username and groupname of the http-user.
 * httpd-user is the username, and httpd-group is the group name fetched from the egrep run on httpd.conf
 
 * Now you can proceed to the installation by opening the webapp from a browser.
-
-
-

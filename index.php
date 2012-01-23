@@ -7,7 +7,7 @@
 
 //Check if installation is done
 $conf = include("./config.inc.php");
-if($conf == 0):
+if($conf !== "LABYRINTH"):
 	//then installation is not done
 	header("Location: ./install.php");
 	exit(1);

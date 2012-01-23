@@ -148,25 +148,25 @@ $TEMPLATE_BODY = "";
 		<div class="outercontainer">
 			<div class="forms">
 				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
-					<input type="file" name="file" />
+					<input type="file" name="file" required="required"/>
 					<input type="hidden" name="action" value="addNode" />
 					<input type="submit" /> 
 				</form>
 				<form id="removeNode" action="./index.php?_a=1" method="POST">
-					<input type="text" name="level" value="" />
+					<input type="text" name="level" value=""  required="required"/>
 					<input type="hidden" name="action" value="removeNode" />
 					<input type="submit" />
 				</form>
 				<form id="addPath" action="./index.php?_a=1" method="POST">
-					<input type="text" name="from" value="" />
-					<input type="text" name="to" value="" />
-					<input type="text" name="key" value="" />
+					<input type="text" name="from" value=""  required="required"/>
+					<input type="text" name="to" value=""  required="required"/>
+					<input type="text" name="key" value=""  required="required"/>
 					<input type="hidden" name="action" value="addPath" />
 					<input type="submit" />
 				</form>
 				<form id="removePath" action="./index.php?_a=1" method="POST">
-					<input type="text" name="from" value="" />
-					<input type="text" name="to" value="" />
+					<input type="text" name="from" value="" required="required" />
+					<input type="text" name="to" value="" required="required" />
 					<input type="hidden" name="action" value="removePath" />
 					<input type="submit" />
 				</form>

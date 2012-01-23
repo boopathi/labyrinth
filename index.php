@@ -81,7 +81,6 @@ else:
 	
 endif;
 
-
 $FORM = <<<FORM
 	<div class="labyrinth_submit">
 		<form name="labyrinth_submit" method="POST" action="$needle">

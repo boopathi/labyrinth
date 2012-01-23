@@ -1,7 +1,7 @@
 <?php
  
 /* Project	: Labyrinth
- * Author 	: Boopathi Rajaa , Vignesh
+ * Author 	: Boopathi Rajaa
  * Concept	: Matrix
  * Description:
  */
@@ -14,6 +14,28 @@ ERROR;
 	exit(1);
 endif;
 
+function escape($query)
+{
+        if (!get_magic_quotes_gpc()) {
+            $xquery = mysql_real_escape_string($query);
+            /// If there's no mysql connection, then the xquery will be false
+            if($xquery===false)
+            {
+             connectDB();
+             return escape($query);
+            }
+            else return $xquery;
+        }
+        return $query;
+}
+
+function _GET($key){
+	return escape($_GET[$key]);
+}
+
+function _POST($key) {
+	return escape($_POST[$key]);
+}
 
 function connectDB(){
 	if(defined('DB_HOST')):
@@ -27,7 +49,7 @@ function connectDB(){
 //to address from the last row of user_level table
 function getUserCurrentLevel(){
 	global $userid;
-	$userAccess = mysql_query("SELECT `to` FROM `user_level` WHERE `userid`='$userid' ORDER BY `id` DESC LIMIT 1") or die(mysql_error());
+	$userAccess = mysql_query("SELECT `to` FROM `user_level` WHERE `userid`='{$userid}' ORDER BY `id` DESC LIMIT 1") or die(mysql_error());
 	$userAccessArray = mysql_fetch_array($userAccess);
 	$userLevel = $userAccessArray['to'];
 	if(empty($userLevel))
@@ -47,10 +69,38 @@ function getNodes($key){
 		$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$key'") or die(mysql_error());
 		$fromtoArray = mysql_fetch_array($fromtoQuery);
 		$returnvalue = array(
-			"from"	=> $fromtoarray['from'],
-			"to"	=> $fromtoarray['to']
+			"from"	=> $fromtoArray['from'],
+			"to"	=> $fromtoArray['to']
 		);
 		return $returnvalue;
+}
+
+//Update the UserLevel in the database
+function updateUserLevel($fromLevel, $toLevel){
+	global $userid;
+	$updateQuery = mysql_query("INSERT INTO `user_level` (`userid`, `from`, `to`) VALUES ('{$userid}','{$fromLevel}','{$toLevel}')") or die(mysql_erro());
+	if($updateQuery)
+		return true;
+	else 
+		return false;
+}
+
+
+
+//Add a new path(answer) in the database
+function addNewPath($from, $to, $key){
+	$addPathQuery = mysql_query("INSERT INTO `answers` (`from`,`to`,`key`) VALUES ('{$from}','{$to}','{$key}')") or die(mysql_error());
+	if($addPathQuery)
+		return true;
+	else
+		return false;
+}
+
+//Remove a path(answers) from the database
+function removePath($from, $to){
+	$removePathQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '{$from}' AND `answers`.`to` = '{$to}'") or die(mysql_error());
+	if($removePathQuery) return true;
+	else return false;
 }
 
 function getUserRequestLevel(){

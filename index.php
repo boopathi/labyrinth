@@ -18,9 +18,8 @@ session_start();
 //generate a dynamic user id
 $_SESSION["userid"] = 1;
 
-
 //Set the Constant LABYRINTH
-define("LABYRINTH_CONST", "BOOPATHI VIGNESH");
+define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
 
 //Get the PATH
 $needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
@@ -44,7 +43,7 @@ $CONTENT = "";
 
 //connect to the database
 connectDB();
-
+echo $answer;
 if(empty($answer)):
 	//Get the user level from database
 
@@ -64,7 +63,9 @@ else:
 	
 	if($userCurrentLevel == $requestLevelArray['from']){
 		//then user entered a correct answer
-		$CONTENT = "Correct Answer";
+		$CONTENT = getQuestion($requestLevelArray['to']);
+		//update the database with the current level
+		updateUserLevel($userCurrentLevel, $requestLevelArray['to']);
 	}
 	else if($userCurrentLevel == $requestLevelArray['to']) {
 		//then user is trying to access the same level

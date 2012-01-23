@@ -10,7 +10,7 @@ $TEMPLATE_BODY="";
 //check if installation is done
 if(file_exists("./config.inc.php")) :
 	$config = include ("./config.inc.php");
-	if ($config == 1) :
+	if ($config === 1) :
 		//then proceed to index.php as installation is done
 		header("Location: ./");
 	else :

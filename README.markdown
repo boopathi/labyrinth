@@ -3,7 +3,7 @@ Installation
 
 * If you're already familiar with httpd, directly run the webapp from a browser. Others continue reading the article
 
-** Finding the Settings **
+== Finding the Settings ==
 
 * find /etc/ | grep httpd\.conf$
 

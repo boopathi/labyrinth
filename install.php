@@ -10,7 +10,7 @@ $TEMPLATE_BODY="";
 //check if installation is done
 if(file_exists("./config.inc.php")) :
 	$config = include ("./config.inc.php");
-	if ($config === 1) :
+	if ($config === "LABYRINTH") :
 		//then proceed to index.php as installation is done
 		header("Location: ./");
 	else :
@@ -29,7 +29,7 @@ define("DB_PASS","{$_POST['dbpass']}");
 define("DB_NAME","{$_POST['dbname']}");
 
 //IMPORTANT - If 0, then config is not done
-return 1;
+return "LABYRINTH";
 	
 CONFF;
 			if(!is_writable("./config.inc.php")){

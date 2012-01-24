@@ -85,7 +85,17 @@ function updateUserLevel($fromLevel, $toLevel){
 		return false;
 }
 
+//Add a new Node(question) in the database
+function addNewNode($level, $questionHtml){
+	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`) VALUE ('{$level}','{$questionHtml}')") or die(mysql_error());
+	if($addNodeQuery) return true;
+	else return false;
+}
 
+//Remove a Node(question) from the database
+function removeNode($level) {
+	
+}
 
 //Add a new path(answer) in the database
 function addNewPath($from, $to, $key){

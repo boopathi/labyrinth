@@ -21,6 +21,7 @@ $_SESSION["userid"] = 1;
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
 
+
 //Get the PATH
 $needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
 $request = substr($_SERVER["REQUEST_URI"],strlen($needle));

@@ -2,7 +2,6 @@
 
 /* Project	: Labyrinth
  * Author 	: Boopathi Rajaa
- * Concept	: Matrix
  * Description:
  */
 

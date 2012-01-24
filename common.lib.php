@@ -96,7 +96,7 @@ function addNewNode($level, $questionHtml){
 function removeNode($level) {
 	$removeNodeQuery = mysql_query("DELETE FROM `labyrinth`.`questions` WHERE `questions`.`level` = '".$level."'") or die(mysql_error());
 	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'") or die(mysql_error());
-	if($removeNodeLinkPathsQuery && $removeNodeLinkPathsQuery)return true;
+	if($removeNodeQuery && $removeNodeLinkPathsQuery)return true;
 	else return false;
 }
 

@@ -15,6 +15,10 @@
  * 974 - Unable to Remove Path 
 **/
 
+
+//Set the Constant LABYRINTH
+define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
+
 include("../common.lib.php");
 
 //handle all ajax requests in the beginning
@@ -70,7 +74,16 @@ $TEMPLATE_BODY = "";
 	</head>
 	<link href="./admin.css" rel="stylesheet" type="text/css" />
 	<body>
-		
+		<div class="outercontainer">
+			<div class="buttons">
+				<button id="addNode">Add New Node</button>
+				<button id="removeNode">Remove Node</button>
+				<button id="addPath">Add New Path</button>
+				<button id="removePath">Remove Path</button>
+			</div>
+		</div>
+		<script type="text/javascript" src="../template/jquery.min.js"></script>
+		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="./admin.js"></script>
 	</body>
 </html>

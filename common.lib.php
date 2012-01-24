@@ -58,6 +58,7 @@ function getUserCurrentLevel(){
 }
 
 function getQuestion($userLevel) {
+	$userLevel = escape($userLevel);
 	$questionQuery = mysql_query("SELECT `question` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
 	$questionArray = mysql_fetch_array($questionQuery);
 	$question = $questionArray['question'];
@@ -66,18 +67,20 @@ function getQuestion($userLevel) {
 
 //get From and To in an array
 function getNodes($key){
-		$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$key'") or die(mysql_error());
-		$fromtoArray = mysql_fetch_array($fromtoQuery);
-		$returnvalue = array(
-			"from"	=> $fromtoArray['from'],
-			"to"	=> $fromtoArray['to']
-		);
-		return $returnvalue;
+	$key = escape($key);
+	$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$key'") or die(mysql_error());
+	$fromtoArray = mysql_fetch_array($fromtoQuery);
+	$returnvalue = array(
+		"from"	=> $fromtoArray['from'],
+		"to"	=> $fromtoArray['to']
+	);
+	return $returnvalue;
 }
 
 //Update the UserLevel in the database
 function updateUserLevel($fromLevel, $toLevel){
 	global $userid;
+	$fromLevel = escape($fromLevel); $toLevel = escape($toLevel);
 	$updateQuery = mysql_query("INSERT INTO `user_level` (`userid`, `from`, `to`) VALUES ('{$userid}','{$fromLevel}','{$toLevel}')") or die(mysql_erro());
 	if($updateQuery)
 		return true;
@@ -87,6 +90,7 @@ function updateUserLevel($fromLevel, $toLevel){
 
 //Add a new Node(question) in the database
 function addNewNode($questionHtml){
+	$questionHtml = escape($questionHtml);
 	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`) SELECT MAX(`level`)+1  , '{$questionHtml}' FROM `questions`") or die(mysql_error());
 	if($addNodeQuery) return true;
 	else return false;
@@ -94,6 +98,7 @@ function addNewNode($questionHtml){
 
 //Remove a Node(question) from the database
 function removeNode($level) {
+	$level = escape($level);
 	$removeNodeQuery = mysql_query("DELETE FROM `labyrinth`.`questions` WHERE `questions`.`level` = '".$level."'") or die(mysql_error());
 	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'") or die(mysql_error());
 	if($removeNodeQuery && $removeNodeLinkPathsQuery)return true;
@@ -102,6 +107,7 @@ function removeNode($level) {
 
 //Add a new path(answer) in the database
 function addNewPath($from, $to, $key){
+	$from = escape($from); $to = escape($to); $key = escape($key);
 	$addPathQuery = mysql_query("INSERT INTO `answers` (`from`,`to`,`key`) VALUES ('{$from}','{$to}','{$key}')") or die(mysql_error());
 	if($addPathQuery)
 		return true;
@@ -111,6 +117,7 @@ function addNewPath($from, $to, $key){
 
 //Remove a path(answers) from the database
 function removePath($from, $to){
+	$from = escape($from); $to = escape($to);
 	$removePathQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '{$from}' AND `answers`.`to` = '{$to}'") or die(mysql_error());
 	if($removePathQuery) return true;
 	else return false;

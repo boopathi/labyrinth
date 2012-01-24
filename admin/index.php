@@ -19,7 +19,10 @@
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
 
+include("../config.inc.php");
 include("../common.lib.php");
+
+connectDB();
 
 //handle all ajax requests in the beginning
 if(isset($_GET["_a"]) && _GET('_a') == 1) :
@@ -29,9 +32,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 	endif;
 	switch(_POST('action')){
 		case "addNode":
-			
 			//upload images
-			
 			$execute = 1 ;
 			$questionHTML = NULL ;
 			if(isset($_FILES['file'])):
@@ -81,30 +82,30 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 							imagecopyresampled($resized_img, $new_img, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 							
 							$new_name = randomStr();
-							ImageJpeg ($resized_img,$_SERVER['PHP_SELF']."/../../images/questions/".$new_name.$type);
+							ImageJpeg ($resized_img,"../images/questions/".$new_name.$type);
 							ImageDestroy ($resized_img);
 							ImageDestroy ($new_img);
 							
-							$questionHTML = "<img src='".$_SERVER['PHP_SELF']."/../../images/questions/".$_FILES['file']['name']."' />";
+							$questionHTML = "<img src='../images/questions/".$new_name.$type."' />";
 						}
 					}
 				}
 			endif;		
 			//get question details and update the database
 			if($execute)
-			if(addNewNode($questionHTML))
-				json_encode(array("status"=>"961", "message"=>"Successfully Added"));
+				if(addNewNode($questionHTML))
+					echo json_encode(array("status"=>"961", "message"=>"Successfully Added"));
 			else 
-				json_encode(array("status"=>"971", "message"=>"Unable to add a new node"));
+				echo json_encode(array("status"=>"971", "message"=>"Unable to add a new node"));
 			break;
 			
 			
 		case "removeNode":
 			//delete question from the database and remove all paths attached to it
 			if(removeNode(_POST('level')))
-				json_encode(array("status"=>"962", "message"=>"Successfully Added"));
+				echo json_encode(array("status"=>"962", "message"=>"Successfully Added"));
 			else 
-				json_encode(array("status"=>"972", "message"=>"Unable to remove Node"));
+				echo json_encode(array("status"=>"972", "message"=>"Unable to remove Node"));
 			break;
 			
 			
@@ -112,18 +113,18 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			//get from and to data and create a new entry in the answer table
 						
 			if(addNewPath( _POST('from') , _POST('to') , _POST('key') ))
-				json_encode(array("status"=>"963", "message"=>"Successfully Added"));
+				echo json_encode(array("status"=>"963", "message"=>"Successfully Added"));
 			else 
-				json_encode(array("status"=>"973", "message"=>"Unable to add a new path"));
+				echo json_encode(array("status"=>"973", "message"=>"Unable to add a new path"));
 			break;
 			
 			
 		case "removePath":
 			//get from and to data and remove a path from the answer table
 			if(removePath( _POST('from') , _POST('to') ))
-				json_encode(array("status"=>"964", "message"=>"Successfully Added"));
+				echo json_encode(array("status"=>"964", "message"=>"Successfully Added"));
 			else 
-				json_encode(array("status"=>"974", "message"=>"Unable to remove Path"));
+				echo json_encode(array("status"=>"974", "message"=>"Unable to remove Path"));
 			break;
 			
 			
@@ -145,13 +146,33 @@ $TEMPLATE_BODY = "";
 	<link href="./admin.css" rel="stylesheet" type="text/css" />
 	<body>
 		<div class="outercontainer">
-			<div class="buttons">
-				<button id="addNode">Add New Node</button>
-				<button id="removeNode">Remove Node</button>
-				<button id="addPath">Add New Path</button>
-				<button id="removePath">Remove Path</button>
+			<div class="forms">
+				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
+					<input type="file" name="file" />
+					<input type="hidden" name="action" value="addNode" />
+					<input type="submit" /> 
+				</form>
+				<form id="removeNode" action="./index.php?_a=1" method="POST">
+					<input type="text" name="level" value="" />
+					<input type="hidden" name="action" value="removeNode" />
+					<input type="submit" />
+				</form>
+				<form id="addPath" action="./index.php?_a=1" method="POST">
+					<input type="text" name="from" value="" />
+					<input type="text" name="to" value="" />
+					<input type="text" name="key" value="" />
+					<input type="hidden" name="action" value="addPath" />
+					<input type="submit" />
+				</form>
+				<form id="removePath" action="./index.php?_a=1" method="POST">
+					<input type="text" name="from" value="" />
+					<input type="text" name="to" value="" />
+					<input type="hidden" name="action" value="removePath" />
+					<input type="submit" />
+				</form>
 			</div>
 		</div>
+		<div id="statusbar"></div>
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="./admin.js"></script>

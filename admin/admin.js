@@ -25,6 +25,13 @@
 			actions[action].apply(this, [options]);
 		}
 	});
+	
+	$("#addNode, #removeNode, #addPath, #removePath").ajaxForm({
+		dataType: "json",
+		success: function(response){
+			console.log(response);
+		}
+	});
 	/*
 	$.fn.labyrinth = function(options){
 		//default settings

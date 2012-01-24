@@ -86,8 +86,8 @@ function updateUserLevel($fromLevel, $toLevel){
 }
 
 //Add a new Node(question) in the database
-function addNewNode($level, $questionHtml){
-	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`) VALUE ('{$level}','{$questionHtml}')") or die(mysql_error());
+function addNewNode($questionHtml){
+	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`) SELECT MAX(`level`)+1  , '{$questionHtml}' FROM `questions`") or die(mysql_error());
 	if($addNodeQuery) return true;
 	else return false;
 }
@@ -129,4 +129,15 @@ function getUserRequestLevel(){
 	}
 }
 
+function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'){ 
+    	$num_chars  = rand($min_chars, $max_chars); 
+    	$num_usable = strlen($use_chars) - 1; 
+    	$string     = ''; 
+
+    	for($i = 0; $i < $num_chars; $i++){
+    		$rand_char = rand(0, $num_usable);
+    		$string .= $use_chars{$rand_char};
+		}
+		return $string;
+	}
 

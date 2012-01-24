@@ -94,7 +94,8 @@ function addNewNode($level, $questionHtml){
 
 //Remove a Node(question) from the database
 function removeNode($level) {
-	
+	$removeNodeQuery = mysql_query("DELETE FROM `labyrinth`.`questions` WHERE `questions`.`level` = '".$level."'");
+	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'");
 }
 
 //Add a new path(answer) in the database

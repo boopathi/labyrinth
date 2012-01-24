@@ -105,12 +105,20 @@ if(isset($_SESSION["user"]))
 
 /*Initial setting*/
 if(isset($_POST['size']) && !isset($_FILES['file'])){
-	define("MATRIX_SIZE",2*$_POST['size']);
+	define("MATRIX_SIZE",2*$_POST['size']);	
 }
-else if(!isset($_POST['size']) && !isset($_FILES['file'])){
-	$html= '<html><head></head><body><form action="admin.php" method="post">	<lable for="size">Enter size of the matrix:</lable>	<input type="text" name="size"/>	<input type="submit" value="Go" name="submit" />	</form></body></html>';
-	echo $html;
-	exit(1);
+else if(!isset($_POST['size']) && !isset($_FILES['file'])){		
+	$query = "SELECT * FROM `admin` WHERE `active`= 1 ORDER BY `time` DESC LIMIT 1";
+	$result =  mysql_query($query) or die (mysql_error());
+	if($info=mysql_fetch_assoc($result)){
+		define("MATRIX_SIZE_X",2*$info['matrix_size_x']);
+		define("MATRIX_SIZE_Y",2*$info['matrix_size_y']);
+	}
+	else {
+		$html= '<html><head></head><body><form action="admin.php" method="post">	<lable for="size">Enter size of the matrix:</lable>	<input type="text" name="size"/>	<input type="submit" value="Go" name="submit" />	</form></body></html>';
+		echo $html;
+		exit(1);
+	}
 }
 
 

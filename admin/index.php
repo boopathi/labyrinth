@@ -95,6 +95,8 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			if($execute)
 				if(addNewNode($questionHTML))
 					echo json_encode(array("status"=>"961", "message"=>"Successfully Added"));
+				else 
+					echo json_encode(array("status"=>"971", "message"=>"Unable to add a new node"));
 			else 
 				echo json_encode(array("status"=>"971", "message"=>"Unable to add a new node"));
 			break;

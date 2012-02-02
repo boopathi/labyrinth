@@ -1,4 +1,4 @@
-<IfModule mod_rewrite.c>
+1<IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /labyrinth/
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -7,4 +7,3 @@ RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteRule . ./ [L]
 RewriteRule . ./index.php
 </IfModule>
-

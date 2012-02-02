@@ -59,10 +59,13 @@ function getUserCurrentLevel(){
 
 function getQuestion($userLevel) {
 	$userLevel = escape($userLevel);
-	$questionQuery = mysql_query("SELECT `question` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
+	$questionQuery = mysql_query("SELECT * FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
 	$questionArray = mysql_fetch_array($questionQuery);
 	$question = $questionArray['question'];
-	return $question;
+	print_r($questionArray);
+	return array(
+		"question"=>$question,
+		"header"=>$questionArray['header']);
 }
 
 //get From and To in an array
@@ -91,6 +94,7 @@ function updateUserLevel($fromLevel, $toLevel){
 //Add a new Node(question) in the database
 function addNewNode($questionHtml){
 	$questionHtml = escape($questionHtml);
+	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`) VALUES('{$questionHtml}')");
 	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`) SELECT MAX(`level`)+1  , '{$questionHtml}' FROM `questions`") or die(mysql_error());
 	if($addNodeQuery) return true;
 	else return false;

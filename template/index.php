@@ -14,13 +14,12 @@ endif;
 			window.onload=function(){
 			document.forms.labyrinth_submit.addEventListener("submit", function(evt){
 			//evt.preventDefault();
-			console.log("Default action prevented");
-			}, true);
+				console.log("Default action prevented");
+				}, true);
 			}
 		</script>
 	</head>
 	<body>
-	JUST ANOTHER TEST <br/><br/>
 		<?php echo $CONTENT; ?>
 		<?php echo $FORM; ?>
 	</body>

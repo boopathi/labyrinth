@@ -1,7 +1,7 @@
 <?php
 
 /* Project	: Labyrinth
- * Author 	: Boopathi Rajaa , Vignesh
+ * Author 	: Boopathi Rajaa
  * Concept	: Matrix
  */
 
@@ -45,6 +45,15 @@ $CONTENT = "";
 //connect to the database
 connectDB();
 
+$FORM = <<<FORM
+	<div class="labyrinth_submit">
+		<form name="labyrinth_submit" method="POST" action="$needle">
+			<input type="text" name="labyrinth_answer" />
+			<input type="submit" />
+		</form>
+	</div>
+FORM;
+
 if(empty($answer)):
 	//Get the user level from database
 
@@ -52,8 +61,7 @@ if(empty($answer)):
 	$userLevel = getUserCurrentLevel();
 	//get the question for the userlevel
 	$questionArray = getQuestion($userLevel);
-	$CONTENT = $questionArray['question'];
-	die("came here");
+	//$CONTENT = $questionArray['question'];
 	header("Location: ./{$questionArray['header']}");
 
 else:
@@ -76,31 +84,21 @@ else:
 		//then user is trying to access the same level
 		//$CONTENT = "You are still here";
 		
-		
 		//from the user's current level
 		$userLevel = getUserCurrentLevel();
 		//get the question for the userlevel
 		$questionArray = getQuestion($userLevel);
 		$CONTENT = $questionArray['question'];
-		
 	}
 	else {
 		//user entered an answer that was not allowed
-		$CONTENT = "trying to access a different level";
+		$CONTENT = "Trying to access a restricted Level, this incident will be reported.";
+		$userLevel = getQuestion(getUserCurrentLevel());
+		$CONTENT .= "<a href=\"./{$userLevel['header']}\">Click here</a> to goto your level ";
+		//and nullify the form so that he cannot submit it
+		$FORM = "";
 	}
-	
-	//$CONTENT = "checking if the user has access to this particular level";
-	
 endif;
-
-$FORM = <<<FORM
-	<div class="labyrinth_submit">
-		<form name="labyrinth_submit" method="POST" action="$needle">
-			<input type="text" name="labyrinth_answer" />
-			<input type="submit" />
-		</form>
-	</div>
-FORM;
 
 require_once("./template/index.php");
 

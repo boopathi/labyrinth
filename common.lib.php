@@ -59,13 +59,13 @@ function getUserCurrentLevel(){
 
 function getQuestion($userLevel) {
 	$userLevel = escape($userLevel);
-	$questionQuery = mysql_query("SELECT * FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
-	$questionArray = mysql_fetch_array($questionQuery);
+	$questionQuery = mysql_query("SELECT `question`,`header` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
+	$questionArray = mysql_fetch_assoc($questionQuery);
 	$question = $questionArray['question'];
-	print_r($questionArray);
 	return array(
 		"question"=>$question,
-		"header"=>$questionArray['header']);
+		"header"=>$questionArray['header']
+	);
 }
 
 //get From and To in an array

@@ -79,7 +79,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 						else {
 							$type = NULL;
 							if(($_FILES['file']['type']=='image/jpeg')||($_FILES['file']['type']=='image/pjpeg')){
-								$new_img=imagecreatefromjpeg($_FILES['file']['tmp_name']); $type = ".jpeg";
+								$new_img=imagecreatefromjpeg($_FILES['file']['tmp_name']); $type = ".jpg";
 							}
 							elseif (($_FILES['file']['type']=='image/gif')) {
 								$new_img=imagecreatefromgif($_FILES['file']['tmp_name']); $type = ".gif";

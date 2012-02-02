@@ -1,44 +1,27 @@
 (function($,window,docment,undefined){
 	//extend jQuery
-	var actions = {
-		addNode: function(options){
-			
-		},
-		removeNode: function(options){
-			$.extend({
-				
-			},options);
-		},
-		addPath: function(options){
-			$.extend({
-				
-			},options);
-		},
-		removePath: function(options){
-			$.extend({
-				
-			},options);
-		}
-	};
-	$.extend({
-		labyrinth: function(action, options){
-			actions[action].apply(this, [options]);
-		}
+	$("#addNode, #removeNode, #addPath, #removePath").submit(function(e){
+		e.preventDefault();
+		$(this).ajaxSubmit({
+			dataType:"json",
+			success: function(response){
+				console.log(response);
+			}
+		});
+		return false;
 	});
-	/*
 	$("#addNode, #removeNode, #addPath, #removePath").ajaxForm({
 		dataType: "json",
 		success: function(response){
 			console.log(response);
 		}
 	});
-	*/
 	
-	$("form").submit(function(event){
-		event.preventDefault();
-		$(this).children("input").each(function(i,item){
-			console.log($(item).data("params"));
-		});
+	//create the canvas object
+	window.graph = oCanvas.create({
+		canvas: "#graph",
+		background: "#222",
+		fps: 60
 	});
 	
 	/*

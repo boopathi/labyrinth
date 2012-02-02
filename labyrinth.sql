@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 02, 2011 at 08:20 PM
+-- Generation Time: Feb 04, 2012 at 04:56 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `answers` (
   `to` int(11) NOT NULL,
   `key` varchar(200) NOT NULL,
   PRIMARY KEY (`from`,`to`),
-  UNIQUE KEY `key` (`key`)
+  UNIQUE KEY `SECONDARY` (`from`,`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -41,20 +41,18 @@ CREATE TABLE IF NOT EXISTS `answers` (
 --
 
 CREATE TABLE IF NOT EXISTS `questions` (
-  `level` int(11) NOT NULL,
-  `ans_type` enum('POST','URL') NOT NULL,
-  `answers` int(11) NOT NULL DEFAULT '4',
+  `level` int(11) NOT NULL AUTO_INCREMENT,
+  `header` varchar(100) NOT NULL DEFAULT 'Labyrinth',
   `question` text NOT NULL,
   PRIMARY KEY (`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `questions` (`level`, `ans_type`, `answers`, `question`) VALUES
-(1, 'POST', 4, 'Question one'),
-(2, 'POST', 4, 'Question two');
+INSERT INTO `questions` (`level`, `header`, `question`) VALUES
+(0, 'Labyrinth', 'Welcome to Labyrinth. Start playing');
 
 -- --------------------------------------------------------
 
@@ -70,10 +68,3 @@ CREATE TABLE IF NOT EXISTS `user_level` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `user_level`
---
-
-INSERT INTO `user_level` (`id`, `userid`, `from`, `to`, `time`) VALUES
-(1, 1, 1, 2, '2011-11-02 13:54:05');

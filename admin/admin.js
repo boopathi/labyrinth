@@ -25,6 +25,22 @@
 				//put graph data on server, and bind the following lines of code within the success hook
 				//ajax request
 				
+				$.ajax({
+					type : "POST",
+					url : "index.php?_a=1",
+					data : ,
+					dataType : "json" ,
+					success : function(data){
+						if(data.status != 600 ){
+							console.log(data.message);
+							return false;
+						}
+						
+					},
+					error : function(){
+						
+					}
+				});
 				var node = graph.display.arc({
 					x:e.x, y:e.y,
 					radius: 5,

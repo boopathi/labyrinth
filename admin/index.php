@@ -246,7 +246,7 @@ $TEMPLATE_BODY = "";
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>
-		<script type="text/javascript" src="./admin.js"></script>
+		<script type="text/javascript" src="./admin2.js"></script>
 	</body>
 </html>
 <?php

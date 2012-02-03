@@ -4,7 +4,10 @@
 		//default settings
 		options = $.extend({
 			background: "#222",
-			fps: 60
+			fps: 60,
+			onNodeEdit: function(){},
+			onNodeDelete: function(){},
+			onNodeSelect: [function(){}, function(){}]
 		},options);
 		//make it available for cascading
 		return this.each(function(){
@@ -14,11 +17,14 @@
 				fps: options.fps
 			});
 			graph.nodes=[];
-			var isChild = false;
+			graph.nodeAction = "edit";
 			graph.bind("click", function(e){
 				//draw a circle
 				e.preventDefault();
-				if(isChild)return;
+				
+				//put graph data on server, and bind the following lines of code within the success hook
+				//ajax request
+				
 				var node = graph.display.arc({
 					x:e.x, y:e.y,
 					radius: 5,
@@ -26,23 +32,37 @@
 					fill: "#fff"
 				});
 				node.bind("mouseenter", function(evt){
-					this.radius=7;
-					this.redraw();
+					this.radius=7; this.redraw();
 				}).bind("mouseleave", function(evt){
-					this.radius=5;
-					this.redraw();
+					this.radius=5; this.redraw();
 				}).bind("click", function(evt){
-					isChild=true;
-					//TODO: this is not working properly. Remove isChild and timedout call
-					evt.stopPropagation();
+					
+					//alternative for stopPropagation	
+					graph.mouse.cancel();
 					evt.preventDefault();
-					console.log("node clicked");
-					//call the edit node function
-					setTimeout(function(){
-						isChild = false;
-					}, 100);
+					
+					//possibilities - editing the node or deleting the node or path operations
+					var node_num = 0;
+					switch(graph.nodeAction){
+						case "edit":
+							this.fill="#abcdef";
+							this.redraw();
+							var that = this;
+							options.onNodeEdit.apply(this,[function(){
+								//end of edit
+								that.fill = "#fff";
+								that.redraw();
+							}]);
+							break;
+						case "delete":
+							options.onNodeDelete.apply(this,[]);
+							break;
+						case "path":
+							options.onNodePath[node_num++].apply(this,[]);
+							break;
+					}
+					
 				});
-				console.log("canvas clicked");
 				graph.nodes.push(node);	
 				graph.addChild(node);
 				return false;
@@ -71,6 +91,23 @@
 		}
 	});
 
-	$("#graph").labygraph();
+	$("#graph").labygraph({
+		onNodeEdit: function(callback){
+			console.log(this);
+			$("#nodeEditor").slideDown(50);
+			$("#nodeEditor .closebutton").click(function(e){
+				e.preventDefault();
+				$(this).parent(".floater").slideUp(100);
+				callback.call();
+			});
+		},
+		onNodeDelete: function(callback){
+			callback.call();
+		},
+		onNodePath: function(callback){
+			callback.call();
+		}
+		
+	});
 	
 })(jQuery,this,this.document);

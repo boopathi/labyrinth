@@ -186,11 +186,6 @@ $TEMPLATE_BODY = "";
 				</canvas>
 			</div>
 			<div class="forms">
-				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
-					<input type="file" name="file" required="required" data-params="required"/>
-					<input type="hidden" name="action" value="addNode" data-params="required"/>
-					<input type="submit" /> 
-				</form>
 				<form id="removeNode" action="./index.php?_a=1" method="POST">
 					<input type="text" name="level" value=""  data-params="required" />
 					<input type="hidden" name="action" value="removeNode" data-params="required" />
@@ -212,6 +207,14 @@ $TEMPLATE_BODY = "";
 			</div>
 		</div>
 		<div id="statusbar"></div>
+		<div id="nodeEditor" class="floater">
+			<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
+					<input type="file" name="file" required="required" data-params="required"/>
+					<input type="hidden" name="action" value="addNode" data-params="required"/>
+					<input type="submit" /> 
+			</form>
+			<a href="#" class="closeButton">Click here to close</a>
+		</div>
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>

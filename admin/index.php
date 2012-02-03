@@ -9,12 +9,6 @@
 /*Statuses
  * 600 - Operation completed Successflly
  * 601 - Some Error Occured
- * 900 - No action specified ajax request failed
- * 901 - Unidentified Action Name (UAN)
- * 971 - Unable to add New Node
- * 972 - Unable to Remove a Node
- * 973 - Unable to add new Path
- * 974 - Unable to Remove Path 
 **/
 
 

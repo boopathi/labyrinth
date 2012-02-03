@@ -114,9 +114,15 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			//get question details and update the database
 			if($execute)
 				if(addNewNode($questionHTML))
-					echo json_encode(array("status"=>600, "message"=>"Successfully Added a new node"));
+					echo json_encode(array("status"=>600, 
+					"message"=>"Successfully Added a new node", 
+					"posX"=>intval(_POST("posX")) , 
+					"posY"=>intval(_POST("posY")))
+					);
+				else 
+					echo json_encode(array("status"=>601, "message"=>"Unable to add a new node"));
 			else 
-				echo json_encode(array("status"=>601, "message"=>"Unable to add a new node"));
+				echo json_encode(array("status"=>601, "message"=>"Unable to add , \$exec fail"));
 			break;
 			
 			
@@ -185,6 +191,17 @@ $TEMPLATE_BODY = "";
 				<canvas id="graph" width="940" height="400">
 				</canvas>
 			</div>
+			<div class="action">
+				<form id="actionType" action="./index.php?_a=1" method="POST">
+					<label for="actionType">Action Type :</label>
+					<select name="actionType">
+						<option value="editnode" selected>Edit Node</option>
+						<option value="addpath" >Add Path</option>
+						<option value="removepath" >Remove Path</option>
+						<option value="removenode" >Remove Node</option>
+					</select>
+				</form>
+			</div>
 			<div class="forms">
 				<form id="removeNode" action="./index.php?_a=1" method="POST">
 					<input type="text" name="level" value=""  data-params="required" />
@@ -208,9 +225,12 @@ $TEMPLATE_BODY = "";
 		</div>
 		<div id="statusbar"></div>
 		<div id="nodeEditor" class="floater">
+			<div class="content"></div>
 			<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
 					<input type="file" name="file" required="required" data-params="required"/>
 					<input type="hidden" name="action" value="addNode" data-params="required"/>
+					<input type="hidden" name="posX" value="" data-params="required" />
+					<input type="hidden" name="posY" value="" data-params="required"/>
 					<input type="submit" /> 
 			</form>
 			<a href="#" class="closeButton">Click here to close</a>

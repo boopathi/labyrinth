@@ -17,6 +17,7 @@
 		
 		var handlerObject = {
 			"viewnode": function() {
+				var self = this;
 				$.ajax({
 					url: "./index.php?_a=1",
 					type:"POST",
@@ -30,11 +31,14 @@
 							console.log(data.message);
 							return;
 						}
-						$("#viewNode").html(data.html).find("img").css({
-							width: 50,
-							height: 50
+						console.log(self);
+						//append the loaded html and resize the image
+						$("#viewNode").html(data.html).css({
+							top: $("#graph").offset().top + self.posY - 3,
+							left: $("#graph").offset().left + self.posX + 10
+						}).find("img").css({
+							width: 100, height: 100
 						});
-						console.log(data.html);
 					}
 				})
 			},

@@ -31,3 +31,6 @@ body {
 	height: 400px;
 }
 
+#viewNode {
+	position: absolute;
+}

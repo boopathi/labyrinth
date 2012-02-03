@@ -208,13 +208,6 @@ $TEMPLATE_BODY = "";
 					<input type="hidden" name="action" value="removeNode" data-params="required" />
 					<input type="submit" />
 				</form>
-				<form id="addPath" action="./index.php?_a=1" method="POST">
-					<input type="text" name="from" value=""  data-params="required"/>
-					<input type="text" name="to" value=""  data-params="required"/>
-					<input type="text" name="key" value=""  data-params="required"/>
-					<input type="hidden" name="action" value="addPath" />
-					<input type="submit" />
-				</form>
 				<form id="removePath" action="./index.php?_a=1" method="POST">
 					<input type="text" name="from" value="" data-params="required" />
 					<input type="text" name="to" value="" data-params="required" />
@@ -235,6 +228,21 @@ $TEMPLATE_BODY = "";
 			</form>
 			<a href="#" class="closeButton">Click here to close</a>
 		</div>
+		<div id="pathEditor" class="floater">
+			<div class="content"></div>
+			<form id="addPath" action="./index.php?_a=1" method="POST">
+					<label for="from">From : </label>
+					<input type="text" name="from" value=""  data-params="required"/><br/>
+					<label for="to">To : </label>
+					<input type="text" name="to" value=""  data-params="required"/><br/>
+					<label for="key">Key : </label>
+					<input type="text" name="key" value=""  data-params="required"/>
+					<input type="hidden" name="action" value="addPath" /><br/>
+					<input type="submit" />
+			</form>
+			<a href="#" class="closeButton">Click here to close</a>
+		</div>
+		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>

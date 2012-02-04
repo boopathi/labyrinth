@@ -69,7 +69,7 @@
 		var createPath = function(options){
 			//add offset
 			var offset={};
-			offset.x = (options.start.x > options.end.x) ? 3 : -3;
+			offset.x = (options.start.x < options.end.x) ? 3 : -3;
 			offset.y = (options.start.y > options.end.y) ? 3 : -3;
 			options.start.x+=offset.x;
 			options.start.y+=offset.y;

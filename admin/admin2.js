@@ -119,7 +119,21 @@
 		window.labygraph.createNode = createNode;
 		
 		var initGraph =  function () {
-			createNode();
+			$.ajax({
+				type : "POST",
+				url : "index.php?_a=1",
+				data: {
+					action : "initGraph"
+				},
+				dataType : "json",
+				success : function(data){
+					
+				},
+				error : function(){
+					
+				}
+			});
+			//createNode();
 		}
 		
 		//make it available for cascading

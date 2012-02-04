@@ -127,13 +127,16 @@
 				},
 				dataType : "json",
 				success : function(data){
-					
+					if(data.status!=600){
+						console.log(data.message);
+						return;
+					}
+					createNode();
 				},
 				error : function(){
 					
 				}
 			});
-			//createNode();
 		}
 		
 		//make it available for cascading

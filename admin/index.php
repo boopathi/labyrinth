@@ -170,7 +170,9 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			break;	
 			
 		case "initGraph":
-			if($nodeInfo = initNodes() && $pathInfo = initPaths())
+			$nodeInfo = initNodes();
+			$pathInfo = initPaths();
+			if( is_array($nodeInfo) && is_array($pathInfo) )
 				echo json_encode(array("status"=>600, "message"=>"Successfully Fetched Info", "nodedata"=>$nodeInfo, "pathdata"=>$pathInfo));
 			else
 				echo json_encode(array("status"=>601, "message"=>"Unable to fetch info"));

@@ -177,8 +177,6 @@ function initNodes(){
 	$nodearray = array();
 	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`") or die(mysql_error());
 
-	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`");
-
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
@@ -208,5 +206,13 @@ function getUserLastAnswer(){
 		$ans = mysql_fetch_assoc($getUserLastAnsQuery);
 		return $ans['key'];
 	}
+}
+
+
+function getLevelstats($from, $to){
+	// no.of people who have solved a particular level..
+	$noLevelSolved = mysql_query("SELECT DISTINCT `userid`,count(`from`) FROM `user_level` WHERE `from` = ".$from." LIMIT 1") or die(mysql_error());
+	// no.of people who are currently in a particular level..
+	$noInLevel = mysql_query("SELECT DISTINCT `userid`,count(`to`) FROM `user_level` WHERE `to` = ".$to." LIMIT 1") or die(mysql_error());
 }
 

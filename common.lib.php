@@ -176,8 +176,6 @@ function initNodes(){
 	$nodearray = array();
 	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`") or die(mysql_error());
 
-	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`");
-
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));

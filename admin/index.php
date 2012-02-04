@@ -29,7 +29,7 @@ connectDB();
 //handle all ajax requests in the beginning
 if(isset($_GET["_a"]) && _GET('_a') == 1) :
 	if(!isset($_POST['action'])):
-		echo json_encode(array("status"=>"900","message"=>"Unknown Ajax Request"));
+		echo json_encode(array("status"=>601,"message"=>"Unknown Ajax Request"));
 		exit(1);
 	endif;
 	switch(_POST('action')){

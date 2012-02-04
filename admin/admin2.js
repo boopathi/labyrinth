@@ -67,6 +67,14 @@
 		
 		//The following function is just drawPath.. and not createPath
 		var createPath = function(options){
+			//add offset
+			var offset={};
+			offset.x = (options.start.x > options.end.x) ? 3 : -3;
+			offset.y = (options.start.y > options.end.y) ? 3 : -3;
+			options.start.x+=offset.x;
+			options.start.y+=offset.y;
+			options.end.x+=offset.x;
+			options.end.y+=offset.y;
 			var graph = options.graph;
 			var path = graph.display.line({
 				start: options.start,
@@ -125,11 +133,15 @@
 						$("#addPath input[name=to]").val(this.qno);
 						//after the second node is set, display the dialog box to enter the answer
 						var self = this;
-						$("#showTextBox").val("").bind({
+						$("#showTextBox").css({
+							top: $("#graph").offset().top + this.posY - 3,
+							left: $("#graph").offset().left + this.posX + 10
+						}).show().find("input").val("").bind({
 							"keypress": function(e){
 								if(e.which == 13){
 									//create the path
 									e.preventDefault();
+									$("#addPath input[name=key]").val($(this).val());
 									//create the path with ajax request
 									$("#addPath").ajaxSubmit({
 										dataType:"json",
@@ -159,14 +171,12 @@
 										},
 										error: function(xhr,err){
 											console.log(err);
+											$(e.target).hide();
 										}
 									});
 								}
 							}
-						}).css({
-							top: $("#graph").offset().top + this.posY - 3,
-							left: $("#graph").offset().left + this.posX + 10
-						}).show().find("input").focus();
+						}).focus();
 					} else {
 						console.log("Some error happened. Deleting the values");
 						delete graph.path.firstNode;
@@ -218,7 +228,6 @@
 					$(data.pathdata).each(function(){
 						var from = getNodePointer(this.from);
 						var to = getNodePointer(this.to);
-						
 						createPath.apply(this,[{
 							graph: graph,
 							start: {

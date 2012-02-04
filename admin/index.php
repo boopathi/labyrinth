@@ -120,18 +120,18 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			//get question details and update the database
 			if($execute)
 				if(addNewNode($questionHTML))
-					echo json_encode(array("status"=>"961", "message"=>"Successfully Added"));
+					echo json_encode(array("status"=>600, "message"=>"Successfully Added a new node"));
 			else 
-				echo json_encode(array("status"=>"971", "message"=>"Unable to add a new node"));
+				echo json_encode(array("status"=>601, "message"=>"Unable to add a new node"));
 			break;
 			
 			
 		case "removeNode":
 			//delete question from the database and remove all paths attached to it
 			if(removeNode(_POST('level')))
-				echo json_encode(array("status"=>"962", "message"=>"Successfully Added"));
+				echo json_encode(array("status"=>600, "message"=>"Successfully Removed Node"));
 			else 
-				echo json_encode(array("status"=>"972", "message"=>"Unable to remove Node"));
+				echo json_encode(array("status"=>601, "message"=>"Unable to remove Node"));
 			break;
 			
 			
@@ -139,23 +139,23 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			//get from and to data and create a new entry in the answer table
 						
 			if(addNewPath( _POST('from') , _POST('to') , _POST('key') ))
-				echo json_encode(array("status"=>"963", "message"=>"Successfully Added"));
+				echo json_encode(array("status"=>600, "message"=>"Successfully Added Path"));
 			else 
-				echo json_encode(array("status"=>"973", "message"=>"Unable to add a new path"));
+				echo json_encode(array("status"=>601, "message"=>"Unable to add a new path"));
 			break;
 			
 			
 		case "removePath":
 			//get from and to data and remove a path from the answer table
 			if(removePath( _POST('from') , _POST('to') ))
-				echo json_encode(array("status"=>"964", "message"=>"Successfully Added"));
+				echo json_encode(array("status"=>600, "message"=>"Successfully Added"));
 			else 
-				echo json_encode(array("status"=>"974", "message"=>"Unable to remove Path"));
+				echo json_encode(array("status"=>601, "message"=>"Unable to remove Path"));
 			break;
 			
 			
 		default:
-			echo json_encode(array("status"=>"901","message"=>"Unidentified Action Name"));			
+			echo json_encode(array("status"=>601,"message"=>"Unidentified Action Name"));			
 	}
 	exit(1);	
 endif;

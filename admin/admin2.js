@@ -41,7 +41,7 @@
 					}
 				})
 			},
-			"editnode": function(){
+			"editNode": function(){
 				$("#addNode input[name=posX]").val(this.posX);
 				$("#addNode input[name=posY]").val(this.posY);
 				$("#addNode input[name=file]").click().change(function(){
@@ -69,7 +69,7 @@
 		var createPath = function(options){
 			//add offset
 			var offset={};
-			offset.x = (options.start.x > options.end.x) ? 3 : -3;
+			offset.x = (options.start.x < options.end.x) ? 3 : -3;
 			offset.y = (options.start.y > options.end.y) ? 3 : -3;
 			options.start.x+=offset.x;
 			options.start.y+=offset.y;
@@ -142,6 +142,9 @@
 						delete graph.path.firstNode;
 						delete graph.path.secondNode;
 					}
+				} else {
+					//he is editing the current node
+					handlerObject["editNode"].apply(this,[]);
 				}
 			});
 			graph.nodes.push(node);
@@ -201,8 +204,8 @@
 						}]);
 					});
 				},
-				error : function(){
-					
+				error: function(xhr, err){
+					console.log(err);
 				}
 			});
 		}
@@ -221,8 +224,6 @@
 			//an array containing the path data
 			graph.path={};
 			graph.path.items=[];
-			//set the default action
-			graph.nodeAction = "select";
 			
 			graph.isCtrl=false;
 
@@ -231,7 +232,7 @@
 					graph.isCtrl = e.which === 17;
 				},
 				"keyup": function(e){
-					graph.isCtrl = e.which === 17;
+					graph.isCtrl = !(e.which === 17);
 				}
 				
 			});
@@ -240,9 +241,11 @@
 			$("#showTextBox").find("input").bind({
 				"keyup": function(e){
 					if(e.which === 27) {
-						graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
-						graph.path.firstNode.redraw();
-						graph.path.secondNode.redraw();
+						graph.path.firstNode && 
+						graph.path.secondNode && 
+						(graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff");
+						graph.path.firstNode && graph.path.firstNode.redraw();
+						graph.path.secondNode && graph.path.secondNode.redraw();
 						delete graph.path.firstNode;
 						delete graph.path.secondNode;
 						$(this).parent("#showTextBox").hide();

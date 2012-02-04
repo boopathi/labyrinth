@@ -3,7 +3,7 @@
 	$.fn.labygraph = function(options){
 		//default settings
 		options = $.extend({
-			background: "#222",
+			background: "#628d00",
 			fps: 60,
 			addNodeForm: null,
 			onNodeClick: function(){},
@@ -39,7 +39,7 @@
 							width: 60, height: 60
 						});
 					}
-				})
+				});
 			},
 			"editNode": function(){
 				$("#addNode input[name=posX]").val(this.posX);
@@ -79,7 +79,7 @@
 			var path = graph.display.line({
 				start: options.start,
 				end: options.end,
-				stroke: "1px #aaa"
+				stroke: "2px #fff"
 			});
 			graph.path.items.push(path);
 			graph.addChild(path);
@@ -154,61 +154,44 @@
 		window.labygraph.createNode = createNode;
 		window.labygraph.createPath = createPath;
 		
-		var getNodePointer = function(qno) {
+		var getNodePointer = function(qno, graph) {
 			var r = 0, c;
-			while( typeof window.labygraph.items[r] !== "undefined") {
-				for( c = 0; c < window.labygraph.items[r].nodes.length; c++)
-					if(window.labygraph.items[r].nodes[c].qno == qno)
-						return window.labygraph.items[r].nodes[c];
-				r++;
-			}
+			for( c = 0; c < graph.nodes.length; c++)
+				if(graph.nodes[c].qno == qno)
+					return graph.nodes[c];
 		}
 
 		//function to initialize the graph
-		var initGraph =  function (graph) {
-			$.ajax({
-				type : "POST",
-				url : "index.php?_a=1",
-				data: {
-					action : "initGraph"
-				},
-				dataType : "json",
-				success : function(data){
-					if(data.status!==600){
-						console.log(data.message);
-						return;
-					}
-					$(data.nodedata).each(function(){
-						if(this.level !== 0){
-							createNode.apply(this,[{
-								graph: graph,
-								posX: this.posX,
-								posY: this.posY,
-								nodeId: this.level
-							}]);
-						}
-					});
-					$(data.pathdata).each(function(){
-						var from = getNodePointer(this.from);
-						var to = getNodePointer(this.to);
-						createPath.apply(this,[{
-							graph: graph,
-							start: {
-								x:from.posX,
-								y:from.posY
-							},
-							end: {
-								x:to.posX,
-								y:to.posY
-							}
-						}]);
-					});
-				},
-				error: function(xhr, err){
-					console.log(err);
+		
+		var initGraph = function(graph) {
+			var data = graph_data;
+			$(data.nodedata).each(function() {
+				if(this.level !== 0) {
+					createNode.apply(this, [{
+						graph : graph,
+						posX : this.posX,
+						posY : this.posY,
+						nodeId : this.level
+					}]);
 				}
 			});
+			$(data.pathdata).each(function() {
+				var from = getNodePointer(this.from,graph);
+				var to = getNodePointer(this.to,graph);
+				createPath.apply(this, [{
+					graph : graph,
+					start : {
+						x : from.posX,
+						y : from.posY
+					},
+					end : {
+						x : to.posX,
+						y : to.posY
+					}
+				}]);
+			});
 		}
+
 		
 		//make it available for cascading
 		return this.each(function(){
@@ -290,6 +273,32 @@
 				}
 			});
 			
+			//bind to click for node create
+			$("#nodeheaderBox input").bind({
+				"keyup": function(e){
+					e.preventDefault();
+					$("#addNode input[name=header]").val($(this).val());
+					if(e.which==13){
+						$("#addNode").ajaxSubmit({
+							dataType:"json",
+							success: function(data){
+								if(data.status!=600){
+									console.log(data.message);
+									return;
+								}
+								createNode.apply(this,[{
+									graph: graph,
+									posX: data.posX,
+									posY: data.posY,
+									nodeId: data.nodeId
+								}]);
+								$("#nodeheaderBox").hide();
+							}
+						});
+					}
+				}
+			});
+			
 			//When a click happens in graph, it means creating a new node 
 			graph.bind("click", function(e){
 				e.preventDefault();
@@ -298,21 +307,9 @@
 				$("#addNode input[name=posX]").val(e.x);
 				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
-					$("#addNode").ajaxSubmit({
-						dataType:"json",
-						success: function(data){
-							if(data.status!=600){
-								console.log(data.message);
-								return;
-							}
-							createNode.apply(self,[{
-								graph: graph,
-								posX: data.posX,
-								posY: data.posY,
-								nodeId: data.nodeId
-							}]);
-						}
-					});
+					$("#nodeheaderBox").css({
+						left: $("#graph").offset().left+e.x, top:$("#graph").offset().top+e.y
+					}).show().find("input").val("").focus();
 				});
 			});
 			

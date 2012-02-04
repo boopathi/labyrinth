@@ -32,17 +32,46 @@ define("DB_NAME","{$_POST['dbname']}");
 return "LABYRINTH";
 	
 CONFF;
+			$writable_flag = true;
 			if(!is_writable("./config.inc.php")){
+				$writable_flag=false;
 				$TEMPLATE_BODY = <<<NOTWRITABLE
 				The config file config.inc.php is not writable by http-user
 				<address>sudo chown http-user config.inc.php</address>
 NOTWRITABLE;
-			} else {
-				$conf_file = fopen("./config.inc.php", "w");
-				fwrite($conf_file, $conf);
-				fclose($conf_file);
-				header("Location: ./");
 			}
+			if(!is_dir("./images")){
+				if(!mkdir("./images",0755)){
+					$writable_flag=false;
+					$TEMPLATE_BODY=<<<NOTWRITABLE
+					Folder <em>images</em> could not be created.
+NOTWRITABLE;
+				}
+			} else {
+				if(!is_dir("./images/questions")){
+					if(!mkdir("./images/questions",0755)){
+						$writable_flag = false;
+						$TEMPLATE_BODY=<<<NOTWRITABLE
+							Folder <em>images/questions</em> could not be created.
+NOTWRITABLE;
+					}
+				}
+			}
+			if($writable_flag === true) {
+				//execute the command in shell
+				$result="";
+				system("mysql -u{$_POST['dbuser']} -p{$_POST['dbpass']} -D{$_POST['dbname']} < labyrinth.sql",$result);
+				print_r($result);
+				if($result===0){
+					$conf_file = fopen("./config.inc.php", "w");
+					fwrite($conf_file, $conf);
+					fclose($conf_file);
+					$TEMPLATE_BODY = "Installation Complete. <a href='./'>Click here</a>";
+					//header("Location: ./");
+				} else {
+					$TEMPLATE_BODY = "Error in Making the tables in database. Check SQL";
+				}
+			} else {}
 		else:
 			//then show a form containing the fields required for config
 			$TEMPLATE_BODY = <<<FORM
@@ -56,15 +85,15 @@ NOTWRITABLE;
 							</tr>
 							<tr>
 								<td>Database Name</td>
-								<td><input type="text" name="dbname" placeholder="labyrinth" /></td>
+								<td><input type="text" name="dbname" value="labyrinth" placeholder="labyrinth" /></td>
 							</tr>
 							<tr>
 								<td>Username to connect to database</td>
-								<td><input type="text" name="dbuser" value="" placeholder="root"/></td>
+								<td><input type="text" name="dbuser" value="root" placeholder="root"/></td>
 							</tr>
 							<tr>
 								<td>Password</td>
-								<td><input type="password" name="dbpass" placeholder="P@55W0RD" /></td>
+								<td><input type="password" name="dbpass" value="root" placeholder="P@55W0RD" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" align="center"><input type="submit" value="Make Config"/></td>

@@ -113,7 +113,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 			//get question details and update the database
 			if($execute)
-				if(addNewNode($questionHTML, _POST("posX"), _POST("posY")))
+				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header")))
 					echo json_encode(array("status"=>600, 
 					"message"=>"Successfully Added a new node",
 					"posX"=>intval(_POST("posX")), 
@@ -200,65 +200,48 @@ $TEMPLATE_BODY = "";
 				<canvas id="graph" width="940" height="400">
 				</canvas>
 			</div>
-			<div class="action">
-				<form id="actionType" action="./index.php?_a=1" method="POST">
-					<label for="actionType">Action Type :</label>
-					<select name="actionType">
-						<option value="viewnode" selected>View Node</option>
-						<option value="editnode" >Edit Node</option>
-						<option value="addpath" >Add Path</option>
-						<option value="removepath" >Remove Path</option>
-						<option value="removenode" >Remove Node</option>
-					</select>
-				</form>
-			</div>
 			<div class="forms">
 				<form id="removeNode" action="./index.php?_a=1" method="POST">
-					<input type="text" name="level" value=""  data-params="required" />
+					<input type="hidden" name="level" value=""  data-params="required" />
 					<input type="hidden" name="action" value="removeNode" data-params="required" />
-					<input type="submit" />
 				</form>
 				<form id="removePath" action="./index.php?_a=1" method="POST">
-					<input type="text" name="from" value="" data-params="required" />
-					<input type="text" name="to" value="" data-params="required" />
+					<input type="hidden" name="from" value="" data-params="required" />
+					<input type="hidden" name="to" value="" data-params="required" />
 					<input type="hidden" name="action" value="removePath" />
-					<input type="submit" />
+				</form>
+				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
+					<input type="file" name="file" required="required" data-params="required"/>
+					<input type="hidden" name="action" value="addNode" data-params="required"/>
+					<input type="hidden" name="posX" value="" data-params="required"/>
+					<input type="hidden" name="posY" value="" data-params="required"/>
+					<input type="hidden" name="header" value="" data-params="required"/>
+				</form>
+				<form id="addPath" action="./index.php?_a=1" method="POST">
+					<input type="hidden" name="from" value=""  data-params="required"/><br/>
+					<input type="hidden" name="to" value=""  data-params="required"/><br/>
+					<input type="hidden" name="key" value=""  data-params="required"/>
+					<input type="hidden" name="action" value="addPath" /><br/>
 				</form>
 			</div>
 		</div>
-		<div id="statusbar"></div>
-		<div id="nodeEditor" class="floater">
-			<div class="content"></div>
-			<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
-					<input type="file" name="file" required="required" data-params="required"/>
-					<input type="hidden" name="action" value="addNode" data-params="required"/>
-					<input type="hidden" name="posX" value="" data-params="required" />
-					<input type="hidden" name="posY" value="" data-params="required"/>
-					<input type="submit" /> 
-			</form>
-			<a href="#" class="closeButton">Click here to close</a>
-		</div>
-		<div id="pathEditor" class="floater">
-			<div class="content"></div>
-			<form id="addPath" action="./index.php?_a=1" method="POST">
-					<label for="from">From : </label>
-					<input type="text" name="from" value=""  data-params="required"/><br/>
-					<label for="to">To : </label>
-					<input type="text" name="to" value=""  data-params="required"/><br/>
-					<label for="key">Key : </label>
-					<input type="text" name="key" value=""  data-params="required"/>
-					<input type="hidden" name="action" value="addPath" /><br/>
-					<input type="submit" />
-			</form>
-			<a href="#" class="closeButton">Click here to close</a>
-		</div>
 		
-		<div id="viewNode" style="position:absolute"></div>
-		<div id="showTextBox" style="position:absolute"><input type="text" /></div>
+		<div id="statusbar"></div>
+		<div id="viewNode" class="floater" ></div>
+		<div id="showTextBox" class="floater" ><input type="text" /></div>
+		<div id="nodeheaderBox" class="floater" ><input type="text" /></div>
 		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>
+		<script type="text/javascript">
+			var graph_data = <?php
+					$nodeInfo = initNodes();
+					$pathInfo = initPaths();	
+					if( is_array($nodeInfo) && is_array($pathInfo) )
+						echo json_encode(array("nodedata"=>$nodeInfo, "pathdata"=>$pathInfo));
+			?>
+		</script>
 		<script type="text/javascript" src="./admin2.js"></script>
 	</body>
 </html>

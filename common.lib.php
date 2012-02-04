@@ -52,8 +52,15 @@ function getUserCurrentLevel(){
 	$userAccess = mysql_query("SELECT `to` FROM `user_level` WHERE `userid`='{$userid}' ORDER BY `id` DESC LIMIT 1") or die(mysql_error());
 	$userAccessArray = mysql_fetch_array($userAccess);
 	$userLevel = $userAccessArray['to'];
-	if(empty($userLevel))
-		return 1;
+	if(empty($userLevel)):
+		//then try to find the starting level from the database
+		$startNodeQuery = mysql_query("SELECT `value` FROM `config` WHERE `key`='start'") or die(mysql_error());
+		$startNodeArray = mysql_fetch_assoc($startNodeQuery);
+		if(empty($startNodeArray['value']))
+			return 1;
+		else
+			return $startNodeArray['value'];
+	endif;
 	return $userLevel;
 }
 
@@ -69,10 +76,11 @@ function getQuestion($userLevel) {
 }
 
 //get From and To in an array
-function getNodes($key){
+function getNodes($key,$level){
 	$key = escape($key);
-	$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$key'") or die(mysql_error());
-	$fromtoArray = mysql_fetch_array($fromtoQuery);
+	$level = escape($level);
+	$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='{$key}' AND (`from`='{$level}' OR `to`='{$level}')") or die(mysql_error());
+	$fromtoArray = mysql_fetch_assoc($fromtoQuery);
 	$returnvalue = array(
 		"from"	=> $fromtoArray['from'],
 		"to"	=> $fromtoArray['to']
@@ -92,13 +100,14 @@ function updateUserLevel($fromLevel, $toLevel){
 }
 
 //Add a new Node(question) in the database
-function addNewNode($questionHtml, $posx, $posy){
+function addNewNode($questionHtml, $posx, $posy, $header){
 	$questionHtml = escape($questionHtml);
 	$posx = escape($posx);
 	$posy = escape($posy);
+	$header = escape($header);
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`) VALUES('{$questionHtml}')");
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`,`posX`,`posY`) SELECT MAX(`level`)+1  , '{$questionHtml}', '{$posx}', '{$posy}' FROM `questions`");
-	$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`,`posX`,`posY`) VALUES('{$questionHtml}','$posx','$posy')");
+	$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`,`header`,`posX`,`posY`) VALUES('{$questionHtml}','{$header}','$posx','$posy')");
 	if($addNodeQuery) return true;
 	else return false;
 }
@@ -189,5 +198,15 @@ function initPaths(){
 		return $patharray;
 	endif;
 	return false;
+}
+
+
+function getUserLastAnswer(){
+	global $userid;
+	$getUserLastAnsQuery = mysql_query("SELECT a.key FROM `answers` a JOIN `user_level` u on a.from=u.from AND a.to=u.to WHERE u.userid='{$userid} ORDER BY `id` DESC LIMIT 1' ") or die(mysql_error());
+	if($getUserLastAnsQuery){
+		$ans = mysql_fetch_assoc($getUserLastAnsQuery);
+		return $ans['key'];
+	}
 }
 

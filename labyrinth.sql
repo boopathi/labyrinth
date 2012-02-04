@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2012 at 05:02 PM
+-- Generation Time: Feb 06, 2012 at 08:59 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -37,6 +37,18 @@ CREATE TABLE IF NOT EXISTS `answers` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `config`
+--
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `key` varchar(100) NOT NULL,
+  `value` varchar(500) NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `questions`
 --
 
@@ -47,14 +59,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `posX` int(11) NOT NULL,
   `posY` int(11) NOT NULL,
   PRIMARY KEY (`level`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63 ;
-
---
--- Dumping data for table `questions`
---
-
-INSERT INTO `questions` (`level`, `header`, `question`, `posX`, `posY`) VALUES
-(0, 'Labyrinth', 'Welcome to Labyrinth. Start playing', 0, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -69,4 +74,4 @@ CREATE TABLE IF NOT EXISTS `user_level` (
   `to` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

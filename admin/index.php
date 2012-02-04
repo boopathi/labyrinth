@@ -7,6 +7,8 @@
 
 
 /*Statuses
+ * 600 - Operation completed Successflly
+ * 601 - Some Error Occured
  * 900 - No action specified ajax request failed
  * 901 - Unidentified Action Name (UAN)
  * 971 - Unable to add New Node
@@ -35,6 +37,36 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			//upload images
 			$execute = 1 ;
 			$questionHTML = NULL ;
+			
+			//The classic file uploader script
+			if(isset($_FILES['file'])):
+				//check if there was any error
+				if($_FILES['file']['error'] > 0):
+					echo json_encode(array("status"=>601, "message"=>$_FILES['file']['error']));
+					exit(1);
+				endif;
+				
+				//check if the file is an image
+				if(strrpos($_FILES['file']['type'], "image") !== false):
+					$safename = $_FILES['file']['name'];
+					$safename = str_replace("#", "No.", $safename);
+					$safename = str_replace("$", "Dollar.", $safename);
+					$safename = str_replace("%", "percent", $safename);
+					$safename = str_replace("^", "", $safename);
+					$safename = str_replace("&", "and", $safename);
+					$safename = str_replace("*", "", $safename);
+					$safename = str_replace("?", "", $safename);
+					$safename = $safename . randomStr();
+					//just to make sure there are no overriddens
+					if(file_exists($safename)):
+						echo json_encode(array("status"=>601,"message"=>"File Already Exists"));
+						exit(1);
+					endif;
+				else:
+					echo json_encode(array("status"=>601,"message"=>"You can upload only Image files"));	
+				endif;
+			endif;
+			
 			if(isset($_FILES['file'])):
 				if((($_FILES['file']['type']=='image/gif')||($_FILES['file']['type']=='image/jpeg')||($_FILES['file']['type']=='image/pjpeg')||($_FILES['file']['type']=='image/png')||($_FILES['file']['type']=='image/x-png'))&&($_FILES['file']['size']<=(5*1024*1024)))
 				{
@@ -82,11 +114,11 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 							imagecopyresampled($resized_img, $new_img, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 							
 							$new_name = randomStr();
-							ImageJpeg ($resized_img,"../images/questions/".$new_name.$type);
+							ImageJpeg ($resized_img,$_SERVER['PHP_SELF']."/../../images/questions/".$new_name.$type);
 							ImageDestroy ($resized_img);
 							ImageDestroy ($new_img);
 							
-							$questionHTML = "<img src='../images/questions/".$new_name.$type."' />";
+							$questionHTML = "<img src='".$_SERVER['PHP_SELF']."/../../images/questions/".$new_name.$type."' />";
 						}
 					}
 				}
@@ -146,6 +178,10 @@ $TEMPLATE_BODY = "";
 	<link href="./admin.css" rel="stylesheet" type="text/css" />
 	<body>
 		<div class="outercontainer">
+			<div class="graphcontainer">
+				<canvas id="graph" width="940" height="400">
+				</canvas>
+			</div>
 			<div class="forms">
 				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
 					<input type="file" name="file" required="required"/>
@@ -175,6 +211,7 @@ $TEMPLATE_BODY = "";
 		<div id="statusbar"></div>
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
+		<script type="text/javascript" src="../template/ocanvas.min.js"></script>
 		<script type="text/javascript" src="./admin.js"></script>
 	</body>
 </html>

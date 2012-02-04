@@ -204,35 +204,31 @@ $TEMPLATE_BODY = "";
 				<form id="removeNode" action="./index.php?_a=1" method="POST">
 					<input type="hidden" name="level" value=""  data-params="required" />
 					<input type="hidden" name="action" value="removeNode" data-params="required" />
-					<input type="submit" />
 				</form>
 				<form id="removePath" action="./index.php?_a=1" method="POST">
 					<input type="hidden" name="from" value="" data-params="required" />
 					<input type="hidden" name="to" value="" data-params="required" />
 					<input type="hidden" name="action" value="removePath" />
-					<input type="submit" />
 				</form>
 				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
 					<input type="file" name="file" required="required" data-params="required"/>
 					<input type="hidden" name="action" value="addNode" data-params="required"/>
 					<input type="hidden" name="posX" value="" data-params="required" />
 					<input type="hidden" name="posY" value="" data-params="required"/>
-					<input type="submit" /> 
 				</form>
 				<form id="addPath" action="./index.php?_a=1" method="POST">
 					<input type="hidden" name="from" value=""  data-params="required"/><br/>
 					<input type="hidden" name="to" value=""  data-params="required"/><br/>
 					<input type="hidden" name="key" value=""  data-params="required"/>
 					<input type="hidden" name="action" value="addPath" /><br/>
-					<input type="submit" />
 				</form>
 			</div>
 		</div>
 		
 		<div id="statusbar"></div>
-		<div id="viewNode" class="floater" style="position:absolute"></div>
-		<div id="showTextBox" class="floater" style="position:absolute"><input type="text" /></div>
-		<div id="nodeheaderBox" class="floater" style="position:absolute"><input type="text" /></div>
+		<div id="viewNode" class="floater" ></div>
+		<div id="showTextBox" class="floater" ><input type="text" /></div>
+		<div id="nodeheaderBox" class="floater" ><input type="text" /></div>
 		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>

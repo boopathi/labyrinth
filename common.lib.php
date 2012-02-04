@@ -163,3 +163,13 @@ function showPath( $from , $to){
 	endif;
 }
 
+function initNodes(){
+	$nodearray = array();
+	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`");
+	if(mysql_num_rows($allNodes)>0):
+		while($nodeinfo = mysql_fetch_assoc($allNodes)):
+			$nodearray[] = array ("level"=>$nodeinfo['level'] , "posX"=>$nodeinfo['posX'] , "posY"=>$nodeinfo['posY']);
+		endwhile;
+	endif;
+	return $nodearray;
+}

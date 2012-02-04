@@ -169,6 +169,9 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 				echo json_encode(array("status"=>601, "message"=>"Query Failed"));
 			break;	
 			
+		case "initGraph":
+			
+			break;
 		default:
 			echo json_encode(array("status"=>601,"message"=>"Unidentified Action Name"));			
 	}

@@ -102,6 +102,10 @@
 		//make it available Globally, to use it as an API
 		window.labygraph.createNode = createNode;
 		
+		var initGraph =  function () {
+			createNode();
+		}
+		
 		//make it available for cascading
 		return this.each(function(){
 			

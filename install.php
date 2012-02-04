@@ -53,15 +53,24 @@ NOTWRITABLE;
 						$writable_flag = false;
 						$TEMPLATE_BODY=<<<NOTWRITABLE
 							Folder <em>images/questions</em> could not be created.
-NOTWRITABLE;	
+NOTWRITABLE;
 					}
 				}
 			}
 			if($writable_flag === true) {
-				$conf_file = fopen("./config.inc.php", "w");
-				fwrite($conf_file, $conf);
-				fclose($conf_file);
-				header("Location: ./");
+				//execute the command in shell
+				$result="";
+				system("mysql -u{$_POST['dbuser']} -p{$_POST['dbpass']} -D{$_POST['dbname']} < labyrinth.sql",$result);
+				print_r($result);
+				if($result===0){
+					$conf_file = fopen("./config.inc.php", "w");
+					fwrite($conf_file, $conf);
+					fclose($conf_file);
+					$TEMPLATE_BODY = "Installation Complete. <a href='./'>Click here</a>";
+					//header("Location: ./");
+				} else {
+					$TEMPLATE_BODY = "Error in Making the tables in database. Check SQL";
+				}
 			} else {}
 		else:
 			//then show a form containing the fields required for config
@@ -76,15 +85,15 @@ NOTWRITABLE;
 							</tr>
 							<tr>
 								<td>Database Name</td>
-								<td><input type="text" name="dbname" placeholder="labyrinth" /></td>
+								<td><input type="text" name="dbname" value="labyrinth" placeholder="labyrinth" /></td>
 							</tr>
 							<tr>
 								<td>Username to connect to database</td>
-								<td><input type="text" name="dbuser" value="" placeholder="root"/></td>
+								<td><input type="text" name="dbuser" value="root" placeholder="root"/></td>
 							</tr>
 							<tr>
 								<td>Password</td>
-								<td><input type="password" name="dbpass" placeholder="P@55W0RD" /></td>
+								<td><input type="password" name="dbpass" value="root" placeholder="P@55W0RD" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" align="center"><input type="submit" value="Make Config"/></td>

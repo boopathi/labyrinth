@@ -44,15 +44,18 @@ $CONTENT = "";
 
 //connect to the database
 connectDB();
-echo $answer;
+
 if(empty($answer)):
 	//Get the user level from database
 
 	//from the user's current level
 	$userLevel = getUserCurrentLevel();
 	//get the question for the userlevel
-	$CONTENT = getQuestion($userLevel);
-	
+	$questionArray = getQuestion($userLevel);
+	$CONTENT = $questionArray['question'];
+	die("came here");
+	header("Location: ./{$questionArray['header']}");
+
 else:
 	//Check if the user has access to the particular level
 	//$level = $request
@@ -64,13 +67,22 @@ else:
 	
 	if($userCurrentLevel == $requestLevelArray['from']){
 		//then user entered a correct answer
-		$CONTENT = getQuestion($requestLevelArray['to']);
+		$questionArray = getQuestion($requestLevelArray['to']);
+		$CONTENT = $questionArray['question'];
 		//update the database with the current level
 		updateUserLevel($userCurrentLevel, $requestLevelArray['to']);
 	}
 	else if($userCurrentLevel == $requestLevelArray['to']) {
 		//then user is trying to access the same level
-		$CONTENT = "You are still here";
+		//$CONTENT = "You are still here";
+		
+		
+		//from the user's current level
+		$userLevel = getUserCurrentLevel();
+		//get the question for the userlevel
+		$questionArray = getQuestion($userLevel);
+		$CONTENT = $questionArray['question'];
+		
 	}
 	else {
 		//user entered an answer that was not allowed

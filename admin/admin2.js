@@ -276,6 +276,8 @@
 			//bind to click for node create
 			$("#nodeheaderBox input").bind({
 				"keyup": function(e){
+					e.preventDefault();
+					$("#addNode input[name=header]").val($(this).val());
 					if(e.which==13){
 						$("#addNode").ajaxSubmit({
 							dataType:"json",

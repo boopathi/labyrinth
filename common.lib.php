@@ -170,6 +170,7 @@ function initNodes(){
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>$nodeinfo['level'] , "posX"=>$nodeinfo['posX'] , "posY"=>$nodeinfo['posY']);
 		endwhile;
+		return $nodearray;
 	endif;
-	return $nodearray;
+	return FALSE;
 }

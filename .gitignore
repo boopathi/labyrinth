@@ -5,3 +5,4 @@ config\.inc\.php
 \.project
 \.settings
 images/questions/*
+*.log

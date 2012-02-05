@@ -147,6 +147,21 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 				echo json_encode(array("status"=>601, "message"=>"Unable to remove Path"));
 			break;
 			
+		case "showNode":
+			$data = getQuestion(_POST('level'));
+			if(!empty($data))
+				echo json_encode(array("status"=>600, "message"=>"Successfully Fetched", "html"=>$data['question']));
+			else
+				echo json_encode(array("status"=>601, "message"=>"Query Failed"));
+			break;
+			
+		case "showPath":
+			$data = showPath(_POST('from') , _POST('to'));
+			if(!empty($data))
+				echo json_encode(array("status"=>600, "message"=>"Successfully Fetched", "html"=>$data));
+			else
+				echo json_encode(array("status"=>601, "message"=>"Query Failed"));
+			break;	
 			
 		default:
 			echo json_encode(array("status"=>601,"message"=>"Unidentified Action Name"));			

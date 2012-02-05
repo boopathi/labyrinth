@@ -152,3 +152,11 @@ function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklm
 	return $string;
 }
 
+function showPath( $from , $to){
+	$requestQuery = mysql_query("SELECT * FROM `labyrinth`.`answers` WHERE `from` = '".$from."' AND `to` = '".$to."' LIMIT 1")or die (mysql_error());
+	if(mysql_num_rows($requestQuery)):
+		$requestKey =  mysql_fetch_assoc($requestQuery);
+		return $requestKey['key'];
+	endif;
+}
+

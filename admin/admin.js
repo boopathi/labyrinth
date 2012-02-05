@@ -25,46 +25,63 @@
 				//put graph data on server, and bind the following lines of code within the success hook
 				//ajax request
 				
-				var node = graph.display.arc({
-					x:e.x, y:e.y,
-					radius: 5,
-					start: 0, end: 360,
-					fill: "#fff"
-				});
-				node.bind("mouseenter", function(evt){
-					this.radius=7; this.redraw();
-				}).bind("mouseleave", function(evt){
-					this.radius=5; this.redraw();
-				}).bind("click", function(evt){
-					
-					//alternative for stopPropagation	
-					graph.mouse.cancel();
-					evt.preventDefault();
-					
-					//possibilities - editing the node or deleting the node or path operations
-					var node_num = 0;
-					switch(graph.nodeAction){
-						case "edit":
-							this.fill="#abcdef";
-							this.redraw();
-							var that = this;
-							options.onNodeEdit.apply(this,[function(){
-								//end of edit
-								that.fill = "#fff";
-								that.redraw();
-							}]);
-							break;
-						case "delete":
-							options.onNodeDelete.apply(this,[]);
-							break;
-						case "path":
-							options.onNodePath[node_num++].apply(this,[]);
-							break;
+				$.ajax({
+					type : "POST",
+					url : "index.php?_a=1",
+					data : {
+						action:"addNode"
+						},
+					dataType : "json" ,
+					success : function(data){
+						if(data.status != 600 ){
+							console.log(data.message);
+							return false;
+						}
+						var node = graph.display.arc({
+							x:e.x, y:e.y,
+							radius: 5,
+							start: 0, end: 360,
+							fill: "#fff"
+						});
+						node.bind("mouseenter", function(evt){
+							this.radius=7; this.redraw();
+						}).bind("mouseleave", function(evt){
+							this.radius=5; this.redraw();
+						}).bind("click", function(evt){
+							
+							//alternative for stopPropagation	
+							graph.mouse.cancel();
+							evt.preventDefault();
+							
+							//possibilities - editing the node or deleting the node or path operations
+							var node_num = 0;
+							switch(graph.nodeAction){
+								case "edit":
+									this.fill="#abcdef";
+									this.redraw();
+									var that = this;
+									options.onNodeEdit.apply(this,[function(){
+										//end of edit
+										that.fill = "#fff";
+										that.redraw();
+									}]);
+									break;
+								case "delete":
+									options.onNodeDelete.apply(this,[]);
+									break;
+								case "path":
+									options.onNodePath[node_num++].apply(this,[]);
+									break;
+							}
+							
+						});
+						graph.nodes.push(node);	
+						graph.addChild(node);
+					},
+					error : function(){
+						
 					}
-					
 				});
-				graph.nodes.push(node);	
-				graph.addChild(node);
 				return false;
 			});
 			window.graph = graph;

@@ -187,7 +187,7 @@ function initNodes(){
 
 function initPaths(){
 	$patharray = array();
-	$allPaths = mysql_query("SELECT * FROM `labyrinth`.`answers`");
+	$allPaths = mysql_query("SELECT * FROM `labyrinth`.`answers`") or die(mysql_error());
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
@@ -210,25 +210,20 @@ function getUserLastAnswer(){
 function getStats(){
 	// no.of people who have solved a particular level(gets info for all level)..
 	$allNodes = mysql_query("SELECT DISTINCT `from` `from`,count(DISTINCT `userid`),`posX`,`posY` FROM `user_level`,`questions` WHERE `user_level`.`from`=`questions`.`level`") or die(mysql_error());
-	
 	$nodearray = array();
 
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
 		endwhile;
-		return $nodearray;
 	endif;
-	return false;
 	
 	$patharray = array();
-	$allPaths = mysql_query("SELECT * FROM `labyrinth`.`answers`");
+	$allPaths = mysql_query("SELECT `from`, `to` FROM `labyrinth`.`answers`");
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
 		endwhile;
-		return $patharray;
 	endif;
-	return false;
+	return json_encode(array($nodearray,$patharray));
 }
-

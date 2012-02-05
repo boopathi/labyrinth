@@ -116,9 +116,10 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 				if(addNewNode($questionHTML))
 					echo json_encode(array("status"=>600, 
 					"message"=>"Successfully Added a new node", 
-					"posX"=>intval(_POST("posX")) , 
-					"posY"=>intval(_POST("posY")))
-					);
+					"posX"=>intval(_POST("posX")), 
+					"posY"=>intval(_POST("posY")),
+					"nodeId"=>intval(mysql_insert_id())
+					));
 				else 
 					echo json_encode(array("status"=>601, "message"=>"Unable to add a new node"));
 			else 

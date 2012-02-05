@@ -15,14 +15,30 @@
 		window.labygraph = {};
 		window.labygraph.items = [];
 		
-		var handleClick = function() {
-			switch(a){
-				case "editNode":
-									
-				case "deleteNode":
-					break;
+		var handlerObject = {
+			"editnode": function(){
+				$("#addNode input[name=posX]").val(this.posX);
+				$("#addNode input[name=posY]").val(this.posY);
+				$("#addNode input[name=file]").click().change(function(){
+					$("#addNode").ajaxSubmit({
+						dataType:"json",
+						success: function(data){
+							if(data.status!=600){
+								console.log(data.message);
+								return;
+							}
+							console.log("edited successfully");
+						}
+					});
+				});
+			},
+			"deleteNode": function(){
+				
+			},
+			"createPath": function() {
+				
 			}
-		};
+		}
 		
 		var createNode = function(options){
 			var graph = options.graph;
@@ -33,6 +49,10 @@
 				start: 0, end: 360,
 				fill: "#fff"
 			});
+			//set the id and position for the node
+			node.qno = options.nodeId;
+			node.posX = options.posX;
+			node.posY = options.posY;
 			//next step is to bind the event listeners to the node
 			node.bind("mouseenter",function(){
 				this.radius=7; this.redraw();
@@ -40,7 +60,10 @@
 				this.radius=5; this.redraw();
 			}).bind("click",function(){
 				graph.mouse.cancel();
-				handleClick.apply(this,[]);
+				var _tselector = $("#actionType select[name=actionType]").val();
+				if(typeof _tselector === "undefined")
+					return;
+				handlerObject[_tselector].apply(this,[]);
 			});
 			graph.nodes.push(node);
 			graph.addChild(node);
@@ -80,13 +103,15 @@
 							createNode.apply(self,[{
 								graph: graph,
 								posX: data.posX,
-								posY: data.posY
+								posY: data.posY,
+								nodeId: data.nodeId
 							}]);
 						}
 					});
 				});
 			});
 			
+			window.labygraph.items.push(graph);
 			window.graph = graph;
 		});
 	}

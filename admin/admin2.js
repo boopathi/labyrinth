@@ -325,7 +325,7 @@
 						posY: data.posY,
 						nodeId: data.nodeId
 					}]);
-					$("#nodeheaderBox").hide();
+					$("#nodeheaderBox").css({"top":"-500px"});
 				}
 			});
 			
@@ -337,11 +337,9 @@
 				$("#addNode input[name=posX]").val(e.x);
 				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
-					$("#addNode input[name=header]").focus();
-					$("#nodeheaderBox").css({
-						left: $("#graph").offset().left+($("#graph").width()/2)-($(this).width()/2), 
-						top:$("#graph").offset().top+($("#graph").height()/2)-100
-					}).show();
+					$("#nodeheaderBox").css({"top":"50%"});
+					$("#addNode textarea[name=comments]").val("");
+					$("#addNode input[name=header]").val("").focus();
 				});
 			});
 			

@@ -274,28 +274,20 @@
 			});
 			
 			//bind to click for node create
-			$("#nodeheaderBox input").bind({
-				"keyup": function(e){
-					e.preventDefault();
-					$("#addNode input[name=header]").val($(this).val());
-					if(e.which==13){
-						$("#addNode").ajaxSubmit({
-							dataType:"json",
-							success: function(data){
-								if(data.status!=600){
-									console.log(data.message);
-									return;
-								}
-								createNode.apply(this,[{
-									graph: graph,
-									posX: data.posX,
-									posY: data.posY,
-									nodeId: data.nodeId
-								}]);
-								$("#nodeheaderBox").hide();
-							}
-						});
+			$("#addNode").ajaxForm({
+				dataType:"json",
+				success: function(data){
+					if(data.status!=600){
+						console.log(data.message);
+						return;
 					}
+					createNode.apply(this,[{
+						graph: graph,
+						posX: data.posX,
+						posY: data.posY,
+						nodeId: data.nodeId
+					}]);
+					$("#nodeheaderBox").hide();
 				}
 			});
 			
@@ -307,9 +299,11 @@
 				$("#addNode input[name=posX]").val(e.x);
 				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
+					$("#addNode input[name=header]").focus();
 					$("#nodeheaderBox").css({
-						left: $("#graph").offset().left+e.x, top:$("#graph").offset().top+e.y
-					}).show().find("input").val("").focus();
+						left: $("#graph").offset().left+($("#graph").width()/2)-($(this).width()/2), 
+						top:$("#graph").offset().top+($("#graph").height()/2)-100
+					}).show();
 				});
 			});
 			
@@ -325,17 +319,7 @@
 
 (function($,window,document,undefined){
 	//extend jQuery
-	$("#addNode, #removeNode, #addPath, #removePath").submit(function(e){
-		e.preventDefault();
-		$(this).ajaxSubmit({
-			dataType:"json",
-			success: function(response){
-				console.log(response);
-			}
-		});
-		return false;
-	});
-
+	
 	$("#graph").labygraph();
 	
 })(jQuery,this,this.document);

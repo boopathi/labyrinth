@@ -210,13 +210,6 @@ $TEMPLATE_BODY = "";
 					<input type="hidden" name="to" value="" data-params="required" />
 					<input type="hidden" name="action" value="removePath" />
 				</form>
-				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
-					<input type="file" name="file" required="required" data-params="required"/>
-					<input type="hidden" name="action" value="addNode" data-params="required"/>
-					<input type="hidden" name="posX" value="" data-params="required"/>
-					<input type="hidden" name="posY" value="" data-params="required"/>
-					<input type="hidden" name="header" value="" data-params="required"/>
-				</form>
 				<form id="addPath" action="./index.php?_a=1" method="POST">
 					<input type="hidden" name="from" value=""  data-params="required"/><br/>
 					<input type="hidden" name="to" value=""  data-params="required"/><br/>
@@ -229,7 +222,17 @@ $TEMPLATE_BODY = "";
 		<div id="statusbar"></div>
 		<div id="viewNode" class="floater" ></div>
 		<div id="showTextBox" class="floater" ><input type="text" /></div>
-		<div id="nodeheaderBox" class="floater" ><input type="text" /></div>
+		<div id="nodeheaderBox" class="floater" >
+			<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
+					<input type="file" name="file" required="required" data-params="required"/>
+					<input type="hidden" name="action" value="addNode" data-params="required"/>
+					<input type="hidden" name="posX" value="" data-params="required"/>
+					<input type="hidden" name="posY" value="" data-params="required"/>
+					<input type="text" name="header" value="" data-params="required"/>
+					<textarea name="comments"></textarea>
+					<input type="submit" name="submit"/>
+				</form>
+		</div>
 		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>

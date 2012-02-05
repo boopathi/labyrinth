@@ -19,14 +19,28 @@ body {
 	border-top: 0;
 	border-bottom: 0;
 }
+
 .forms {
 	position: relative;
 	top: -500px;
 }
+
 .floater {
 	position:absolute;
 	top:-500px;
 }
+
+#nodeheaderBox{
+	height:200px;
+	width:200px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border : solid 2px #000;
+}
+
 #viewNode {
 	position: absolute;
 }

@@ -245,6 +245,7 @@ $TEMPLATE_BODY = "";
 		</div>
 		
 		<div id="viewNode" style="position:absolute"></div>
+		<div id="showTextBox" style="position:absolute"><input type="text" /></div>
 		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>

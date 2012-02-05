@@ -11,7 +11,7 @@
 			onPathClick: function(){}
 		},options);
 		
-		//set window.graphs
+		//set globally accesible objects
 		window.labygraph = {};
 		window.labygraph.items = [];
 		
@@ -92,10 +92,26 @@
 				$("#viewNode").html("");
 			}).bind("click",function(){
 				graph.mouse.cancel();
-				var _tselector = $("#actionType select[name=actionType]").val();
-				if(typeof _tselector === "undefined")
-					return;
-				handlerObject[_tselector].apply(this,[]);
+				//decide which one to call - node or path
+				if(graph.isCtrl && !graph.isAlt){
+					//then the first node is selected
+					$("#addPath input[name=from]").val(this.qno);
+				} else if(graph.isAlt && !graph.isCtrl){
+					if($("#addPath input[name=from]").val() == null)
+						console.log("First Select the starting node");
+					else
+						$("#addPath input[name=to]").val(this.qno);
+					//continue with updating the db. show a textbox
+					$("#showTextBox").css({
+						top: $("#graph").offset().top + self.posY - 3,
+						left: $("#graph").offset().left + self.posX + 10
+					}).show();
+				} else {
+					var _tselector = $("#actionType select[name=actionType]").val();
+					if(typeof _tselector === "undefined")
+						return;
+					handlerObject[_tselector].apply(this,[]);	
+				}
 			});
 			graph.nodes.push(node);
 			graph.addChild(node);
@@ -116,6 +132,20 @@
 			graph.nodes=[];
 			//set the default action
 			graph.nodeAction = "select";
+			
+			graph.isCtrl=false;
+			graph.isAlt=false;
+			$(document).bind({
+				"keydown":function(e){
+					graph.isCtrl = e.which === 17;
+					graph.isAlt = e.which === 18;
+				},
+				"keyup": function(e){
+					graph.isCtrl = e.which === 17;
+					graph.isAlt = e.which === 18;
+				}
+				
+			})
 			
 			//When a click happens in graph, it means creating a new node 
 			graph.bind("click", function(e){
@@ -162,8 +192,6 @@
 		return false;
 	});
 
-	$("#graph").labygraph({
-		
-	});
+	$("#graph").labygraph();
 	
 })(jQuery,this,this.document);

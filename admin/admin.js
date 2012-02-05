@@ -77,6 +77,8 @@
 	}
 })(jQuery, this, this.document);
 
+
+var first_node="";
 (function($,window,docment,undefined){
 	//extend jQuery
 	$("#addNode").submit(function(e){
@@ -96,6 +98,7 @@
 					start: 0, end: 360,
 					fill: "#fff"
 				});
+				
 				node.bind("mouseenter", function(evt){
 					this.radius=7; this.redraw();
 				}).bind("mouseleave", function(evt){
@@ -107,13 +110,26 @@
 					evt.preventDefault();
 					switch ($("#actionType select").val()){
 						case "editnode":
+							first_node="";
 							break;
 						case "addpath":
-							console.log(this.id);
+							if(first_node=="" || first_node == this.id){
+								console.log(this.id);
+								first_node = this.id;
+							}
+							else{
+								console.log("second node");
+								
+								
+								$("#pathEditor").slideDown(150);
+								first_node="";
+							}							
 							break;
 						case "removepath":
+							first_node="";
 							break;
 						case "removenode":
+							first_node="";
 							break;
 					}
 					

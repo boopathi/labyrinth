@@ -19,3 +19,14 @@ body {
 	border-top: 0;
 	border-bottom: 0;
 }
+
+.floater {
+	position: absolute;
+	top: 0;
+	display: none;
+	background: white;
+	margin-left: -470px;
+	left: 50%;
+	width: 940px;
+	height: 400px;
+}

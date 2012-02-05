@@ -9,15 +9,7 @@ endif;
 ?>
 <html>
 	<head>
-		<title>Labyrinth 3d</title>
-		<script type="text/javascript">
-			window.onload=function(){
-			document.forms.labyrinth_submit.addEventListener("submit", function(evt){
-			//evt.preventDefault();
-				console.log("Default action prevented");
-				}, true);
-			}
-		</script>
+		<title>Labyrinth</title>
 	</head>
 	<body>
 		<?php echo $userLevel; ?>

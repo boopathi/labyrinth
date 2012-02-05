@@ -15,15 +15,17 @@ endif;
  
 session_start();
 //TODO:
-//generate a dynamic user id
-$_SESSION["userid"] = 1;
+
+if(!isset($_SESSION['userid']))
+	$_SESSION["userid"] = rand(5, 100);
 
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
 
 
 //Get the PATH
-$needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
+$needle = substr($_SERVER['SCRIPT_NAME'],0,strpos($_SERVER['SCRIPT_NAME'], "index.php"));
+//$needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
 $request = substr($_SERVER["REQUEST_URI"],strlen($needle));
 
 //Required Details
@@ -33,7 +35,7 @@ if(isset($_POST["labyrinth_answer"]))
 else
 	$answer = $request;
 
-$userid = $_SESSION["userid"];
+echo $userid = $_SESSION["userid"];
 
 //Includes
 require_once("./config.inc.php");

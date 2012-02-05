@@ -113,7 +113,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 			//get question details and update the database
 			if($execute)
-				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header")))
+				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header"), _POST("comments")))
 					echo json_encode(array("status"=>600, 
 					"message"=>"Successfully Added a new node",
 					"posX"=>intval(_POST("posX")), 
@@ -197,7 +197,7 @@ $TEMPLATE_BODY = "";
 	<body>
 		<div class="outercontainer">
 			<div class="graphcontainer">
-				<canvas id="graph" width="940" height="400">
+				<canvas id="graph" width="1000" height="600">
 				</canvas>
 			</div>
 			<div class="forms">
@@ -209,13 +209,6 @@ $TEMPLATE_BODY = "";
 					<input type="hidden" name="from" value="" data-params="required" />
 					<input type="hidden" name="to" value="" data-params="required" />
 					<input type="hidden" name="action" value="removePath" />
-				</form>
-				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
-					<input type="file" name="file" required="required" data-params="required"/>
-					<input type="hidden" name="action" value="addNode" data-params="required"/>
-					<input type="hidden" name="posX" value="" data-params="required"/>
-					<input type="hidden" name="posY" value="" data-params="required"/>
-					<input type="hidden" name="header" value="" data-params="required"/>
 				</form>
 				<form id="addPath" action="./index.php?_a=1" method="POST">
 					<input type="hidden" name="from" value=""  data-params="required"/><br/>
@@ -229,7 +222,17 @@ $TEMPLATE_BODY = "";
 		<div id="statusbar"></div>
 		<div id="viewNode" class="floater" ></div>
 		<div id="showTextBox" class="floater" ><input type="text" /></div>
-		<div id="nodeheaderBox" class="floater" ><input type="text" /></div>
+		<div id="nodeheaderBox" class="floater" >
+			<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
+					<input type="file" name="file" required="required" data-params="required"/>
+					<input type="hidden" name="action" value="addNode" data-params="required"/>
+					<input type="hidden" name="posX" value="" data-params="required"/>
+					<input type="hidden" name="posY" value="" data-params="required"/>
+					<input type="text" name="header" value="" data-params="required"/>
+					<textarea name="comments"></textarea>
+					<input type="submit" name="submit"/>
+				</form>
+		</div>
 		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>

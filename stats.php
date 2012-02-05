@@ -48,11 +48,9 @@ $TEMPLATE_BODY = "";
 		<script type="text/javascript" src="./template/jquery.form.js"></script>
 		<script type="text/javascript" src="./template/ocanvas.min.js"></script>
 	    <script>
-		    var stats_data = <?php
-			         			
-							?>	
+		    var stats_data = <?php 	echo getStats(); ?>	
 		</script>
-		<script type="text/javascript" src="./admin/stats.js"></script>
+		<script type="text/javascript" src="./template/stats.js"></script>
 	</body>
 </html>
 <?php

@@ -57,8 +57,23 @@
 					});
 				});
 			},
-			"deleteNode": function(){
-				
+			"removeNode": function(){
+				$("#removeNode input[name=level]").val(this.qno);
+				var self=this;
+				$("#removeNode").ajaxSubmit({
+					dataType: "json",
+					success: function(data){
+						if(data.status!=600){
+							console.log(data.message);
+							return;
+						}
+						graph.removeChild(self);
+						var paths=getPathsConnected(self.qno,graph);
+						for( i in paths)
+							graph.removeChild(paths[i],graph);
+						console.log("removed Node");
+					}
+				})
 			},
 			"createPath": function(options){
 				//this function is the ajax request
@@ -81,6 +96,10 @@
 				end: options.end,
 				stroke: "2px #fff"
 			});
+			path.qno = {
+				from :options.start.qno,
+				to: options.end.qno
+			};
 			graph.path.items.push(path);
 			graph.addChild(path);
 			$("#showTextBox").hide();
@@ -117,7 +136,7 @@
 			}).bind("click",function(){
 				graph.mouse.cancel();
 				//decide which one to call - node or path
-				if(graph.isCtrl){
+				if(graph.isCtrl && !graph.isAlt){
 					//when CRTL is down, record the first and second nodes
 					if(typeof graph.path.firstNode === "undefined"){
 						//the selection is the first node
@@ -142,6 +161,9 @@
 						delete graph.path.firstNode;
 						delete graph.path.secondNode;
 					}
+				} else if(graph.isAlt){
+					//remove the particular node
+					handlerObject["removeNode"].apply(this,[]);
 				} else {
 					//he is editing the current node
 					handlerObject["editNode"].apply(this,[]);
@@ -155,10 +177,19 @@
 		window.labygraph.createPath = createPath;
 		
 		var getNodePointer = function(qno, graph) {
-			var r = 0, c;
+			var c;
 			for( c = 0; c < graph.nodes.length; c++)
 				if(graph.nodes[c].qno == qno)
 					return graph.nodes[c];
+		}
+		
+		var getPathsConnected = function(qno, graph){
+			var paths=[];
+			for(var i=0;i<graph.path.items.length; i++){
+				if(graph.path.items[i].qno.from === qno || graph.path.items[i].qno.to === qno)
+					paths.push(graph.path.items[i]);
+			}
+			return paths;
 		}
 
 		//function to initialize the graph
@@ -182,11 +213,13 @@
 					graph : graph,
 					start : {
 						x : from.posX,
-						y : from.posY
+						y : from.posY,
+						qno: this.from
 					},
 					end : {
 						x : to.posX,
-						y : to.posY
+						y : to.posY,
+						qno: this.to
 					}
 				}]);
 			});
@@ -209,13 +242,16 @@
 			graph.path.items=[];
 			
 			graph.isCtrl=false;
+			graph.isAlt = false;
 
 			$(document).bind({
 				"keydown":function(e){
-					graph.isCtrl = e.which === 17;
+					if(e.which === 17) graph.isCtrl = true;
+					if(e.which === 16) graph.isAlt = true;
 				},
 				"keyup": function(e){
-					graph.isCtrl = !(e.which === 17);
+					if(e.which === 17) graph.isCtrl = false;
+					if(e.which === 16) graph.isAlt = false;
 				}
 				
 			});
@@ -249,11 +285,13 @@
 									graph: graph,
 									start: {
 										x:graph.path.firstNode.posX,
-										y:graph.path.firstNode.posY
+										y:graph.path.firstNode.posY,
+										qno: graph.path.firstNode.qno
 									},
 									end: {
 										x:graph.path.secondNode.posX,
-										y:graph.path.secondNode.posY
+										y:graph.path.secondNode.posY,
+										qno: graph.path.secondNode.qno
 									}, 
 									callback: function(){
 										graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
@@ -274,28 +312,20 @@
 			});
 			
 			//bind to click for node create
-			$("#nodeheaderBox input").bind({
-				"keyup": function(e){
-					e.preventDefault();
-					$("#addNode input[name=header]").val($(this).val());
-					if(e.which==13){
-						$("#addNode").ajaxSubmit({
-							dataType:"json",
-							success: function(data){
-								if(data.status!=600){
-									console.log(data.message);
-									return;
-								}
-								createNode.apply(this,[{
-									graph: graph,
-									posX: data.posX,
-									posY: data.posY,
-									nodeId: data.nodeId
-								}]);
-								$("#nodeheaderBox").hide();
-							}
-						});
+			$("#addNode").ajaxForm({
+				dataType:"json",
+				success: function(data){
+					if(data.status!=600){
+						console.log(data.message);
+						return;
 					}
+					createNode.apply(this,[{
+						graph: graph,
+						posX: data.posX,
+						posY: data.posY,
+						nodeId: data.nodeId
+					}]);
+					$("#nodeheaderBox").css({"top":"-500px"});
 				}
 			});
 			
@@ -307,9 +337,9 @@
 				$("#addNode input[name=posX]").val(e.x);
 				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
-					$("#nodeheaderBox").css({
-						left: $("#graph").offset().left+e.x, top:$("#graph").offset().top+e.y
-					}).show().find("input").val("").focus();
+					$("#nodeheaderBox").css({"top":"50%"});
+					$("#addNode textarea[name=comments]").val("");
+					$("#addNode input[name=header]").val("").focus();
 				});
 			});
 			
@@ -325,17 +355,7 @@
 
 (function($,window,document,undefined){
 	//extend jQuery
-	$("#addNode, #removeNode, #addPath, #removePath").submit(function(e){
-		e.preventDefault();
-		$(this).ajaxSubmit({
-			dataType:"json",
-			success: function(response){
-				console.log(response);
-			}
-		});
-		return false;
-	});
-
+	
 	$("#graph").labygraph();
 	
 })(jQuery,this,this.document);

@@ -113,7 +113,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 			//get question details and update the database
 			if($execute)
-				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header")))
+				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header"), _POST("comments")))
 					echo json_encode(array("status"=>600, 
 					"message"=>"Successfully Added a new node",
 					"posX"=>intval(_POST("posX")), 

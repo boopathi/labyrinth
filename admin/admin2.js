@@ -12,14 +12,41 @@
 		},options);
 		
 		//set window.graphs
-		window.labygraphs = [];
+		window.labygraph = {};
+		window.labygraph.items = [];
+		
+		var handleClick = function() {
+			switch(a){
+				case "editNode":
+									
+				case "deleteNode":
+					break;
+			}
+		};
 		
 		var createNode = function(options){
+			var graph = options.graph;
 			var node = graph.display.arc({
-				x: options.evt.x,
-				y: options.evt.y
+				x: options.posX,
+				y: options.posY,
+				radius: 5,
+				start: 0, end: 360,
+				fill: "#fff"
 			});
+			//next step is to bind the event listeners to the node
+			node.bind("mouseenter",function(){
+				this.radius=7; this.redraw();
+			}).bind("mouseleave", function(){
+				this.radius=5; this.redraw();
+			}).bind("click",function(){
+				graph.mouse.cancel();
+				handleClick.apply(this,[]);
+			});
+			graph.nodes.push(node);
+			graph.addChild(node);
 		}
+		//make it available Globally, to use it as an API
+		window.labygraph.createNode = createNode;
 		
 		//make it available for cascading
 		return this.each(function(){
@@ -38,65 +65,28 @@
 			//When a click happens in graph, it means creating a new node 
 			graph.bind("click", function(e){
 				e.preventDefault();
+				var self= this;
 				//display the container for image upload
 				$("#addNode input[name=posX]").val(e.x);
-				$("#addNode input[name=posX]").val(e.y);
+				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
 					$("#addNode").ajaxSubmit({
 						dataType:"json",
-						success: function(response){
-							console.log(response);
+						success: function(data){
+							if(data.status!=600){
+								console.log(data.message);
+								return;
+							}
+							createNode.apply(self,[{
+								graph: graph,
+								posX: data.posX,
+								posY: data.posY
+							}]);
 						}
 					});
 				});
-			});			
-			
-			graph.bind("click", function(e){
-				//draw a circle
-				e.preventDefault();
-				
-				var node = graph.display.arc({
-					x:e.x, y:e.y,
-					radius: 5,
-					start: 0, end: 360,
-					fill: "#fff"
-				});
-				node.bind("mouseenter", function(evt){
-					this.radius=7; this.redraw();
-				}).bind("mouseleave", function(evt){
-					this.radius=5; this.redraw();
-				}).bind("click", function(evt){
-					
-					//alternative for stopPropagation	
-					graph.mouse.cancel();
-					evt.preventDefault();
-					
-					//possibilities - editing the node or deleting the node or path operations
-					var node_num = 0;
-					switch(graph.nodeAction){
-						case "edit":
-							this.fill="#abcdef";
-							this.redraw();
-							var that = this;
-							options.onNodeEdit.apply(this,[function(){
-								//end of edit
-								that.fill = "#fff";
-								that.redraw();
-							}]);
-							break;
-						case "delete":
-							options.onNodeDelete.apply(this,[]);
-							break;
-						case "path":
-							options.onNodePath[node_num++].apply(this,[]);
-							break;
-					}
-					
-				});
-				graph.nodes.push(node);	
-				graph.addChild(node);
-				return false;
 			});
+			
 			window.graph = graph;
 		});
 	}

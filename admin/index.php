@@ -192,10 +192,12 @@ $TEMPLATE_BODY = "";
 			</div>
 		</div>
 		<div id="statusbar"></div>
-		<div id="nodeEditor" class="floater">
+		<div id="nodeEditor" class="floate">
 			<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
 					<input type="file" name="file" required="required" data-params="required"/>
 					<input type="hidden" name="action" value="addNode" data-params="required"/>
+					<input type="hidden" name="posX" value="" data-params="required"/>
+					<input type="hidden" name="posY" value="" data-params="required"/>
 					<input type="submit" /> 
 			</form>
 			<a href="#" class="closeButton">Click here to close</a>
@@ -203,7 +205,7 @@ $TEMPLATE_BODY = "";
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>
-		<script type="text/javascript" src="./admin.js"></script>
+		<script type="text/javascript" src="./admin2.js"></script>
 	</body>
 </html>
 <?php

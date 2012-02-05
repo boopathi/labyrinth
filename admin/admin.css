@@ -20,7 +20,7 @@ body {
 	border-bottom: 0;
 }
 
-.floater {
+.loater {
 	position: absolute;
 	top: 0;
 	display: none;
@@ -30,3 +30,4 @@ body {
 	width: 940px;
 	height: 400px;
 }
+

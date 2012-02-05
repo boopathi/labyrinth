@@ -141,14 +141,14 @@ function getUserRequestLevel(){
 }
 
 function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'){ 
-    	$num_chars  = rand($min_chars, $max_chars); 
-    	$num_usable = strlen($use_chars) - 1; 
-    	$string     = ''; 
+	$num_chars  = rand($min_chars, $max_chars); 
+	$num_usable = strlen($use_chars) - 1; 
+	$string     = ''; 
 
-    	for($i = 0; $i < $num_chars; $i++){
-    		$rand_char = rand(0, $num_usable);
-    		$string .= $use_chars{$rand_char};
-		}
-		return $string;
+	for($i = 0; $i < $num_chars; $i++){
+		$rand_char = rand(0, $num_usable);
+		$string .= $use_chars{$rand_char};
 	}
+	return $string;
+}
 

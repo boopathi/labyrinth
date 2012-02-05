@@ -113,9 +113,9 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 			//get question details and update the database
 			if($execute)
-				if(addNewNode($questionHTML))
+				if(addNewNode($questionHTML, _POST("posX"), _POST("posY")))
 					echo json_encode(array("status"=>600, 
-					"message"=>"Successfully Added a new node", 
+					"message"=>"Successfully Added a new node",
 					"posX"=>intval(_POST("posX")), 
 					"posY"=>intval(_POST("posY")),
 					"nodeId"=>intval(mysql_insert_id())
@@ -125,7 +125,6 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 			else 
 				echo json_encode(array("status"=>601, "message"=>"Unable to add , \$exec fail"));
 			break;
-			
 			
 		case "removeNode":
 			//delete question from the database and remove all paths attached to it
@@ -196,7 +195,8 @@ $TEMPLATE_BODY = "";
 				<form id="actionType" action="./index.php?_a=1" method="POST">
 					<label for="actionType">Action Type :</label>
 					<select name="actionType">
-						<option value="editnode" selected>Edit Node</option>
+						<option value="viewnode" selected>View Node</option>
+						<option value="editnode" >Edit Node</option>
 						<option value="addpath" >Add Path</option>
 						<option value="removepath" >Remove Path</option>
 						<option value="removenode" >Remove Node</option>
@@ -243,6 +243,8 @@ $TEMPLATE_BODY = "";
 			</form>
 			<a href="#" class="closeButton">Click here to close</a>
 		</div>
+		
+		<div id="viewNode" style="position:absolute"></div>
 		
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>

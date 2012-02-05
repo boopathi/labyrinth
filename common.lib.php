@@ -92,10 +92,12 @@ function updateUserLevel($fromLevel, $toLevel){
 }
 
 //Add a new Node(question) in the database
-function addNewNode($questionHtml){
+function addNewNode($questionHtml, $posx, $posy){
 	$questionHtml = escape($questionHtml);
+	$posx = escape($posx);
+	$posy = escape($posy);
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`) VALUES('{$questionHtml}')");
-	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`) SELECT MAX(`level`)+1  , '{$questionHtml}' FROM `questions`") or die(mysql_error());
+	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`,`posX`,`posY`) SELECT MAX(`level`)+1  , '{$questionHtml}', '{$posx}', '{$posy}' FROM `questions`") or die(mysql_error());
 	if($addNodeQuery) return true;
 	else return false;
 }

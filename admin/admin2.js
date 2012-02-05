@@ -16,6 +16,28 @@
 		window.labygraph.items = [];
 		
 		var handlerObject = {
+			"viewnode": function() {
+				$.ajax({
+					url: "./index.php?_a=1",
+					type:"POST",
+					dataType: "json",
+					data: {
+						action: "showNode",
+						level: this.qno
+					},
+					success: function(data){
+						if(data.status != 600){
+							console.log(data.message);
+							return;
+						}
+						$("#viewNode").html(data.html).find("img").css({
+							width: 50,
+							height: 50
+						});
+						console.log(data.html);
+					}
+				})
+			},
 			"editnode": function(){
 				$("#addNode input[name=posX]").val(this.posX);
 				$("#addNode input[name=posY]").val(this.posY);
@@ -55,9 +77,14 @@
 			node.posY = options.posY;
 			//next step is to bind the event listeners to the node
 			node.bind("mouseenter",function(){
-				this.radius=7; this.redraw();
+				this.radius=7; 
+				this.redraw();
+				//view the node
+				handlerObject["viewnode"].apply(this,[]);
 			}).bind("mouseleave", function(){
-				this.radius=5; this.redraw();
+				this.radius=5; 
+				this.redraw();
+				$("#viewNode").html("");
 			}).bind("click",function(){
 				graph.mouse.cancel();
 				var _tselector = $("#actionType select[name=actionType]").val();
@@ -117,8 +144,7 @@
 	}
 })(jQuery, this, this.document);
 
-
-(function($,window,docment,undefined){
+(function($,window,document,undefined){
 	//extend jQuery
 	$("#addNode, #removeNode, #addPath, #removePath").submit(function(e){
 		e.preventDefault();

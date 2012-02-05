@@ -24,66 +24,54 @@
 				
 				//put graph data on server, and bind the following lines of code within the success hook
 				//ajax request
+				//set circle details
+				$("#addNode input[name=posX]").val(e.x);
+				$("#addNode input[name=posY]").val(e.y);
+				$("#nodeEditor").slideDown(150);
 				
-				$.ajax({
-					type : "POST",
-					url : "index.php?_a=1",
-					data : {
-						action:"addNode"
-						},
-					dataType : "json" ,
-					success : function(data){
-						if(data.status != 600 ){
-							console.log(data.message);
-							return false;
-						}
-						var node = graph.display.arc({
-							x:e.x, y:e.y,
-							radius: 5,
-							start: 0, end: 360,
-							fill: "#fff"
-						});
-						node.bind("mouseenter", function(evt){
-							this.radius=7; this.redraw();
-						}).bind("mouseleave", function(evt){
-							this.radius=5; this.redraw();
-						}).bind("click", function(evt){
-							
-							//alternative for stopPropagation	
-							graph.mouse.cancel();
-							evt.preventDefault();
-							
-							//possibilities - editing the node or deleting the node or path operations
-							var node_num = 0;
-							switch(graph.nodeAction){
-								case "edit":
-									this.fill="#abcdef";
-									this.redraw();
-									var that = this;
-									options.onNodeEdit.apply(this,[function(){
-										//end of edit
-										that.fill = "#fff";
-										that.redraw();
-									}]);
-									break;
-								case "delete":
-									options.onNodeDelete.apply(this,[]);
-									break;
-								case "path":
-									options.onNodePath[node_num++].apply(this,[]);
-									break;
-							}
-							
-						});
-						graph.nodes.push(node);	
-						graph.addChild(node);
-					},
-					error : function(){
-						
-					}
-				});
 				return false;
 			});
+			
+			graph.actionasd = function(opts) {
+				switch(opts.nodeAction){
+						case "edit":
+							this.fill="#abcdef";
+							this.redraw();
+							var that = this;
+							$.ajax({
+								type: "POST",
+								url: "index.php?_a=1",
+								data : {
+									action : "showNode",
+									level : ""
+								},
+								dataType : "json" ,
+								success : function (data){
+									if(data.status != 600){
+										console.log(data.message);
+										return false;
+									}
+									$("#nodeEditor .content").html(data.html);
+								},
+								error : function (){
+									
+								}
+							})
+							opts.parentArgs.onNodeEdit.apply(this,[function(){
+								//end of edit
+								that.fill = "#fff";
+								that.redraw();
+							}]);
+							break;
+						case "delete":
+							opts.parentArgs.onNodeDelete.apply(this,[]);
+							break;
+						case "path":
+							opts.parentArgs.onNodePath[node_num++].apply(this,[]);
+							break;
+					}
+			}//end of actionasd function
+			
 			window.graph = graph;
 		});
 	}
@@ -91,7 +79,54 @@
 
 (function($,window,docment,undefined){
 	//extend jQuery
-	$("#addNode, #removeNode, #addPath, #removePath").submit(function(e){
+	$("#addNode").submit(function(e){
+		e.preventDefault();
+		$(this).ajaxSubmit({
+			dataType:"json",
+			success: function(response){
+				if(response.status != 600){
+					console.log(response.message);
+					return false;
+				}
+				var graph = window.graph;
+				var node = graph.display.arc({
+					x:response.posX, 
+					y:response.posY,
+					radius: 5,
+					start: 0, end: 360,
+					fill: "#fff"
+				});
+				node.bind("mouseenter", function(evt){
+					this.radius=7; this.redraw();
+				}).bind("mouseleave", function(evt){
+					this.radius=5; this.redraw();
+				}).bind("click", function(evt){
+					
+					//alternative for stopPropagation	
+					graph.mouse.cancel();
+					evt.preventDefault();
+					switch ($("#actionType select").val()){
+						case "editnode":
+							break;
+						case "addpath":
+							console.log(this.id);
+							break;
+						case "removepath":
+							break;
+						case "removenode":
+							break;
+					}
+					
+				});
+				graph.nodes.push(node);
+				graph.addChild(node);
+				$("#nodeEditor").slideUp(150);
+			}
+		});
+		return false;
+	});
+	
+	$("#removeNode").submit(function(e){
 		e.preventDefault();
 		$(this).ajaxSubmit({
 			dataType:"json",
@@ -101,17 +136,22 @@
 		});
 		return false;
 	});
-	$("#addNode, #removeNode, #addPath, #removePath").ajaxForm({
-		dataType: "json",
-		success: function(response){
-			console.log(response);
-		}
+	
+	$("#addPath").submit(function(e){
+		e.preventDefault();
+		$(this).ajaxSubmit({
+			dataType:"json",
+			success: function(response){
+				console.log(response);
+			}
+		});
+		return false;
 	});
-
+	
 	$("#graph").labygraph({
 		onNodeEdit: function(callback){
 			console.log(this);
-			$("#nodeEditor").slideDown(50);
+			$("#nodeEditor").slideDown(150);
 			$("#nodeEditor .closebutton").click(function(e){
 				e.preventDefault();
 				$(this).parent(".floater").slideUp(100);

@@ -247,11 +247,11 @@
 			$(document).bind({
 				"keydown":function(e){
 					if(e.which === 17) graph.isCtrl = true;
-					if(e.which === 18) graph.isAlt = true;
+					if(e.which === 16) graph.isAlt = true;
 				},
 				"keyup": function(e){
 					if(e.which === 17) graph.isCtrl = false;
-					if(e.which === 18) graph.isAlt = false;
+					if(e.which === 16) graph.isAlt = false;
 				}
 				
 			});

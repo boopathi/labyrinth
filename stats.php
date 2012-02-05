@@ -50,7 +50,7 @@ $TEMPLATE_BODY = "";
 	    <script>
 		    var stats_data = <?php 	echo getStats(); ?>	
 		</script>
-		<script type="text/javascript" src="./admin/stats.js"></script>
+		<script type="text/javascript" src="./template/stats.js"></script>
 	</body>
 </html>
 <?php

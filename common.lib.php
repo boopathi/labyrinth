@@ -115,8 +115,8 @@ function addNewNode($questionHtml, $posx, $posy, $header){
 //Remove a Node(question) from the database
 function removeNode($level) {
 	$level = escape($level);
-	$removeNodeQuery = mysql_query("DELETE FROM `labyrinth`.`questions` WHERE `questions`.`level` = '".$level."'");
-	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'");
+	$removeNodeQuery = mysql_query("DELETE FROM `questions` WHERE `questions`.`level` = '".$level."'");
+	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'");
 	if($removeNodeQuery && $removeNodeLinkPathsQuery)return true;
 	else return false;
 }
@@ -134,22 +134,9 @@ function addNewPath($from, $to, $key){
 //Remove a path(answers) from the database
 function removePath($from, $to){
 	$from = escape($from); $to = escape($to);
-	$removePathQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '{$from}' AND `answers`.`to` = '{$to}'");
+	$removePathQuery = mysql_query("DELETE FROM `answers` WHERE `answers`.`from` = '{$from}' AND `answers`.`to` = '{$to}'");
 	if($removePathQuery) return true;
 	else return false;
-}
-
-function getUserRequestLevel(){
-	global $answer;
-	$requestQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$answer' ");
-	if(mysql_num_rows($requestQuery)){
-		$requestQueryArray = mysql_fetch_array($requestQuery);
-		//return info
-		//add info to user_level table
-	}
-	else {
-		//failed access
-	}
 }
 
 function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'){ 
@@ -166,7 +153,7 @@ function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklm
 
 function showPath( $from , $to){
     $from = escape($from); $to = escape($to);
-	$requestQuery = mysql_query("SELECT * FROM `labyrinth`.`answers` WHERE `from` = '".$from."' AND `to` = '".$to."' LIMIT 1");
+	$requestQuery = mysql_query("SELECT * FROM `answers` WHERE `from` = '".$from."' AND `to` = '".$to."' LIMIT 1");
 	if(mysql_num_rows($requestQuery)):
 		$requestKey =  mysql_fetch_assoc($requestQuery);
 		return $requestKey['key'];
@@ -175,7 +162,7 @@ function showPath( $from , $to){
 
 function initNodes(){
 	$nodearray = array();
-	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`") or die(mysql_error());
+	$allNodes = mysql_query("SELECT * FROM `questions`") or die(mysql_error());
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
@@ -187,7 +174,7 @@ function initNodes(){
 
 function initPaths(){
 	$patharray = array();
-	$allPaths = mysql_query("SELECT * FROM `labyrinth`.`answers`") or die(mysql_error());
+	$allPaths = mysql_query("SELECT * FROM `answers`") or die(mysql_error());
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
@@ -219,7 +206,7 @@ function getStats(){
 	endif;
 	
 	$patharray = array();
-	$allPaths = mysql_query("SELECT `from`, `to` FROM `labyrinth`.`answers`");
+	$allPaths = mysql_query("SELECT `from`, `to` FROM `answers`") or die(mysql_error());
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);

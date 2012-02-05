@@ -55,7 +55,7 @@
 				});
 			},
 			"deleteNode": function(){
-				
+				this.clear();
 			},
 			"createPath": function() {
 				
@@ -84,6 +84,7 @@
 			}).bind("mouseleave", function(){
 				this.radius=5; 
 				this.redraw();
+				//clear the content
 				$("#viewNode").html("");
 			}).bind("click",function(){
 				graph.mouse.cancel();

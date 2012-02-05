@@ -97,7 +97,8 @@ function addNewNode($questionHtml, $posx, $posy){
 	$posx = escape($posx);
 	$posy = escape($posy);
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`) VALUES('{$questionHtml}')");
-	$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`,`posX`,`posY`) SELECT MAX(`level`)+1  , '{$questionHtml}', '{$posx}', '{$posy}' FROM `questions`") or die(mysql_error());
+	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`,`posX`,`posY`) SELECT MAX(`level`)+1  , '{$questionHtml}', '{$posx}', '{$posy}' FROM `questions`") or die(mysql_error());
+	$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`,`posX`,`posY`) VALUES('{$questionHtml}','$posx','$posy')") or die(mysql_error());
 	if($addNodeQuery) return true;
 	else return false;
 }

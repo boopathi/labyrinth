@@ -53,15 +53,37 @@ NOTWRITABLE;
 						$writable_flag = false;
 						$TEMPLATE_BODY=<<<NOTWRITABLE
 							Folder <em>images/questions</em> could not be created.
-NOTWRITABLE;	
+NOTWRITABLE;
 					}
 				}
 			}
 			if($writable_flag === true) {
-				$conf_file = fopen("./config.inc.php", "w");
-				fwrite($conf_file, $conf);
-				fclose($conf_file);
-				header("Location: ./");
+				//connect to database
+				$db = mysql_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']) or die(mysql_error());
+				mysql_select_db($_POST['dbname']) or die(mysql_error());
+				
+				$sqlcontent = file('labyrinth.sql');
+				$sqlline = "";
+				$result = true;
+				foreach($sqlcontent as $line) {
+					if(trim($line) != "" && strpos($line, '--' === false)){
+						$sqlline .= $line;
+						if(substr(rtrim($sqlline), -1) == ';'){
+							$result = $result && mysql_query($query);
+							if(!$result)
+								break;
+							$sqlline="";
+						}
+					}
+				}
+				if($result){
+					$conf_file = fopen("./config.inc.php", "w");
+					fwrite($conf_file, $conf);
+					fclose($conf_file);
+					header("Location: ./");
+				} else {
+					$TEMPLATE_BODY = mysql_error();
+				}
 			} else {}
 		else:
 			//then show a form containing the fields required for config
@@ -76,15 +98,15 @@ NOTWRITABLE;
 							</tr>
 							<tr>
 								<td>Database Name</td>
-								<td><input type="text" name="dbname" placeholder="labyrinth" /></td>
+								<td><input type="text" name="dbname" value="labyrinth" placeholder="labyrinth" /></td>
 							</tr>
 							<tr>
 								<td>Username to connect to database</td>
-								<td><input type="text" name="dbuser" value="" placeholder="root"/></td>
+								<td><input type="text" name="dbuser" value="root" placeholder="root"/></td>
 							</tr>
 							<tr>
 								<td>Password</td>
-								<td><input type="password" name="dbpass" placeholder="P@55W0RD" /></td>
+								<td><input type="password" name="dbpass" value="root" placeholder="P@55W0RD" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" align="center"><input type="submit" value="Make Config"/></td>

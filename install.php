@@ -40,6 +40,7 @@ CONFF;
 				<address>sudo chown http-user config.inc.php</address>
 NOTWRITABLE;
 			}
+			
 			if($writable_flag === true) {
 				$conf_file = fopen("./config.inc.php", "w");
 				fwrite($conf_file, $conf);

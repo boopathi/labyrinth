@@ -20,14 +20,12 @@ body {
 	border-bottom: 0;
 }
 .forms {
-	visibility: hidden;
-	position:absolute;
-	top:-500px;
-	
+	position: relative;
+	top: -500px;
 }
 .floater {
-	display:none;
 	position:absolute;
+	top:-500px;
 }
 #viewNode {
 	position: absolute;

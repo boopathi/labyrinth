@@ -31,13 +31,12 @@
 							console.log(data.message);
 							return;
 						}
-						console.log(self);
 						//append the loaded html and resize the image
 						$("#viewNode").html(data.html).css({
 							top: $("#graph").offset().top + self.posY - 3,
 							left: $("#graph").offset().left + self.posX + 10
 						}).find("img").css({
-							width: 100, height: 100
+							width: 60, height: 60
 						});
 					}
 				})
@@ -60,13 +59,25 @@
 			},
 			"deleteNode": function(){
 				
-			},
-			"createPath": function() {
-				
 			}
 		}
 		
+		var createPath = function(options){
+			var graph = options.graph;
+			var path = graph.display.line({
+				start: options.start,
+				end: options.end,
+				stroke: "1px #aaa"
+			});
+			graph.path.items.push(path);
+			graph.addChild(path);
+			$("#showTextBox").hide();
+			//clear once the path is drawn;
+			options.callback.apply(this,[]);
+		};
+		
 		var createNode = function(options){
+			//`this` is not important inside this function. Don't worry about it when using `apply`
 			var graph = options.graph;
 			var node = graph.display.arc({
 				x: options.posX,
@@ -92,24 +103,56 @@
 			}).bind("click",function(){
 				graph.mouse.cancel();
 				//decide which one to call - node or path
-				if(graph.isCtrl && !graph.isAlt){
-					//then the first node is selected
-					$("#addPath input[name=from]").val(this.qno);
-				} else if(graph.isAlt && !graph.isCtrl){
-					if($("#addPath input[name=from]").val() == null)
-						console.log("First Select the starting node");
-					else
+				if(graph.isCtrl){
+					//when CRTL is down, record the first and second nodes
+					if(typeof graph.path.firstNode === "undefined"){
+						//the selection is the first node
+						graph.path.firstNode = this;
+						this.fill = "#f00";
+						this.redraw();
+						$("#addPath input[name=from]").val(this.qno);
+					} else if (typeof graph.path.secondNode === "undefined"){
+						//if second is not defined, then set the second value
+						graph.path.secondNode = this;
+						this.fill = "#f00";
+						this.redraw();
 						$("#addPath input[name=to]").val(this.qno);
-					//continue with updating the db. show a textbox
-					$("#showTextBox").css({
-						top: $("#graph").offset().top + self.posY - 3,
-						left: $("#graph").offset().left + self.posX + 10
-					}).show();
-				} else {
-					var _tselector = $("#actionType select[name=actionType]").val();
-					if(typeof _tselector === "undefined")
-						return;
-					handlerObject[_tselector].apply(this,[]);	
+						//after the second node is set, display the dialog box to enter the answer
+						var self = this;
+						$("#showTextBox").val("").bind({
+							"keypress": function(e){
+								if(e.which == 13){
+									//create the path
+									e.preventDefault();
+									createPath.apply(self,[{
+										graph: graph,
+										start: {
+											x:graph.path.firstNode.posX,
+											y:graph.path.firstNode.posY
+										},
+										end: {
+											x:graph.path.secondNode.posX,
+											y:graph.path.secondNode.posY
+										}, 
+										callback: function(){
+											graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
+											graph.path.firstNode.redraw();
+											graph.path.secondNode.redraw();
+											delete graph.path.firstNode;
+											delete graph.path.secondNode;
+										}
+									}]);
+								}
+							}
+						}).css({
+							top: $("#graph").offset().top + this.posY - 3,
+							left: $("#graph").offset().left + this.posX + 10
+						}).show().find("input").focus();
+					} else {
+						console.log("Some error happened. Deleting the values");
+						delete graph.path.firstNode;
+						delete graph.path.secondNode;
+					}
 				}
 			});
 			graph.nodes.push(node);
@@ -117,8 +160,10 @@
 		}
 		//make it available Globally, to use it as an API
 		window.labygraph.createNode = createNode;
+		window.labygraph.createPath = createPath;
 		
-		var initGraph =  function () {
+		//function to initialize the graph
+		var initGraph =  function (graph) {
 			$.ajax({
 				type : "POST",
 				url : "index.php?_a=1",
@@ -127,13 +172,25 @@
 				},
 				dataType : "json",
 				success : function(data){
-					
+					if(data.status!==600){
+						console.log(data.message);
+						return;
+					}
+					$(data.nodedata).each(function(){
+						if(this.level !== 0){
+							createNode.apply(this,[{
+								graph: graph,
+								posX: this.posX,
+								posY: this.posY,
+								nodeId: this.level
+							}]);
+						}
+					});
 				},
 				error : function(){
 					
 				}
 			});
-			//createNode();
 		}
 		
 		//make it available for cascading
@@ -147,19 +204,20 @@
 			});
 			//an array containing the reference to all the nodes
 			graph.nodes=[];
+			//an array containing the path data
+			graph.path={};
+			graph.path.items=[];
 			//set the default action
 			graph.nodeAction = "select";
 			
 			graph.isCtrl=false;
-			graph.isAlt=false;
+
 			$(document).bind({
 				"keydown":function(e){
 					graph.isCtrl = e.which === 17;
-					graph.isAlt = e.which === 18;
 				},
 				"keyup": function(e){
 					graph.isCtrl = e.which === 17;
-					graph.isAlt = e.which === 18;
 				}
 				
 			})
@@ -189,6 +247,10 @@
 					});
 				});
 			});
+			
+			
+			//init the graph
+			initGraph.apply(this,[graph]);
 			
 			window.labygraph.items.push(graph);
 			window.graph = graph;

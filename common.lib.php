@@ -166,23 +166,24 @@ function showPath( $from , $to){
 function initNodes(){
 	$nodearray = array();
 	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`") or die(mysql_error());
-	if(mysql_num_rows($allNodes)>0):
+	print_r(mysql_fetch_assoc());
+	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
-			$nodearray[] = array ("level"=>$nodeinfo['level'] , "posX"=>$nodeinfo['posX'] , "posY"=>$nodeinfo['posY']);
+			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
 		endwhile;
 		return $nodearray;
 	endif;
-	return FALSE;
+	return false;
 }
 
 function initPaths(){
 	$patharray = array();
 	$allPaths = mysql_query("SELECT * FROM `labyrinth`.`answers`") or die(mysql_error());
-	if(mysql_num_rows($allPaths)>0):
+	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
-			$patharray[] = array ("from"=>$pathinfo['from'] , "to"=>$pathinfo['to'] , "key"=>$pathinfo['key']);
+			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
 		endwhile;
 		return $patharray;
 	endif;
-	return FALSE;
+	return false;
 }

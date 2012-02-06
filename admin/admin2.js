@@ -59,9 +59,13 @@
 			},
 			"deleteNode": function(){
 				
+			},
+			"createPath": function(options){
+				//this function is the ajax request
 			}
 		}
 		
+		//The following function is just drawPath.. and not createPath
 		var createPath = function(options){
 			var graph = options.graph;
 			var path = graph.display.line({
@@ -76,6 +80,7 @@
 			options.callback.apply(this,[]);
 		};
 		
+		//The following function is just drawNode.. and not createNode
 		var createNode = function(options){
 			//`this` is not important inside this function. Don't worry about it when using `apply`
 			var graph = options.graph;
@@ -124,24 +129,37 @@
 								if(e.which == 13){
 									//create the path
 									e.preventDefault();
-									createPath.apply(self,[{
-										graph: graph,
-										start: {
-											x:graph.path.firstNode.posX,
-											y:graph.path.firstNode.posY
+									//create the path with ajax request
+									$("#addPath").ajaxSubmit({
+										dataType:"json",
+										success: function(data){
+											if(data.status!==600){
+												console.log(data.message);
+												return;
+											}
+											createPath.apply(self,[{
+												graph: graph,
+												start: {
+													x:graph.path.firstNode.posX,
+													y:graph.path.firstNode.posY
+												},
+												end: {
+													x:graph.path.secondNode.posX,
+													y:graph.path.secondNode.posY
+												}, 
+												callback: function(){
+													graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
+													graph.path.firstNode.redraw();
+													graph.path.secondNode.redraw();
+													delete graph.path.firstNode;
+													delete graph.path.secondNode;
+												}
+											}]);
 										},
-										end: {
-											x:graph.path.secondNode.posX,
-											y:graph.path.secondNode.posY
-										}, 
-										callback: function(){
-											graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
-											graph.path.firstNode.redraw();
-											graph.path.secondNode.redraw();
-											delete graph.path.firstNode;
-											delete graph.path.secondNode;
+										error: function(xhr,err){
+											console.log(err);
 										}
-									}]);
+									});
 								}
 							}
 						}).css({
@@ -185,6 +203,12 @@
 								nodeId: this.level
 							}]);
 						}
+					});
+					console.log(data.pathdata);
+					$(data.pathdata).each(function(){
+						createPath.apply(this,[{
+							graph: graph,
+						}]);
 					});
 				},
 				error : function(){

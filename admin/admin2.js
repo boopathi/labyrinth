@@ -136,47 +136,7 @@
 						$("#showTextBox").css({
 							top: $("#graph").offset().top + this.posY - 3,
 							left: $("#graph").offset().left + this.posX + 10
-						}).show().find("input").val("").bind({
-							"keypress": function(e){
-								if(e.which == 13){
-									//create the path
-									e.preventDefault();
-									$("#addPath input[name=key]").val($(this).val());
-									//create the path with ajax request
-									$("#addPath").ajaxSubmit({
-										dataType:"json",
-										success: function(data){
-											if(data.status!==600){
-												console.log(data.message);
-												return;
-											}
-											createPath.apply(self,[{
-												graph: graph,
-												start: {
-													x:graph.path.firstNode.posX,
-													y:graph.path.firstNode.posY
-												},
-												end: {
-													x:graph.path.secondNode.posX,
-													y:graph.path.secondNode.posY
-												}, 
-												callback: function(){
-													graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
-													graph.path.firstNode.redraw();
-													graph.path.secondNode.redraw();
-													delete graph.path.firstNode;
-													delete graph.path.secondNode;
-												}
-											}]);
-										},
-										error: function(xhr,err){
-											console.log(err);
-											$(e.target).hide();
-										}
-									});
-								}
-							}
-						}).focus();
+						}).show().find("input").val("").focus();
 					} else {
 						console.log("Some error happened. Deleting the values");
 						delete graph.path.firstNode;
@@ -274,7 +234,58 @@
 					graph.isCtrl = e.which === 17;
 				}
 				
-			})
+			});
+			
+			//bind to the textbox
+			$("#showTextBox").find("input").bind({
+				"keyup": function(e){
+					if(e.which === 27) {
+						graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
+						graph.path.firstNode.redraw();
+						graph.path.secondNode.redraw();
+						delete graph.path.firstNode;
+						delete graph.path.secondNode;
+						$(this).parent("#showTextBox").hide();
+					}
+					if(e.which === 13){
+						//create the path
+						e.preventDefault();
+						$("#addPath input[name=key]").val($(this).val());
+						//create the path with ajax request
+						$("#addPath").ajaxSubmit({
+							dataType:"json",
+							success: function(data){
+								if(data.status!==600){
+									console.log(data.message);
+									return;
+								}
+								createPath.apply(self,[{
+									graph: graph,
+									start: {
+										x:graph.path.firstNode.posX,
+										y:graph.path.firstNode.posY
+									},
+									end: {
+										x:graph.path.secondNode.posX,
+										y:graph.path.secondNode.posY
+									}, 
+									callback: function(){
+										graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
+										graph.path.firstNode.redraw();
+										graph.path.secondNode.redraw();
+										delete graph.path.firstNode;
+										delete graph.path.secondNode;
+									}
+								}]);
+							},
+							error: function(xhr,err){
+								console.log(err);
+								$(e.target).hide();
+							}
+						});
+					}
+				}
+			});
 			
 			//When a click happens in graph, it means creating a new node 
 			graph.bind("click", function(e){

@@ -215,10 +215,20 @@
 							}]);
 						}
 					});
-					console.log(data.pathdata);
 					$(data.pathdata).each(function(){
+						var from = getNodePointer(this.from);
+						var to = getNodePointer(this.to);
+						
 						createPath.apply(this,[{
 							graph: graph,
+							start: {
+								x:from.posX,
+								y:from.posY
+							},
+							end: {
+								x:to.posX,
+								y:to.posY
+							}
 						}]);
 					});
 				},

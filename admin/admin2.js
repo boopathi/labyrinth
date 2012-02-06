@@ -39,7 +39,7 @@
 							width: 60, height: 60
 						});
 					}
-				})
+				});
 			},
 			"editNode": function(){
 				$("#addNode input[name=posX]").val(this.posX);

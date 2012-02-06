@@ -255,13 +255,16 @@ $TEMPLATE_BODY = "";
 		
 		<div id="viewNode" style="position:absolute"></div>
 		<div id="showTextBox" style="position:absolute"><input type="text" /></div>
-		
+		<div id="nodeheaderBox" style="position:absolute"><input type="text" /></div>
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>
-		<script type='text/javascript'>
+		<script type="text/javascript">
 			var graph_data = <?php
-				echo json_encode(array());
+					$nodeInfo = initNodes();
+					$pathInfo = initPaths();	
+					if( is_array($nodeInfo) && is_array($pathInfo) )
+						echo json_encode(array("nodedata"=>$nodeInfo, "pathdata"=>$pathInfo));
 			?>
 		</script>
 		<script type="text/javascript" src="./admin2.js"></script>

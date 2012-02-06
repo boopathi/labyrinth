@@ -113,7 +113,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 			//get question details and update the database
 			if($execute)
-				if(addNewNode($questionHTML, _POST("posX"), _POST("posY")))
+				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header")))
 					echo json_encode(array("status"=>600, 
 					"message"=>"Successfully Added a new node",
 					"posX"=>intval(_POST("posX")), 
@@ -213,8 +213,9 @@ $TEMPLATE_BODY = "";
 				<form id="addNode" action="./index.php?_a=1" method="POST" enctype="multipart/form-data">
 					<input type="file" name="file" required="required" data-params="required"/>
 					<input type="hidden" name="action" value="addNode" data-params="required"/>
-					<input type="hidden" name="posX" value="" data-params="required" />
+					<input type="hidden" name="posX" value="" data-params="required"/>
 					<input type="hidden" name="posY" value="" data-params="required"/>
+					<input type="hidden" name="header" value="" data-params="required"/>
 				</form>
 				<form id="addPath" action="./index.php?_a=1" method="POST">
 					<input type="hidden" name="from" value=""  data-params="required"/><br/>

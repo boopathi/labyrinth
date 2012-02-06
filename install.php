@@ -58,31 +58,18 @@ NOTWRITABLE;
 				}
 			}
 			if($writable_flag === true) {
-				//connect to database
-				$db = mysql_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']) or die(mysql_error());
-				mysql_select_db($_POST['dbname']) or die(mysql_error());
-				
-				$sqlcontent = file('labyrinth.sql');
-				$sqlline = "";
-				$result = true;
-				foreach($sqlcontent as $line) {
-					if(trim($line) != "" && strpos($line, '--' === false)){
-						$sqlline .= $line;
-						if(substr(rtrim($sqlline), -1) == ';'){
-							$result = $result && mysql_query($query);
-							if(!$result)
-								break;
-							$sqlline="";
-						}
-					}
-				}
-				if($result){
+				//execute the command in shell
+				$result="";
+				system("mysql -u{$_POST['dbuser']} -p{$_POST['dbpass']} -D{$_POST['dbname']} < labyrinth.sql",$result);
+				print_r($result);
+				if($result===0){
 					$conf_file = fopen("./config.inc.php", "w");
 					fwrite($conf_file, $conf);
 					fclose($conf_file);
-					header("Location: ./");
+					$TEMPLATE_BODY = "Installation Complete. <a href='./'>Click here</a>";
+					//header("Location: ./");
 				} else {
-					$TEMPLATE_BODY = mysql_error();
+					$TEMPLATE_BODY = "Error in Making the tables in database. Check SQL";
 				}
 			} else {}
 		else:
@@ -98,7 +85,7 @@ NOTWRITABLE;
 							</tr>
 							<tr>
 								<td>Database Name</td>
-								<td><input type="text" name="dbname" value="labyrinth" placeholder="labyrinth" /></td>
+								<td><input type="text" name="dbname" value="labytest" placeholder="labyrinth" /></td>
 							</tr>
 							<tr>
 								<td>Username to connect to database</td>

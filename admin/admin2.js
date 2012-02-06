@@ -77,7 +77,8 @@
 			graph.addChild(path);
 			$("#showTextBox").hide();
 			//clear once the path is drawn;
-			options.callback.apply(this,[]);
+			if(typeof options.callback === "function")
+				options.callback.apply(this,[]);
 		};
 		
 		//The following function is just drawNode.. and not createNode
@@ -179,6 +180,13 @@
 		//make it available Globally, to use it as an API
 		window.labygraph.createNode = createNode;
 		window.labygraph.createPath = createPath;
+		
+		var getNodePointer = function(qno){
+			
+			return {
+				
+			}
+		}
 		
 		//function to initialize the graph
 		var initGraph =  function (graph) {

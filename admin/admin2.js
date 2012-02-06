@@ -201,8 +201,8 @@
 						}]);
 					});
 				},
-				error : function(){
-					
+				error: function(xhr, err){
+					console.log(err);
 				}
 			});
 		}

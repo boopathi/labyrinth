@@ -180,20 +180,17 @@
 		//make it available Globally, to use it as an API
 		window.labygraph.createNode = createNode;
 		window.labygraph.createPath = createPath;
-		/*
-		var getNodePointer = function(qno){
-			var r=0,c;
-			while(typeof window.labygraph.items[r]!= "undefined")
-			{
-			 for(c=0;c<window.labygraph.items[r].nodes.length-1;c++)
-			  if(window.labygraph.items[r].nodes[c].qno == qno)
-			     return {
-				 console.log("found node"); 
-			    }
-			 r++;
-			} 
+		
+		var getNodePointer = function(qno) {
+			var r = 0, c;
+			while( typeof window.labygraph.items[r] !== "undefined") {
+				for( c = 0; c < window.labygraph.items[r].nodes.length; c++)
+					if(window.labygraph.items[r].nodes[c].qno == qno)
+						return window.labygraph.items[r].nodes[c];
+				r++;
+			}
 		}
-		*/
+
 		//function to initialize the graph
 		var initGraph =  function (graph) {
 			$.ajax({
@@ -220,9 +217,9 @@
 					});
 					console.log(data.pathdata);
 					$(data.pathdata).each(function(){
-						/*createPath.apply(this,[{
+						createPath.apply(this,[{
 							graph: graph,
-						}]);*/
+						}]);
 					});
 				},
 				error : function(){

@@ -206,9 +206,9 @@
 					});
 					console.log(data.pathdata);
 					$(data.pathdata).each(function(){
-						createPath.apply(this,[{
+						/*createPath.apply(this,[{
 							graph: graph,
-						}]);
+						}]);*/
 					});
 				},
 				error : function(){

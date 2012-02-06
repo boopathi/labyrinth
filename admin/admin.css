@@ -19,18 +19,16 @@ body {
 	border-top: 0;
 	border-bottom: 0;
 }
-
-.loater {
-	position: absolute;
-	top: 0;
-	display: none;
-	background: white;
-	margin-left: -470px;
-	left: 50%;
-	width: 940px;
-	height: 400px;
+.forms {
+	visibility: hidden;
+	position:absolute;
+	top:-500px;
+	
 }
-
+.floater {
+	display:none;
+	position:absolute;
+}
 #viewNode {
 	position: absolute;
 }

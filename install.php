@@ -40,7 +40,23 @@ CONFF;
 				<address>sudo chown http-user config.inc.php</address>
 NOTWRITABLE;
 			}
-			
+			if(!is_dir("./images")){
+				if(!mkdir("./images",0755)){
+					$writable_flag=false;
+					$TEMPLATE_BODY=<<<NOTWRITABLE
+					Folder <em>images</em> could not be created.
+NOTWRITABLE;
+				}
+			} else {
+				if(!is_dir("./images/questions")){
+					if(!mkdir("./images/questions",0755)){
+						$writable_flag = false;
+						$TEMPLATE_BODY=<<<NOTWRITABLE
+							Folder <em>images/questions</em> could not be created.
+NOTWRITABLE;	
+					}
+				}
+			}
 			if($writable_flag === true) {
 				$conf_file = fopen("./config.inc.php", "w");
 				fwrite($conf_file, $conf);

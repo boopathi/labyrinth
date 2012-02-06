@@ -309,7 +309,7 @@
 				$("#addNode input[name=file]").click().change(function(){
 					$("#nodeheaderBox").css({
 						left: $("#graph").offset().left+e.x, top:$("#graph").offset().top+e.y
-					}).find("input").val("").focus();
+					}).show().find("input").val("").focus();
 				});
 			});
 			

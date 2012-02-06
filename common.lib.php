@@ -52,8 +52,15 @@ function getUserCurrentLevel(){
 	$userAccess = mysql_query("SELECT `to` FROM `user_level` WHERE `userid`='{$userid}' ORDER BY `id` DESC LIMIT 1") or die(mysql_error());
 	$userAccessArray = mysql_fetch_array($userAccess);
 	$userLevel = $userAccessArray['to'];
-	if(empty($userLevel))
-		return 1;
+	if(empty($userLevel)):
+		//then try to find the starting level from the database
+		$startNodeQuery = mysql_query("SELECT `value` FROM `config` WHERE `key`='start'") or die(mysql_error());
+		$startNodeArray = mysql_fetch_assoc($startNodeQuery);
+		if(empty($startNodeArray['value']))
+			return 1;
+		else
+			return $startNodeArray['value'];
+	endif;
 	return $userLevel;
 }
 

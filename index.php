@@ -62,7 +62,11 @@ if(empty($answer)):
 	//get the question for the userlevel
 	$questionArray = getQuestion($userLevel);
 	//$CONTENT = $questionArray['question'];
-	header("Location: ./{$questionArray['header']}");
+	if(empty($questionArray['header'])){
+		die("INTERNAL SERVER ERROR - INFINITE LOOP");
+	}else {
+		header("Location: ./{$questionArray['header']}");
+	}
 
 else:
 	//Check if the user has access to the particular level

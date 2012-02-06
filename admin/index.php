@@ -259,6 +259,11 @@ $TEMPLATE_BODY = "";
 		<script type="text/javascript" src="../template/jquery.min.js"></script>
 		<script type="text/javascript" src="../template/jquery.form.js"></script>
 		<script type="text/javascript" src="../template/ocanvas.min.js"></script>
+		<script type='text/javascript'>
+			var graph_data = <?php
+				echo json_encode(array());
+			?>
+		</script>
 		<script type="text/javascript" src="./admin2.js"></script>
 	</body>
 </html>

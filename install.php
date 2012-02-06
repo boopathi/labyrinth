@@ -32,17 +32,20 @@ define("DB_NAME","{$_POST['dbname']}");
 return "LABYRINTH";
 	
 CONFF;
+			$writable_flag = true;
 			if(!is_writable("./config.inc.php")){
+				$writable_flag=false;
 				$TEMPLATE_BODY = <<<NOTWRITABLE
 				The config file config.inc.php is not writable by http-user
 				<address>sudo chown http-user config.inc.php</address>
 NOTWRITABLE;
-			} else {
+			}
+			if($writable_flag === true) {
 				$conf_file = fopen("./config.inc.php", "w");
 				fwrite($conf_file, $conf);
 				fclose($conf_file);
 				header("Location: ./");
-			}
+			} else {}
 		else:
 			//then show a form containing the fields required for config
 			$TEMPLATE_BODY = <<<FORM

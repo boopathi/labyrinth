@@ -240,9 +240,11 @@
 			$("#showTextBox").find("input").bind({
 				"keyup": function(e){
 					if(e.which === 27) {
-						graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff";
-						graph.path.firstNode.redraw();
-						graph.path.secondNode.redraw();
+						graph.path.firstNode && 
+						graph.path.secondNode && 
+						(graph.path.firstNode.fill = graph.path.secondNode.fill = "#fff");
+						graph.path.firstNode && graph.path.firstNode.redraw();
+						graph.path.secondNode && graph.path.secondNode.redraw();
 						delete graph.path.firstNode;
 						delete graph.path.secondNode;
 						$(this).parent("#showTextBox").hide();

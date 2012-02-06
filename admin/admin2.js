@@ -273,6 +273,30 @@
 				}
 			});
 			
+			//bind to click for node create
+			$("#nodeheaderBox input").bind({
+				"keyup": function(e){
+					if(e.which==13){
+						$("#addNode").ajaxSubmit({
+							dataType:"json",
+							success: function(data){
+								if(data.status!=600){
+									console.log(data.message);
+									return;
+								}
+								createNode.apply(this,[{
+									graph: graph,
+									posX: data.posX,
+									posY: data.posY,
+									nodeId: data.nodeId
+								}]);
+								$("#nodeheaderBox").hide();
+							}
+						});
+					}
+				}
+			});
+			
 			//When a click happens in graph, it means creating a new node 
 			graph.bind("click", function(e){
 				e.preventDefault();
@@ -281,28 +305,9 @@
 				$("#addNode input[name=posX]").val(e.x);
 				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
-					$("#nodeheaderBox input").focus();
-					$("#nodeheaderBox input").bind({
-						"keyup": function(e){
-							if(e.which==13){
-								$("#addNode").ajaxSubmit({
-									dataType:"json",
-									success: function(data){
-										if(data.status!=600){
-											console.log(data.message);
-											return;
-										}
-										createNode.apply(self,[{
-											graph: graph,
-											posX: data.posX,
-											posY: data.posY,
-											nodeId: data.nodeId
-										}]);
-									}
-								});
-							}
-						}
-					});
+					$("#nodeheaderBox").css({
+						left: $("#graph").offset().left+e.x, top:$("#graph").offset().top+e.y
+					}).find("input").val("").focus();
 				});
 			});
 			

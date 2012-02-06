@@ -133,11 +133,15 @@
 						$("#addPath input[name=to]").val(this.qno);
 						//after the second node is set, display the dialog box to enter the answer
 						var self = this;
-						$("#showTextBox").val("").bind({
+						$("#showTextBox").css({
+							top: $("#graph").offset().top + this.posY - 3,
+							left: $("#graph").offset().left + this.posX + 10
+						}).show().find("input").val("").bind({
 							"keypress": function(e){
 								if(e.which == 13){
 									//create the path
 									e.preventDefault();
+									$("#addPath input[name=key]").val($(this).val());
 									//create the path with ajax request
 									$("#addPath").ajaxSubmit({
 										dataType:"json",
@@ -172,10 +176,7 @@
 									});
 								}
 							}
-						}).css({
-							top: $("#graph").offset().top + this.posY - 3,
-							left: $("#graph").offset().left + this.posX + 10
-						}).show().find("input").focus();
+						}).focus();
 					} else {
 						console.log("Some error happened. Deleting the values");
 						delete graph.path.firstNode;

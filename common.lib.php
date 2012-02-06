@@ -76,10 +76,11 @@ function getQuestion($userLevel) {
 }
 
 //get From and To in an array
-function getNodes($key){
+function getNodes($key,$level){
 	$key = escape($key);
-	$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$key'") or die(mysql_error());
-	$fromtoArray = mysql_fetch_array($fromtoQuery);
+	$level = escape($level);
+	$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='{$key}' AND (`from`='{$level}' OR `to`='{$level}')") or die(mysql_error());
+	$fromtoArray = mysql_fetch_assoc($fromtoQuery);
 	$returnvalue = array(
 		"from"	=> $fromtoArray['from'],
 		"to"	=> $fromtoArray['to']
@@ -196,4 +197,13 @@ function initPaths(){
 		return $patharray;
 	endif;
 	return false;
+}
+
+function getUserLastAnswer(){
+	global $userid;
+	$getUserLastAnsQuery = mysql_query("SELECT a.key FROM `answers` a JOIN `user_level` u on a.from=u.from AND a.to=u.to WHERE u.userid='{$userid} ORDER BY `id` DESC LIMIT 1' ") or die(mysql_error());
+	if($getUserLastAnsQuery){
+		$ans = mysql_fetch_assoc($getUserLastAnsQuery);
+		return $ans['key'];
+	}
 }

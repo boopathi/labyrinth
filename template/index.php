@@ -20,6 +20,7 @@ endif;
 		</script>
 	</head>
 	<body>
+		<?php echo $userLevel; ?>
 		<?php echo $CONTENT; ?>
 		<?php echo $FORM; ?>
 	</body>

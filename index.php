@@ -61,19 +61,20 @@ if(empty($answer)):
 	$userLevel = getUserCurrentLevel();
 	//get the question for the userlevel
 	$questionArray = getQuestion($userLevel);
-	//$CONTENT = $questionArray['question'];
-	if(empty($questionArray['header'])){
-		die("INTERNAL SERVER ERROR - INFINITE LOOP");
-	}else {
-		header("Location: ./{$questionArray['header']}");
-	}
+
+	//get the user's last entered answer
+	$lastEnteredAnswer = getUserLastAnswer();
+	if(empty($lastEnteredAnswer))
+		$CONTENT = $questionArray['question'];
+	else 
+		header("Location: ./{$lastEnteredAnswer}");
 
 else:
 	//Check if the user has access to the particular level
 	//$level = $request
 	
 	$userCurrentLevel = getUserCurrentLevel();
-	$requestLevelArray = getNodes($answer);
+	$requestLevelArray = getNodes($answer, $userCurrentLevel);
 	
 	//might be correct answer / trying to access a different level / the same level
 	
@@ -83,6 +84,7 @@ else:
 		$CONTENT = $questionArray['question'];
 		//update the database with the current level
 		updateUserLevel($userCurrentLevel, $requestLevelArray['to']);
+		header("Location: ./{$answer}");
 	}
 	else if($userCurrentLevel == $requestLevelArray['to']) {
 		//then user is trying to access the same level

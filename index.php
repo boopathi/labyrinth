@@ -55,7 +55,6 @@ $FORM = <<<FORM
 FORM;
 
 if(empty($answer)):
-	//Get the user level from database
 
 	//from the user's current level
 	$userLevel = getUserCurrentLevel();

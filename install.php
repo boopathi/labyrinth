@@ -85,7 +85,7 @@ NOTWRITABLE;
 							</tr>
 							<tr>
 								<td>Database Name</td>
-								<td><input type="text" name="dbname" value="labytest" placeholder="labyrinth" /></td>
+								<td><input type="text" name="dbname" value="labyrinth" placeholder="labyrinth" /></td>
 							</tr>
 							<tr>
 								<td>Username to connect to database</td>

@@ -3,7 +3,7 @@
 	$.fn.labygraph = function(options){
 		//default settings
 		options = $.extend({
-			background: "#222",
+			background: "#628d00",
 			fps: 60,
 			addNodeForm: null,
 			onNodeClick: function(){},
@@ -79,7 +79,7 @@
 			var path = graph.display.line({
 				start: options.start,
 				end: options.end,
-				stroke: "1px #aaa"
+				stroke: "2px #fff"
 			});
 			graph.path.items.push(path);
 			graph.addChild(path);

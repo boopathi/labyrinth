@@ -139,19 +139,6 @@ function removePath($from, $to){
 	else return false;
 }
 
-function getUserRequestLevel(){
-	global $answer;
-	$requestQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='$answer' ");
-	if(mysql_num_rows($requestQuery)){
-		$requestQueryArray = mysql_fetch_array($requestQuery);
-		//return info
-		//add info to user_level table
-	}
-	else {
-		//failed access
-	}
-}
-
 function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'){ 
 	$num_chars  = rand($min_chars, $max_chars); 
 	$num_usable = strlen($use_chars) - 1; 
@@ -187,7 +174,7 @@ function initNodes(){
 
 function initPaths(){
 	$patharray = array();
-	$allPaths = mysql_query("SELECT * FROM `answers`");
+	$allPaths = mysql_query("SELECT * FROM `answers`") or die(mysql_error());
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
@@ -210,24 +197,20 @@ function getUserLastAnswer(){
 function getStats(){
 	// no.of people who have solved a particular level(gets info for all level)..
 	$allNodes = mysql_query("SELECT DISTINCT `from` `from`,count(DISTINCT `userid`),`posX`,`posY` FROM `user_level`,`questions` WHERE `user_level`.`from`=`questions`.`level`") or die(mysql_error());
-	
 	$nodearray = array();
 
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
 		endwhile;
-		return $nodearray;
 	endif;
-	return false;
 	
 	$patharray = array();
-	$allPaths = mysql_query("SELECT * FROM `answers`");
+	$allPaths = mysql_query("SELECT `from`, `to` FROM `answers`") or die(mysql_error());
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
 		endwhile;
-		return $patharray;
 	endif;
-	return false;
+	return json_encode(array($nodearray,$patharray));
 }

@@ -66,9 +66,9 @@ function getUserCurrentLevel(){
 
 function getQuestion($userLevel) {
 	$userLevel = escape($userLevel);
-	$questionQuery = mysql_query("SELECT `question`,`header` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
+	$questionQuery = mysql_query("SELECT `question`,`comments`,`header` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
 	$questionArray = mysql_fetch_assoc($questionQuery);
-	$question = $questionArray['question'];
+	$question = $questionArray['question'] . "\n" . $questionArray['comments'];
 	return array(
 		"question"=>$question,
 		"header"=>$questionArray['header']

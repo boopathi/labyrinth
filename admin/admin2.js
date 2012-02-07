@@ -74,9 +74,6 @@
 						console.log("removed Node");
 					}
 				})
-			},
-			"createPath": function(options){
-				//this function is the ajax request
 			}
 		}
 		
@@ -128,11 +125,11 @@
 				this.radius=7; 
 				this.redraw();
 				//view the node
-				handlerObject["viewnode"].apply(this,[]);
+				//handlerObject["viewnode"].apply(this,[]);
 			}).bind("mouseleave", function(){
 				this.radius=5; 
 				this.redraw();
-				$("#viewNode").html("");
+				//$("#viewNode").html("");
 			}).bind("click",function(){
 				graph.mouse.cancel();
 				//decide which one to call - node or path

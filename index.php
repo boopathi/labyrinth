@@ -35,7 +35,7 @@ if(isset($_POST["labyrinth_answer"]))
 else
 	$answer = $request;
 
-echo $userid = $_SESSION["userid"];
+$userid = $_SESSION["userid"];
 
 //Includes
 require_once("./config.inc.php");

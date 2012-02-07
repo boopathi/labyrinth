@@ -27,9 +27,8 @@ $TEMPLATE_BODY = "";
 ?>
 <html>
 	<head>
-		<title>Labyrinth - Administrator</title>
+		<title>Labyrinth - Statistics</title>
 	</head>
-	<link href="./admin.css" rel="stylesheet" type="text/css" />
 	<body>
 		<div class="outercontainer">
 			<div class="graphcontainer">
@@ -37,9 +36,6 @@ $TEMPLATE_BODY = "";
 				</canvas>
 			</div>
 		</div>
-		<div id="statusbar"></div>
-
-
 		
 		<div id="viewNode" style="position:absolute"></div>
 

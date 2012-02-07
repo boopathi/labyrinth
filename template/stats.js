@@ -15,8 +15,6 @@
 		window.labygraph = {};
 		window.labygraph.items = [];
 		
-
-		
 		//The following function is just drawPath.. and not createPath
 		var createPath = function(options){
 			//add offset
@@ -42,12 +40,12 @@
 		};
 		//to display statistics
 		var handlerObject = function() {
-				var self = this;
-				$("#viewNode").html().css({
-							top: $("#graph").offset().top + self.posY - 3,
-							left: $("#graph").offset().left + self.posX + 10
-						});
-					}
+			var self = this;
+			$("#viewNode").html().css({
+				top: $("#graph").offset().top + self.posY - 3,
+				left: $("#graph").offset().left + self.posX + 10
+			});
+		}
 			
 		//The following function is just drawNode.. and not createNode
 		var createNode = function(options){

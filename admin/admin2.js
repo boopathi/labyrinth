@@ -322,6 +322,8 @@
 						posY: data.posY,
 						nodeId: data.nodeId
 					}]);
+					$("#addNode textarea[name=comments]").val("");
+					$("#addNode input").val("")
 					$("#nodeheaderBox").css({"top":"-500px"});
 				}
 			});
@@ -335,8 +337,7 @@
 				$("#addNode input[name=posY]").val(e.y);
 				$("#addNode input[name=file]").click().change(function(){
 					$("#nodeheaderBox").css({"top":"50%"});
-					$("#addNode textarea[name=comments]").val("");
-					$("#addNode input[name=header]").val("").focus();
+					$("#addNode input[name=header]").focus();
 				});
 			});
 			

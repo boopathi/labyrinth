@@ -115,8 +115,8 @@ function addNewNode($questionHtml, $posx, $posy, $header){
 //Remove a Node(question) from the database
 function removeNode($level) {
 	$level = escape($level);
-	$removeNodeQuery = mysql_query("DELETE FROM `labyrinth`.`questions` WHERE `questions`.`level` = '".$level."'");
-	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'");
+	$removeNodeQuery = mysql_query("DELETE FROM `questions` WHERE `questions`.`level` = '".$level."'");
+	$removeNodeLinkPathsQuery = mysql_query("DELETE FROM `answers` WHERE `answers`.`from` = '".$level."' OR `answers`.`to` = '".$level."'");
 	if($removeNodeQuery && $removeNodeLinkPathsQuery)return true;
 	else return false;
 }
@@ -134,7 +134,7 @@ function addNewPath($from, $to, $key){
 //Remove a path(answers) from the database
 function removePath($from, $to){
 	$from = escape($from); $to = escape($to);
-	$removePathQuery = mysql_query("DELETE FROM `labyrinth`.`answers` WHERE `answers`.`from` = '{$from}' AND `answers`.`to` = '{$to}'");
+	$removePathQuery = mysql_query("DELETE FROM `answers` WHERE `answers`.`from` = '{$from}' AND `answers`.`to` = '{$to}'");
 	if($removePathQuery) return true;
 	else return false;
 }
@@ -165,7 +165,7 @@ function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklm
 }
 
 function showPath( $from , $to){
-	$requestQuery = mysql_query("SELECT * FROM `labyrinth`.`answers` WHERE `from` = '".$from."' AND `to` = '".$to."' LIMIT 1");
+	$requestQuery = mysql_query("SELECT * FROM `answers` WHERE `from` = '".$from."' AND `to` = '".$to."' LIMIT 1");
 	if(mysql_num_rows($requestQuery)):
 		$requestKey =  mysql_fetch_assoc($requestQuery);
 		return $requestKey['key'];
@@ -174,7 +174,7 @@ function showPath( $from , $to){
 
 function initNodes(){
 	$nodearray = array();
-	$allNodes = mysql_query("SELECT * FROM `labyrinth`.`questions`") or die(mysql_error());
+	$allNodes = mysql_query("SELECT * FROM `questions`") or die(mysql_error());
 
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
@@ -187,7 +187,7 @@ function initNodes(){
 
 function initPaths(){
 	$patharray = array();
-	$allPaths = mysql_query("SELECT * FROM `labyrinth`.`answers`");
+	$allPaths = mysql_query("SELECT * FROM `answers`");
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
@@ -204,11 +204,4 @@ function getUserLastAnswer(){
 		$ans = mysql_fetch_assoc($getUserLastAnsQuery);
 		return $ans['key'];
 	}
-}
-
-function getLevelstats($from, $to){
-	// no.of people who have solved a particular level..
-	$noLevelSolved = mysql_query("SELECT DISTINCT `userid`,count(`from`) FROM `user_level` WHERE `from` = ".$from." LIMIT 1") or die(mysql_error());
-	// no.of people who are currently in a particular level..
-	$noInLevel = mysql_query("SELECT DISTINCT `userid`,count(`to`) FROM `user_level` WHERE `to` = ".$to." LIMIT 1") or die(mysql_error());
 }

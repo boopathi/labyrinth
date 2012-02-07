@@ -15,8 +15,9 @@ endif;
  
 session_start();
 //TODO:
-//generate a dynamic user id
-$_SESSION["userid"] = 1;
+
+if(!isset($_SESSION['userid']))
+	$_SESSION["userid"] = rand(5, 100);
 
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
@@ -33,7 +34,7 @@ if(isset($_POST["labyrinth_answer"]))
 else
 	$answer = $request;
 
-$userid = $_SESSION["userid"];
+echo $userid = $_SESSION["userid"];
 
 //Includes
 require_once("./config.inc.php");

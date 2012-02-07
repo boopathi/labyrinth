@@ -165,6 +165,7 @@ function randomStr($min_chars = 15, $max_chars = 15, $use_chars = 'abcdefghijklm
 }
 
 function showPath( $from , $to){
+    $from = escape($from); $to = escape($to);
 	$requestQuery = mysql_query("SELECT * FROM `answers` WHERE `from` = '".$from."' AND `to` = '".$to."' LIMIT 1");
 	if(mysql_num_rows($requestQuery)):
 		$requestKey =  mysql_fetch_assoc($requestQuery);
@@ -175,7 +176,6 @@ function showPath( $from , $to){
 function initNodes(){
 	$nodearray = array();
 	$allNodes = mysql_query("SELECT * FROM `questions`") or die(mysql_error());
-
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
 			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
@@ -197,6 +197,7 @@ function initPaths(){
 	return false;
 }
 
+
 function getUserLastAnswer(){
 	global $userid;
 	$getUserLastAnsQuery = mysql_query("SELECT a.key FROM `answers` a JOIN `user_level` u on a.from=u.from AND a.to=u.to WHERE u.userid='{$userid} ORDER BY `id` DESC LIMIT 1' ") or die(mysql_error());
@@ -204,4 +205,29 @@ function getUserLastAnswer(){
 		$ans = mysql_fetch_assoc($getUserLastAnsQuery);
 		return $ans['key'];
 	}
+}
+
+function getStats(){
+	// no.of people who have solved a particular level(gets info for all level)..
+	$allNodes = mysql_query("SELECT DISTINCT `from` `from`,count(DISTINCT `userid`),`posX`,`posY` FROM `user_level`,`questions` WHERE `user_level`.`from`=`questions`.`level`") or die(mysql_error());
+	
+	$nodearray = array();
+
+	if($allNodes):
+		while($nodeinfo = mysql_fetch_assoc($allNodes)):
+			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
+		endwhile;
+		return $nodearray;
+	endif;
+	return false;
+	
+	$patharray = array();
+	$allPaths = mysql_query("SELECT * FROM `answers`");
+	if($allPaths):
+		while($pathinfo = mysql_fetch_assoc($allPaths)):
+			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']) , "key"=>$pathinfo['key']);
+		endwhile;
+		return $patharray;
+	endif;
+	return false;
 }

@@ -24,7 +24,8 @@ define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
 
 
 //Get the PATH
-$needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
+$needle = substr($_SERVER['SCRIPT_NAME'],0,strpos($_SERVER['SCRIPT_NAME'], "index.php"));
+//$needle = strstr($_SERVER["SCRIPT_NAME"],"index.php", true);
 $request = substr($_SERVER["REQUEST_URI"],strlen($needle));
 
 //Required Details

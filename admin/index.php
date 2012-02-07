@@ -197,7 +197,7 @@ $TEMPLATE_BODY = "";
 	<body>
 		<div class="outercontainer">
 			<div class="graphcontainer">
-				<canvas id="graph" width="940" height="400">
+				<canvas id="graph" width="1000" height="600">
 				</canvas>
 			</div>
 			<div class="forms">

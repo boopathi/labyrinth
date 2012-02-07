@@ -7,17 +7,14 @@ body {
 	background: #FFF;
 	margin: 0;
 	padding: 0;
-	height: 100%;
+	overflow: hidden;
 }
 
 .outercontainer {
-	width: 940px;
-	height: 100%;
-	margin: 0 auto;
-	background: #EEE;
-	border: solid 1px #DDD;
-	border-top: 0;
-	border-bottom: 0;
+	background: #FFF;
+	padding:0;
+	margin:0 auto;
+	width: 1000px;
 }
 
 .forms {

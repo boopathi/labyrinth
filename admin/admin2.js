@@ -152,7 +152,7 @@
 						$("#showTextBox").css({
 							top: $("#graph").offset().top + this.posY - 3,
 							left: $("#graph").offset().left + this.posX + 10
-						}).show().find("input[type=text], input[type=hidden]").val("").focus();
+						}).show().find("input").val("").focus();
 					} else {
 						console.log("Some error happened. Deleting the values");
 						delete graph.path.firstNode;
@@ -323,7 +323,7 @@
 						nodeId: data.nodeId
 					}]);
 					$("#addNode textarea[name=comments]").val("");
-					$("#addNode input").val("")
+					$("#addNode input[name=header]").val("")
 					$("#nodeheaderBox").css({"top":"-500px"});
 				}
 			});

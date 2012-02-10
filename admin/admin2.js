@@ -152,7 +152,7 @@
 						$("#showTextBox").css({
 							top: $("#graph").offset().top + this.posY - 3,
 							left: $("#graph").offset().left + this.posX + 10
-						}).show().find("input").val("").focus();
+						}).show().find("input[type=text], input[type=hidden]").val("").focus();
 					} else {
 						console.log("Some error happened. Deleting the values");
 						delete graph.path.firstNode;

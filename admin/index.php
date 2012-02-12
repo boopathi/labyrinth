@@ -21,7 +21,10 @@ include("../common.lib.php");
 connectDB();
 
 session_start();
-echo $_SESSION['userId'];
+
+print_r($_SESSION);
+die();
+
 if(!isset($_SESSION['userId']))
 	header("Location: http://www.pragyan.org/12/+login");
 

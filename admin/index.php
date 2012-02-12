@@ -70,8 +70,8 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 						$safename = str_replace("&", "and", $safename);
 						$safename = str_replace("*", "", $safename);
 						$safename = str_replace("?", "", $safename);
-						$safenameArr = explode(".", $safename);
-						$safename = $safenameArr[count($safenameArr)-2] . ".jpg";
+						//$safenameArr = explode(".", $safename);
+						//$safename = $safenameArr[count($safenameArr)-2] . ".jpg";
 						//just to make sure there are no overriddens
 						if(file_exists($safename)):
 							echo json_encode(array("status"=>601,"message"=>"File Already Exists"));

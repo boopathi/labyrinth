@@ -21,11 +21,11 @@ include("../common.lib.php");
 connectDB();
 
 session_start();
-echo $_SESSION['userid'];
-if(!isset($_SESSION['userid']))
+echo $_SESSION['userId'];
+if(!isset($_SESSION['userId']))
 	header("Location: http://www.pragyan.org/12/+login");
 
-$userid = $_SESSION['userid'];
+$userid = $_SESSION['userId'];
 
 if(!isAdmin())
 	header("../");

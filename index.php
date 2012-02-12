@@ -16,7 +16,7 @@ endif;
 session_start();
 //TODO:
 
-if(!isset($_SESSION['userid'])){
+if(!isset($_SESSION['userId'])){
 	header("Location: http://www.pragyan.org/12/+login");
 //	$_SESSION["userid"] = rand(5, 100);
 }
@@ -37,7 +37,7 @@ if(isset($_POST["labyrinth_answer"]))
 else
 	$answer = $request;
 
-$userid = $_SESSION["userid"];
+$userid = $_SESSION["userId"];
 
 //Includes
 require_once("./config.inc.php");

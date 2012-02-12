@@ -25,9 +25,6 @@ connectDB();
 
 session_start();
 
-print_r($_SESSION['userId']."asdf");
-die();
-
 if(!isset($_SESSION['userId']))
 	header("Location: http://www.pragyan.org/12/+login");
 

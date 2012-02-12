@@ -13,7 +13,7 @@ if($conf !== "LABYRINTH"):
 	exit(1);
 endif;
  
-session_start();
+//session_start();
 //TODO:
 
 if(!isset($_SESSION['userId'])){

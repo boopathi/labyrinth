@@ -231,9 +231,9 @@ function isAdmin(){
 	 $isAdminQuery = mysql_query("SELECT `value` FROM `config` WHERE `key`='admin'") or die(mysql_error());
 	 $isAdmin = mysql_fetch_assoc($isAdminQuery) or die(mysql_error());
 	 $admins = explode(";",$isAdmin['value']);
-	 print_r($admins);
+
 	 for($i=0;$i<count($admins);$i++){
-	 	     if($userid === intval($admins[$i])){
+	 	     if(intval($userid) === intval($admins[$i])){
 				return true;
 			}
 	}

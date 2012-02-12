@@ -31,7 +31,8 @@ if(!isset($_SESSION['userId']))
 $userid = $_SESSION['userId'];
 
 if(isAdmin() !== true) {
-	header("Location: ../");
+	?>You are not an administrator. <a href="../">Click here to go back </a> <?php
+	//header("Location: ../");
 	exit(1);
 }
 

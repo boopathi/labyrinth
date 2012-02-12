@@ -233,7 +233,7 @@ function isAdmin(){
 	 if(!isset($isAdmin['admin']))
 		return false;
 	 $admins = explode(";",$isAdmin['admin']);
-	 for($admins as $key=>$val){
+	 foreach($admins as $key=>$val){
 	 	     if($userid === $val)
 		     		return true;
 	}

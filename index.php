@@ -16,8 +16,10 @@ endif;
 session_start();
 //TODO:
 
-if(!isset($_SESSION['userid']))
-	$_SESSION["userid"] = rand(5, 100);
+if(!isset($_SESSION['userid'])){
+	header("Location: www.pragyan.org/12/+login");
+//	$_SESSION["userid"] = rand(5, 100);
+}
 
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
@@ -73,7 +75,6 @@ if(empty($answer)):
 else:
 	//Check if the user has access to the particular level
 	//$level = $request	
-
 	$userLevel = $userCurrentLevel = getUserCurrentLevel();
 	$requestLevelArray = getNodes($answer, $userCurrentLevel);
 	

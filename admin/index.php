@@ -20,6 +20,16 @@ include("../common.lib.php");
 
 connectDB();
 
+session_start();
+
+if(!isset($_SESSION['userid']))
+	header("Location: www.pragyan.org/12/+login");
+
+$userid = $_SESSION['userid'];
+
+if(!isAdmin())
+	header("../");
+
 //handle all ajax requests in the beginning
 if(isset($_GET["_a"]) && _GET('_a') == 1) :
 	if(!isset($_POST['action'])):

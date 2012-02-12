@@ -225,3 +225,15 @@ function getStats(){
 	endif;
 	return json_encode(array($nodearray,$patharray));
 }
+
+function isAdmin(){
+	 global $userid;
+	 $isAdminQuery = mysql_query("SELECT `admin` FROM `config`") or die(mysql_error());
+	 $isAdmin = mysql_fetch_assoc($isAdminQuery) or die(mysql_error());
+	 $admins = explode(";",$isAdmin['admin']);
+	 for($admins as $key=>$val){
+	 	     if($userid === $val)
+		     		return true;
+	}
+	return false;
+}

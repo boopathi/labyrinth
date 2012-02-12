@@ -20,9 +20,9 @@ include("../common.lib.php");
 
 connectDB();
 
-//session_start();
+session_start();
 
-print_r($_SESSION);
+print_r($_SESSION['userId']."asdf");
 die();
 
 if(!isset($_SESSION['userId']))

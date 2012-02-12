@@ -17,7 +17,7 @@ session_start();
 //TODO:
 
 if(!isset($_SESSION['userid'])){
-	header("Location: www.pragyan.org/12/+login");
+	header("Location: http://www.pragyan.org/12/+login");
 //	$_SESSION["userid"] = rand(5, 100);
 }
 

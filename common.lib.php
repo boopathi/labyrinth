@@ -64,14 +64,23 @@ function getUserCurrentLevel(){
 	return $userLevel;
 }
 
+function isAccessingQuestion($request){
+	 $request = escape($request);
+	 $query = mysql_query("SELECT `level` FROM `questions` WHERE `url`='{$request}'") or die(mysql_error());
+	 $qArray = mysql_fetch_assoc($query) or dir(mysql_error());
+	 return intval($qArray['level']);
+}
+
 function getQuestion($userLevel) {
 	$userLevel = escape($userLevel);
-	$questionQuery = mysql_query("SELECT `question`,`comments`,`header` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
+	$questionQuery = mysql_query("SELECT `url`,`question`,`comments`,`header` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
 	$questionArray = mysql_fetch_assoc($questionQuery);
 	$question = $questionArray['question'] . "\n" . $questionArray['comments'];
 	return array(
 		"question"=>$question,
-		"header"=>$questionArray['header']
+		"header"=>$questionArray['header'],
+		"comments"=>$questionArray['comments'],
+		"url"=>$questionArray['url']
 	);
 }
 

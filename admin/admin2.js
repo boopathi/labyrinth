@@ -44,7 +44,7 @@
 			"editNode": function(){
 				$("#addNode input[name=posX]").val(this.posX);
 				$("#addNode input[name=posY]").val(this.posY);
-				$("#addNode input[name=file[]]").click().change(function(){
+				$("#addNode #file").click().change(function(){
 					$("#addNode").ajaxSubmit({
 						dataType:"json",
 						success: function(data){

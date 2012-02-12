@@ -67,25 +67,29 @@ if(empty($answer)):
 	$lastEnteredAnswer = getUserLastAnswer();
 	if(empty($lastEnteredAnswer))
 		$CONTENT = $questionArray['question'];
-	else 
-		header("Location: ./{$lastEnteredAnswer}");
+	else
+		header("Location: ./{$questionArray['url']}");
 
 else:
 	//Check if the user has access to the particular level
-	//$level = $request
-	
-	$userCurrentLevel = getUserCurrentLevel();
+	//$level = $request	
+
+	$userLevel = $userCurrentLevel = getUserCurrentLevel();
 	$requestLevelArray = getNodes($answer, $userCurrentLevel);
 	
 	//might be correct answer / trying to access a different level / the same level
 	
-	if($userCurrentLevel == $requestLevelArray['from']){
+	if($userCurrentLevel == isAccessingQuestion($answer)) {
+	 	//then user is accessing the current level with the proper url
+		$questionArray = getQuestion($userCurrentLevel);
+		$CONTENT=$questionArray['question'];
+	} else 	if($userCurrentLevel == $requestLevelArray['from']){
 		//then user entered a correct answer
 		$questionArray = getQuestion($requestLevelArray['to']);
 		$CONTENT = $questionArray['question'];
 		//update the database with the current level
 		updateUserLevel($userCurrentLevel, $requestLevelArray['to']);
-		header("Location: ./{$answer}");
+		header("Location: ./");
 	}
 	else if($userCurrentLevel == $requestLevelArray['to']) {
 		//then user is trying to access the same level
@@ -97,11 +101,14 @@ else:
 		$questionArray = getQuestion($userLevel);
 		$CONTENT = $questionArray['question'];
 	}
+	else if(false) {
+	     
+	}
 	else {
 		//user entered an answer that was not allowed
 		$CONTENT = "Trying to access a restricted Level, this incident will be reported.";
 		$userLevel = getQuestion(getUserCurrentLevel());
-		$CONTENT .= "<a href=\"./{$userLevel['header']}\">Click here</a> to goto your level ";
+		$CONTENT .= "<a href=\"./{$userLevel['url']}\">Click here</a> to goto your level ";
 		//and nullify the form so that he cannot submit it
 		$FORM = "";
 	}

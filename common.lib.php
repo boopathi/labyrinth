@@ -230,6 +230,8 @@ function isAdmin(){
 	 global $userid;
 	 $isAdminQuery = mysql_query("SELECT `admin` FROM `config`") or die(mysql_error());
 	 $isAdmin = mysql_fetch_assoc($isAdminQuery) or die(mysql_error());
+	 if(!isset($isAdmin['admin']))
+		return false;
 	 $admins = explode(";",$isAdmin['admin']);
 	 for($admins as $key=>$val){
 	 	     if($userid === $val)

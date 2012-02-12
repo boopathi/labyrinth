@@ -44,7 +44,7 @@
 			"editNode": function(){
 				$("#addNode input[name=posX]").val(this.posX);
 				$("#addNode input[name=posY]").val(this.posY);
-				$("#addNode input[name=file]").click().change(function(){
+				$("#addNode input[name=file[]]").click().change(function(){
 					$("#addNode").ajaxSubmit({
 						dataType:"json",
 						success: function(data){
@@ -324,7 +324,7 @@
 					}]);
 					$("#addNode textarea[name=comments]").val("");
 					$("#addNode textarea[name=url]").val("");
-					$("#addNode input[name=header]").val("");
+					$("#addNode #file").val("");
 					$("#nodeheaderBox").css({"top":"-500px"});
 				}
 			});
@@ -336,7 +336,7 @@
 				//display the container for image upload
 				$("#addNode input[name=posX]").val(e.x);
 				$("#addNode input[name=posY]").val(e.y);
-				$("#addNode input[name=file]").click().change(function(){
+				$("#addNode #file").click().change(function(){
 					$("#nodeheaderBox").css({"top":"50%"});
 					$("#addNode input[name=header]").focus();
 				});

@@ -30,8 +30,10 @@ if(!isset($_SESSION['userId']))
 
 $userid = $_SESSION['userId'];
 
-if(isAdmin() !== true)
-	header("../");
+if(isAdmin() !== true) {
+	header("Location: ../");
+	exit(1);
+}
 
 //handle all ajax requests in the beginning
 if(isset($_GET["_a"]) && _GET('_a') == 1) :

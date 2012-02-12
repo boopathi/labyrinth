@@ -16,7 +16,6 @@ endif;
 ini_set("session.name","PHPSESSID");
 ini_set("session.save_path", "/var/www/html/12/cms/uploads/sessions");
 
-
 session_start();
 //TODO:
 

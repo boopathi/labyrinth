@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.3.2
+-- version 3.4.9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 06, 2012 at 08:59 PM
--- Server version: 5.5.16
--- PHP Version: 5.3.8
+-- Generation Time: Feb 12, 2012 at 03:28 PM
+-- Server version: 5.5.20
+-- PHP Version: 5.3.10
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -58,8 +58,10 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `question` text NOT NULL,
   `posX` int(11) NOT NULL,
   `posY` int(11) NOT NULL,
+  `comments` text NOT NULL,
+  `url` varchar(100) NOT NULL,
   PRIMARY KEY (`level`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
 -- --------------------------------------------------------
 

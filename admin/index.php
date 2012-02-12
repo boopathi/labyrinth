@@ -15,6 +15,9 @@
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");
 
+ini_set("session.name","PHPSESSID");
+ini_set("session.save_path", "/var/www/html/12/cms/uploads/sessions");
+
 include("../config.inc.php");
 include("../common.lib.php");
 

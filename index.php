@@ -12,8 +12,12 @@ if($conf !== "LABYRINTH"):
 	header("Location: ./install.php");
 	exit(1);
 endif;
- 
-//session_start();
+
+ini_set("session.name","PHPSESSID");
+ini_set("session.save_path", "/var/www/html/12/cms/uploads/sessions");
+
+
+session_start();
 //TODO:
 
 if(!isset($_SESSION['userId'])){

@@ -62,7 +62,7 @@ NOTWRITABLE;
 				$result="";
 				system("mysql -u{$_POST['dbuser']} -p{$_POST['dbpass']} -D{$_POST['dbname']} < labyrinth.sql",$result);
 				print_r($result);
-				if($result===0){
+				if($result!==false){
 					$conf_file = fopen("./config.inc.php", "w");
 					fwrite($conf_file, $conf);
 					fclose($conf_file);

@@ -233,7 +233,7 @@ function isAdmin(){
 	 $admins = explode(";",$isAdmin['admin']);
 	 
 	 for($i=0;$i<count($admins);$i++){
-	 	     if($userid === $admins[$i]){
+	 	     if($userid === intval($admins[$i])){
 				return true;
 			}
 	}

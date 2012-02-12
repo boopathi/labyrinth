@@ -228,7 +228,7 @@ function getStats(){
 
 function isAdmin(){
 	 global $userid;
-	 $isAdminQuery = mysql_query("SELECT `admin` FROM `config`") or die(mysql_error());
+	 $isAdminQuery = mysql_query("SELECT `value` FROM `config` WHERE `key`='admin'") or die(mysql_error());
 	 $isAdmin = mysql_fetch_assoc($isAdminQuery) or die(mysql_error());
 	 if(!isset($isAdmin['admin']))
 		return false;

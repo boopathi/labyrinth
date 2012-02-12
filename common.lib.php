@@ -234,10 +234,8 @@ function isAdmin(){
 	 
 	 for($i=0;$i<count($admins);$i++){
 	 	     if($userid === $admins[$i]){
-		     		
-				echo $userid."  ".$_SESSION['userId']." ".$admin[$i];
 				return true;
-				}
+			}
 	}
 	return false;
 }

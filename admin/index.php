@@ -30,7 +30,7 @@ if(!isset($_SESSION['userId']))
 
 $userid = $_SESSION['userId'];
 
-if(!isAdmin())
+if(isAdmin() !== true)
 	header("../");
 
 //handle all ajax requests in the beginning

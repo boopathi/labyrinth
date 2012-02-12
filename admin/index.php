@@ -113,7 +113,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 			//get question details and update the database
 			if($execute)
-				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header"), _POST("comments")))
+				if(addNewNode($questionHTML, _POST("posX"), _POST("posY"), _POST("header"), _POST("comments"), _POST("url")))
 					echo json_encode(array("status"=>600, 
 					"message"=>"Successfully Added a new node",
 					"posX"=>intval(_POST("posX")), 
@@ -230,6 +230,7 @@ $TEMPLATE_BODY = "";
 					<input type="hidden" name="posY" value="" data-params="required"/>
 					<input type="text" name="header" value="" data-params="required"/>
 					<textarea name="comments"></textarea>
+					<textarea name="url"></textarea>
 					<input type="submit" name="submit"/>
 				</form>
 		</div>

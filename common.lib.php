@@ -100,15 +100,16 @@ function updateUserLevel($fromLevel, $toLevel){
 }
 
 //Add a new Node(question) in the database
-function addNewNode($questionHtml, $posx, $posy, $header, $comments){
+function addNewNode($questionHtml, $posx, $posy, $header, $comments, $url){
 	$questionHtml = escape($questionHtml);
 	$posx = escape($posx);
 	$posy = escape($posy);
 	$header = escape($header);
+	$url = escape($url);
 	$comments = "<!--".escape($comments)."-->";
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`) VALUES('{$questionHtml}')");
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`,`posX`,`posY`) SELECT MAX(`level`)+1  , '{$questionHtml}', '{$posx}', '{$posy}' FROM `questions`");
-	$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`,`header`,`posX`,`posY`,`comments`) VALUES('{$questionHtml}','{$header}','$posx','$posy','$comments')");
+	$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`,`header`,`posX`,`posY`,`comments`,`url`) VALUES('{$questionHtml}','{$header}','$posx','$posy','$comments','$url')");
 	if($addNodeQuery) return true;
 	else return false;
 }

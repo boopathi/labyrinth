@@ -86,7 +86,7 @@ function getQuestion($userLevel) {
 
 //get From and To in an array
 function getNodes($key,$level){
-	$key = escape($key);
+	$key = md5(escape($key));
 	$level = escape($level);
 	$fromtoQuery = mysql_query("SELECT * FROM `answers` WHERE `key`='{$key}' AND (`from`='{$level}' OR `to`='{$level}')") or die(mysql_error());
 	$fromtoArray = mysql_fetch_assoc($fromtoQuery);
@@ -134,7 +134,7 @@ function removeNode($level) {
 
 //Add a new path(answer) in the database
 function addNewPath($from, $to, $key){
-	$from = escape($from); $to = escape($to); $key = escape($key);
+	$from = escape($from); $to = escape($to); $key = md5(escape($key));
 	$addPathQuery = mysql_query("INSERT INTO `answers` (`from`,`to`,`key`) VALUES ('{$from}','{$to}','{$key}')");
 	if($addPathQuery)
 		return true;

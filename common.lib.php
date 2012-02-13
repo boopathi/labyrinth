@@ -258,3 +258,9 @@ function updateAttempt($level){
 	else
 		return false;
 }
+function numberSolved($level) {
+	$level=escape($level);
+	$numQuery = mysql_query("SELECT COUNT(*) FROM `user_level` WHERE `from`='{$level}'") or die(mysql_error());
+	$numArray = mysql_fetch_array($numQuery) or die(mysql_error());
+	return $numArray[0];
+}

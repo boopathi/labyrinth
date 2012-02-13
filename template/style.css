@@ -6,6 +6,7 @@ text-align: center;
 .header a {
 text-decoration: none;
 color: white;
+line-height: 21px;
 }
 .header {
 	background: #222;

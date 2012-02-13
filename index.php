@@ -62,7 +62,7 @@ $FORM = <<<FORM
 \n\n\n
 <div class="labyrinth_submit">
 	<form name="labyrinth_submit" method="POST" action="$needle">
-		<input type="text" name="labyrinth_answer" autocomplete="off"/>
+		<input type="password" name="labyrinth_answer" autocomplete="off"/>
 		<input type="submit" value="Submit" />
 	</form>
 </div>
@@ -86,6 +86,7 @@ if(empty($answer)):
 	//else
 	header("Location: ./{$questionArray['url']}");
 	$PAGETITLE = $questionArray['header'];
+	$numberSolved = numberSolved($userLevel);
 
 else:
 	//Check if the user has access to the particular level
@@ -100,6 +101,7 @@ else:
 		$questionArray = getQuestion($userCurrentLevel);
 		$CONTENT=$questionArray['question'];
 		$PAGETITLE = $questionArray['header'];
+		$numberSolved = numberSolved($userLevel);
 	} else 	if($userCurrentLevel == $requestLevelArray['from']){
 		//then user entered a correct answer
 		//$questionArray = getQuestion($requestLevelArray['to']);
@@ -118,6 +120,7 @@ else:
 		$questionArray = getQuestion($userLevel);
 		$CONTENT = $questionArray['question'];
 		$PAGETITLE = $questionArray['header'];
+		$numberSolved = numberSolved($userLevel);
 		updateAttempt($userCurrentLevel);
 	}
 	else {

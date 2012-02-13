@@ -41,7 +41,7 @@
 		//to display statistics
 		var handlerObject = function() {
 			var self = this;
-			$("#viewNode").html().css({
+			$("#viewNode").html(stats_data.nodearray['level']).css({
 				top: $("#graph").offset().top + self.posY - 3,
 				left: $("#graph").offset().left + self.posX + 10
 			});
@@ -93,7 +93,7 @@
 		//function to initialize the graph
 		var initGraph =  function (graph) {
 			
-					$(stats_data.nodedata).each(function(){
+					$(stats_data.nodearray).each(function(){
 						if(this.level !== 0){
 							createNode.apply(this,[{
 								graph: graph,
@@ -103,7 +103,7 @@
 							}]);
 						}
 					});
-					$(stats_data.pathdata).each(function(){
+					$(stats_data.patharray).each(function(){
 						var from = getNodePointer(this.from);
 						var to = getNodePointer(this.to);
 						createPath.apply(this,[{

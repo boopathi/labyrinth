@@ -12,12 +12,18 @@ endif;
 <body>
 <div class="outercontainer">
 
+<div class="header">
+	<h1><a href="http://www.pragyan.org/12/">Pragyan '12</a> > Labyrinth > <?php if(!empty($FORM))echo "Level " . ($userLevel - 1); ?></h1>
+</div>
+
 <div class="content">
 <?php echo $CONTENT; ?>
+
 </div>
 
 <div class="answerform">
 <?php echo $FORM; ?>
+<p>Note: All answers are lower-case letters and numbers 0-9 with NO spaces or special characters.</p>
 </div>
 
 <div class="googleform">
@@ -28,10 +34,5 @@ endif;
 </div>
 
 </div>
-<script type="text/javascript">
-window.onload = function(){
-document.onmousedown = function(e){ console.log(e.pageX + " " + e.pageY); };
-}
-</script>
 </body>
 </html>

@@ -3,6 +3,16 @@ margin: 0 auto;
 text-align: center;
 }
 
+.header a {
+text-decoration: none;
+color: white;
+}
+.header {
+	background: #222;
+	color: white;
+	padding: 20px;
+}
+
 .outercontainer {
 width: 600px;
 background: #EEE;
@@ -28,7 +38,10 @@ img {
 .answerform {
 	background: #222;
 	border: 1px solid #333;
-	line-height: 100px;
+	padding:50px 0 ;
+	color: #777;
+	font-family: Verdana;
+	font-size: 9px;
 }
 .answerform input{
 	background: #222;
@@ -36,8 +49,9 @@ img {
 	border: solid 1px white;
 	color: white;
 	font-size: 25px;
-	font-weight: bold;
-	padding: 5px;
+	font-weight: 100;
+	font-family: Verdana;
+	padding: 10px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;

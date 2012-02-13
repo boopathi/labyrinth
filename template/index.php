@@ -13,7 +13,8 @@ endif;
 <div class="outercontainer">
 
 <div class="header">
-	<h1><a href="http://www.pragyan.org/12/">Pragyan '12</a> > Labyrinth > <?php if(!empty($FORM))echo "Level " . ($userLevel - 1); ?></h1>
+	<h1><a href="http://www.pragyan.org/12/" target="_blank">Pragyan '12</a> > 
+	<a href="http://www.pragyan.org/12/labyrinth/">Labyrinth</a> > <?php if(!empty($FORM))echo "Level " . ($userLevel - 1); ?></h1>
 </div>
 
 <div class="content">

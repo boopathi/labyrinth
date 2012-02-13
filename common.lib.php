@@ -71,6 +71,15 @@ function isAccessingQuestion($request){
 	 return intval($qArray['level']);
 }
 
+function stripslashes_deep($value)
+{
+    $value = is_array($value) ?
+                array_map('stripslashes_deep', $value) :
+                stripslashes($value);
+
+    return $value;
+}
+
 function getQuestion($userLevel) {
 	$userLevel = escape($userLevel);
 	$questionQuery = mysql_query("SELECT `url`,`question`,`comments`,`header` FROM `questions` WHERE `level`='$userLevel' LIMIT 1") or die(mysql_error());
@@ -79,7 +88,7 @@ function getQuestion($userLevel) {
 	return array(
 		"question"=>$question,
 		"header"=>$questionArray['header'],
-		"comments"=>$questionArray['comments'],
+		"comments"=>stripslashes_deep($questionArray['comments']),
 		"url"=>$questionArray['url']
 	);
 }
@@ -238,4 +247,14 @@ function isAdmin(){
 			}
 	}
 	return false;
+}
+
+function updateAttempt($level){
+	global $userid;
+	$level = escape($level);
+	$updateWrong = mysql_query("INSERT INTO `user_attempts` (`userid`,`level`,`attempts`) VALUES('{$userid}','{$level}','1') ON DUPLICATE KEY UPDATE `attempts`=`attempts`+1") or die(mysql_error());
+	if($updateWrong)
+		return true;
+	else
+		return false;
 }

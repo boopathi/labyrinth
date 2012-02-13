@@ -1,0 +1,9 @@
+body {
+width: 800px;
+text-align: center;
+margin: 0 auto;
+}
+img {
+	min-width: 400px;
+	min-height: 400px;
+}

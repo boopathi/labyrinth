@@ -53,13 +53,19 @@ $CONTENT = "";
 connectDB();
 
 $FORM = <<<FORM
-	<div class="labyrinth_submit">
-		<form name="labyrinth_submit" method="POST" action="$needle">
-			<input type="text" name="labyrinth_answer" />
-			<input type="submit" />
-		</form>
-	</div>
+
+\n\n\n
+<div class="labyrinth_submit">
+	<form name="labyrinth_submit" method="POST" action="$needle">
+		<input type="text" name="labyrinth_answer" />
+		<input type="submit" value="Submit" />
+	</form>
+</div>
+\n\n\n
+
 FORM;
+
+$PAGETITLE = "Labyrinth";
 
 if(empty($answer)):
 
@@ -70,10 +76,11 @@ if(empty($answer)):
 
 	//get the user's last entered answer
 	$lastEnteredAnswer = getUserLastAnswer();
-	if(empty($lastEnteredAnswer))
-		$CONTENT = $questionArray['question'];
-	else
-		header("Location: ./{$questionArray['url']}");
+	//if(empty($lastEnteredAnswer))
+	//	$CONTENT = $questionArray['question'];
+	//else
+	header("Location: ./{$questionArray['url']}");
+	$PAGETITLE = $questionArray['header'];
 
 else:
 	//Check if the user has access to the particular level
@@ -87,10 +94,11 @@ else:
 	 	//then user is accessing the current level with the proper url
 		$questionArray = getQuestion($userCurrentLevel);
 		$CONTENT=$questionArray['question'];
+		$PAGETITLE = $questionArray['header'];
 	} else 	if($userCurrentLevel == $requestLevelArray['from']){
 		//then user entered a correct answer
-		$questionArray = getQuestion($requestLevelArray['to']);
-		$CONTENT = $questionArray['question'];
+		//$questionArray = getQuestion($requestLevelArray['to']);
+		//$CONTENT = $questionArray['question'];
 		//update the database with the current level
 		updateUserLevel($userCurrentLevel, $requestLevelArray['to']);
 		header("Location: ./");
@@ -104,16 +112,17 @@ else:
 		//get the question for the userlevel
 		$questionArray = getQuestion($userLevel);
 		$CONTENT = $questionArray['question'];
-	}
-	else if(false) {
-	     
+		$PAGETITLE = $questionArray['header'];
+		updateAttempt($userCurrentLevel);
 	}
 	else {
+		updateAttempt($userCurrentLevel);
 		//user entered an answer that was not allowed
-		$CONTENT = "Trying to access a restricted Level, this incident will be reported.";
+		$CONTENT = "You either entered a Wrong Answer or Tried to access some level that is restricted.";
 		$userLevel = getQuestion(getUserCurrentLevel());
-		$CONTENT .= "<a href=\"./{$userLevel['url']}\">Click here</a> to goto your level ";
+		$CONTENT .= "<br><br><a href=\"./{$userLevel['url']}\">Click here</a> to go to your current level.<br><br>";
 		//and nullify the form so that he cannot submit it
+		$PAGETITLE = "404";
 		$FORM = "";
 	}
 endif;

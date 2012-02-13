@@ -62,7 +62,7 @@ if(isset($_GET["_a"]) && _GET('_a') == 1) :
 					
 					//check if the file is an image
 					if(strrpos($_FILES['file']['type'][$i], "image") !== false):
-						$safename = $_FILES['file'][$i]['name'];
+						$safename = $_FILES['file']['name'][$i];
 						$safename = str_replace("#", "No.", $safename);
 						$safename = str_replace("$", "Dollar.", $safename);
 						$safename = str_replace("%", "percent", $safename);

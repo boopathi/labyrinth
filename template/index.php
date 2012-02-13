@@ -9,11 +9,28 @@ endif;
 ?>
 <html>
 	<head>
-		<title>Labyrinth</title>
+		<title><?php echo $PAGETITLE;?></title>
+		<link href="./template/style.css" type="text/css" rel="stylesheet" />
 	</head>
 	<body>
-		<?php echo $userLevel; ?>
-		<?php echo $CONTENT; ?>
-		<?php echo $FORM; ?>
-	</body>
+
+<div class="googleform">
+<form method="get" action="http://www.google.com/search" target="_blank">
+<input type="text"   name="q" size="31" maxlength="255" value="" />
+<input type="submit" value="Google Search" />
+</form>
+</div>
+
+
+<div class="content">
+<?php echo $CONTENT; ?>
+</div>
+
+<br/>
+<div class="answerform">
+<?php echo $FORM; ?>
+</div>
+
+
+</body>
 </html>

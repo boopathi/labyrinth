@@ -1,9 +1,55 @@
 body {
-width: 800px;
+margin: 0 auto;
+text-align: center;
+}
+
+.outercontainer {
+width: 600px;
+background: #EEE;
+border: solid 1px #CCC;
+border-top:0;
+border-bottom:0;
 text-align: center;
 margin: 0 auto;
 }
 img {
-	min-width: 400px;
-	min-height: 400px;
+	min-width: 200px;
+	min-height: 200px;
+	max-height: 400px;
+	max-width: 400px;
+	border: solid 10px white;
+	margin: 20px;
+}
+
+.content {
+	padding: 20px;
+}
+
+.answerform {
+	background: #222;
+	border: 1px solid #333;
+	line-height: 100px;
+}
+.answerform input{
+	background: #222;
+	outline: none;
+	border: solid 1px white;
+	color: white;
+	font-size: 25px;
+	font-weight: bold;
+	padding: 5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin: 0 10px;
+}
+.answerform input:active, .answerform input:focus {
+	background: black;
+}
+
+.googleform {
+line-height: 100px;
+font-size: 15px;
+font-family: Verdana;
+background: #222;
 }

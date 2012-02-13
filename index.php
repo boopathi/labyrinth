@@ -16,6 +16,11 @@ endif;
 ini_set("session.name","PHPSESSID");
 ini_set("session.save_path", "/var/www/html/12/cms/uploads/sessions");
 
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 session_start();
 //TODO:
 
@@ -57,7 +62,7 @@ $FORM = <<<FORM
 \n\n\n
 <div class="labyrinth_submit">
 	<form name="labyrinth_submit" method="POST" action="$needle">
-		<input type="text" name="labyrinth_answer" />
+		<input type="text" name="labyrinth_answer" autocomplete="off"/>
 		<input type="submit" value="Submit" />
 	</form>
 </div>

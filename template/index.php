@@ -8,11 +8,17 @@ ERROR;
 endif;
 ?>
 <html>
-	<head>
-		<title><?php echo $PAGETITLE;?></title>
-		<link href="./template/style.css" type="text/css" rel="stylesheet" />
-	</head>
-	<body>
+<head><title><?php echo $PAGETITLE;?></title><link href="./template/style.css" type="text/css" rel="stylesheet" /></head>
+<body>
+<div class="outercontainer">
+
+<div class="content">
+<?php echo $CONTENT; ?>
+</div>
+
+<div class="answerform">
+<?php echo $FORM; ?>
+</div>
 
 <div class="googleform">
 <form method="get" action="http://www.google.com/search" target="_blank">
@@ -21,16 +27,11 @@ endif;
 </form>
 </div>
 
-
-<div class="content">
-<?php echo $CONTENT; ?>
 </div>
-
-<br/>
-<div class="answerform">
-<?php echo $FORM; ?>
-</div>
-
-
+<script type="text/javascript">
+window.onload = function(){
+document.onmousedown = function(e){ console.log(e.pageX + " " + e.pageY); };
+}
+</script>
 </body>
 </html>

@@ -124,7 +124,7 @@ function addNewNode($questionHtml, $posx, $posy, $header, $comments, $url){
 	$posy = escape($posy);
 	$header = escape($header);
 	$url = escape($url);
-	$comments = "<!--".escape($comments)."-->";
+	$comments = "<!-- \n".addslashes($comments)."\n-->";
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`) VALUES('{$questionHtml}')");
 	//$addNodeQuery = mysql_query("INSERT INTO `questions` (`level`,`question`,`posX`,`posY`) SELECT MAX(`level`)+1  , '{$questionHtml}', '{$posx}', '{$posy}' FROM `questions`");
 	$addNodeQuery = mysql_query("INSERT INTO `questions` (`question`,`header`,`posX`,`posY`,`comments`,`url`) VALUES('{$questionHtml}','{$header}','$posx','$posy','$comments','$url')");

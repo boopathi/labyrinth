@@ -58,6 +58,9 @@ img {
 	-webkit-border-radius: 5px;
 	margin: 0 10px;
 }
+.answerform input[name=labyrinth_answer]{
+	color: #111;
+}
 .answerform input:active, .answerform input:focus {
 	background: black;
 }

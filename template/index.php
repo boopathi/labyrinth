@@ -8,7 +8,16 @@ ERROR;
 endif;
 ?>
 <html>
-<head><title><?php echo $PAGETITLE;?></title><link href="./template/style.css" type="text/css" rel="stylesheet" /></head>
+<head><title><?php echo $PAGETITLE;?></title><link href="./template/style.css" type="text/css" rel="stylesheet" />
+<!--[if IE]>
+<style type="text/css">
+img {
+width: expression( document.body.clientWidth > 399 ? "400px" : (document.body.clientWidth < 201 ? "200px" : auto ));
+height: expression( document.body.clientHeight > 399 ? "400px" : (document.body.clientHeight < 201 ? "200px" : auto ));
+}
+</style>
+<![endif]-->
+</head>
 <body>
 <div class="outercontainer">
 

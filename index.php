@@ -62,7 +62,7 @@ $FORM = <<<FORM
 \n\n\n
 <div class="labyrinth_submit">
 	<form name="labyrinth_submit" method="POST" action="$needle">
-		<input type="password" name="labyrinth_answer" autocomplete="off"/>
+		<input type="text" name="labyrinth_answer" autocomplete="off"/>
 		<input type="submit" value="Submit" />
 	</form>
 </div>

@@ -216,12 +216,12 @@ function getUserLastAnswer(){
 
 function getStats(){
 	// no.of people who have solved a particular level(gets info for all level)..
-	$allNodes = mysql_query("SELECT DISTINCT `from` `from`,count(DISTINCT `userid`),`posX`,`posY` FROM `user_level`,`questions` WHERE `user_level`.`from`=`questions`.`level`") or die(mysql_error());
+	$allNodes = mysql_query("select DISTINCT questions.level level, COUNT(DISTINCT user_level.userid) solved, posX,posY from questions, user_level where questions.level=user_level.from group by level order by level asc") or die(mysql_error());
 	$nodearray = array();
 
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
-			$nodearray[] = array ("level"=>intval($nodeinfo['level']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
+			$nodearray[] = array ("level"=>intval($nodeinfo['level'])-1,"solved"=>intval($nodeinfo['solved']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
 		endwhile;
 	endif;
 	

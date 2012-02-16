@@ -36,6 +36,7 @@ $TEMPLATE_BODY = "";
 	y : Number Solved <br/>
 	</h4>
 	<div id="stats" style="width:900px; margin:auto; text-align:center;font-family: inherit">
+		<img src="./template/loading.gif" id="loaderr"/>
 	</div> 
 	<script type="text/javascript" src="./template/jquery.min.js"></script>
 	<script>
@@ -58,15 +59,18 @@ $TEMPLATE_BODY = "";
 			console.log(random(6));
 			chart_data.push([stats_data[0][i].solved, '' + stats_data[0][i].level, '#'+random(6)]);
 		}
-		$("#stats").jqBarGraph({
-			data: chart_data,
-			//legend: true,
-			width: "100%",
-			height: $(window).height()-150,
-			speed: 0.25,
-			sort: 'desc'
+		$("#loaderr").ready(function(){
+			setTimeout(function(){
+				$("#stats").html("").jqBarGraph({
+					data: chart_data,
+					//legend: true,
+					width: "100%",
+					height: $(window).height()-150,
+					speed: 0.25,
+					sort: 'desc'
+				});
+			}, 200);
 		});
-		$("#graphBarStats").css("display","block");
 	});
 	</script>
 	</body>

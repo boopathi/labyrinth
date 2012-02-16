@@ -225,14 +225,14 @@ function getStats(){
 		endwhile;
 	endif;
 	
-	$patharray = array();
+	/*$patharray = array();
 	$allPaths = mysql_query("SELECT `from`, `to` FROM `answers`") or die(mysql_error());
 	if($allPaths):
 		while($pathinfo = mysql_fetch_assoc($allPaths)):
 			$patharray[] = array ("from"=>intval($pathinfo['from']) , "to"=>intval($pathinfo['to']));
 		endwhile;
-	endif;
-	return json_encode(array($nodearray,$patharray));
+	endif;*/
+	return json_encode(array($nodearray));
 }
 
 function isAdmin(){

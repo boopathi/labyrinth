@@ -29,37 +29,40 @@ $TEMPLATE_BODY = "";
 	<head>
 		<title>Labyrinth - Statistics</title>
 	</head>
-	<body> <div id="stats">
+	<body style="text-align:center"> 
+	<h1>Labyrinth - Statistics | Number Completed</h1>
+	<div id="stats" style="width:900px; margin:auto; text-align:center;">
 	</div> 
-<?php
-/*
-		<div class="outercontainer">
-			<div class="graphcontainer">
-				<canvas id="graph" width="940" height="400">
-				</canvas>
-			</div>
-		</div>
-		
-		<div id="viewNode" style="position:absolute"></div>
-*/
-?>
-		
-		<script type="text/javascript" src="./template/jquery.min.js"></script>
-<?php 
-/*
-		<script type="text/javascript" src="./template/jquery.form.js"></script>
-		<script type="text/javascript" src="./template/ocanvas.min.js"></script>
-*/ 
-?>
-	    	<script>
-		    var stats_data = <?php echo getStats(); ?>	
-		</script>
-		<script type="text/javascript" >
-for(i in stats_data[0]){
-	document.getElementById("stats").innerHTML += stats_data[0][i].level + " => " +  stats_data[0][i].solved;
-}
-		</script>
-		<script type="text/javascript" src="./template/stats.js"></script>
+	<script type="text/javascript" src="./template/jquery.min.js"></script>
+	<script>
+	    var stats_data = <?php echo getStats(); ?>	
+	</script>
+	<script type="text/javascript" src="./template/jquery.bar.js" ></script>
+	<script type="text/javascript" >
+	function random(l){
+		var allowed="0123456789abcdef";
+		var str="";
+		for(var i=0;i<l;i++){
+			str = str + (allowed[Math.round(Math.random()*allowed.length-1)] || 'f');
+		}
+		return str;
+	}
+
+	$(function(){
+		var chart_data = [];
+		for(i in stats_data[0]){
+			console.log(random(6));
+			chart_data.push([stats_data[0][i].solved, '' + stats_data[0][i].level, '#'+random(6)]);
+		}
+		$("#stats").jqBarGraph({
+			data: chart_data,
+			//legend: true,
+			width: "100%",
+			speed: 0.25
+		});
+		$("#graphBarStats").css("display","block");
+	});
+	</script>
 	</body>
 </html>
 <?php

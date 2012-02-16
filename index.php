@@ -57,6 +57,25 @@ $CONTENT = "";
 //connect to the database
 connectDB();
 
+//Check if the user has registered on the main site
+function checkRegistrant($userid){
+$rq = mysql_query("SELECT * FROM `pragyan12_cms`.`form_elementdata` WHERE `user_id`='{$userid}' AND `page_modulecomponentid`='34'") or die(mysql_error());
+$rr = mysql_fetch_array($rq);// or die("MYSQL_ERROR:" . mysql_error());
+if(empty($rr['form_elementdata'])):
+	return false;
+else:
+	if($rr['form_elementdata'] === "Yes")
+		return true;
+	else
+		return false;
+endif;
+}
+if(checkRegistrant($userid) === false):
+//	echo "Labyrinth is down for a moment. Kindly wait... More levels are being added. ";
+	$CONTENT="It seems you have not registered on Labyrinth. Kindly register ";
+	$CONTENT.="<a href='http://www.pragyan.org/12/home/events/brainwork/labyrinth/registrations/'>here</a>";
+else:
+
 $FORM = <<<FORM
 
 \n\n\n
@@ -134,6 +153,8 @@ else:
 		$FORM = "";
 	}
 endif;
+
+endif;//end of checkRegistrant
 
 require_once("./template/index.php");
 

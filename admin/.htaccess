@@ -1,0 +1,4 @@
+AuthName "Admin Section"
+AuthType Basic
+AuthUserFile ./.htpasswd
+Require valid-user

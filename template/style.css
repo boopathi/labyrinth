@@ -60,7 +60,7 @@ img {
 	margin: 0 10px;
 }
 .answerform input[name=labyrinth_answer]{
-	color: #111;
+	color: #222;
 }
 .answerform input:active, .answerform input:focus {
 	background: black;

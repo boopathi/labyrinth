@@ -25,7 +25,7 @@ height: expression( document.body.clientHeight > 399 ? "400px" : (document.body.
 	<h1><a href="http://www.pragyan.org/12/" target="_blank">Pragyan '12</a> > 
 	<a href="http://www.pragyan.org/12/labyrinth/">Labyrinth</a> > <?php if(!empty($FORM))echo "Level " . ($userLevel - 1); ?></h1>
 
-	<a href="http://www.pragyan.org/12/labyrinth/stats.php">Stats</a> | 
+	<a href="http://www.pragyan.org/12/labyrinth/stats.php" target="_blank">Stats</a> | 
 	<a href="http://www.pragyan.org/12/home/events/brainwork/labyrinth/discussion/" target="_blank">Forum</a> | 
 	<iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Flabyrinthpragyan&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;action=like&amp;colorscheme=dark&amp;font=verdana&amp;height=21&amp;appId=224545730925393" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;position:relative;top:6px;padding: 0 10px" allowTransparency="true"></iframe> | 
 	<a><?php echo $numberSolved; ?> solved this level</a>

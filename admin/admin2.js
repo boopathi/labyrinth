@@ -323,7 +323,8 @@
 						nodeId: data.nodeId
 					}]);
 					$("#addNode textarea[name=comments]").val("");
-					$("#addNode textarea[name=url]").val("");
+					$("#addNode input[name=url]").val("");
+					$("#addNode input[name=header]").val("");
 					$("#addNode #file").val("");
 					$("#nodeheaderBox").css({"top":"-500px"});
 				}

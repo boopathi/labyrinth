@@ -56,7 +56,6 @@ $TEMPLATE_BODY = "";
 	$(function(){
 		var chart_data = [];
 		for(i in stats_data[0]){
-			console.log(random(6));
 			chart_data.push([stats_data[0][i].solved, '' + stats_data[0][i].level, '#'+random(6)]);
 		}
 		$("#loaderr").ready(function(){

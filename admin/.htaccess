@@ -1,4 +1,4 @@
 AuthName "Admin Section"
 AuthType Basic
-AuthUserFile ./.htpasswd
+AuthUserFile /var/www/html/12/labyrinth/admin/.htpasswd
 Require valid-user

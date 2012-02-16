@@ -252,7 +252,7 @@ $TEMPLATE_BODY = "";
 					<input type="hidden" name="posY" value="" data-params="required"/>
 					<input type="text" name="header" value="" data-params="required"/>
 					<textarea name="comments"></textarea>
-					<textarea name="url"></textarea>
+					<input type="text" name="url"/>
 					<input type="submit" name="submit"/>
 				</form>
 		</div>

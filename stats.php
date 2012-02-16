@@ -38,9 +38,38 @@ $TEMPLATE_BODY = "";
 	<div id="stats" style="width:900px; margin:auto; text-align:center;font-family: inherit">
 		<img src="./template/loading.gif" id="loaderr"/>
 	</div> 
+	<table>
+		<tbody>
+<?php
+function getAllStats($to){
+	$to = escape($to);
+	$qq = mysql_query("SELECT  cu.user_email, cu.user_fullname FROM pragyan12_laby.user_level lu, pragyan12_cms.pragyanV3_users cu WHERE lu.userid=cu.user_id AND lu.to='$to' ORDER BY lu.to desc") or die(mysql_error());
+	$ret=array();
+	while($qa = mysql_fetch_assoc($qq))
+		$ret[]=$qa;
+	return $ret;
+}
+$request_path = pathinfo($_SERVER['PHP_SELF']);
+if($_GET['admin'] === '5'){
+	$statsarr = getAllStats(intval(end($request_path))+2);
+	for($i=0;$i<count($statsarr);$i++){
+		$html = <<<ROW
+<tr>
+<td colspan="2">{$i}</td>
+<td>{$statsarr[$i]["user_email"]}</td>
+<td>{$statsarr[$i]["user_fullname"]}</td>
+</tr>
+ROW;
+		echo $html;
+	}
+}
+?>
+
+	</tbody>
+	</table>
 	<script type="text/javascript" src="./template/jquery.min.js"></script>
 	<script>
-	    var stats_data = <?php echo getStats(); ?>	
+	    var stats_data = <?php echo getStats(); ?>
 	</script>
 	<script type="text/javascript" src="./template/jquery.bar.js" ></script>
 	<script type="text/javascript" >

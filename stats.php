@@ -29,9 +29,13 @@ $TEMPLATE_BODY = "";
 	<head>
 		<title>Labyrinth - Statistics</title>
 	</head>
-	<body style="text-align:center"> 
-	<h1>Labyrinth - Statistics | Number Completed</h1>
-	<div id="stats" style="width:900px; margin:auto; text-align:center;">
+	<body style="text-align:center;background: black;color: white; font-family: sans-serif;"> 
+	<h1>Labyrinth - Statistics</h1>
+	<h4 style="text-align:left;margin: 0 auto; width: 900px;font-family: inherit;">
+	x : Level Number <br/>
+	y : Number Solved <br/>
+	</h4>
+	<div id="stats" style="width:900px; margin:auto; text-align:center;font-family: inherit">
 	</div> 
 	<script type="text/javascript" src="./template/jquery.min.js"></script>
 	<script>
@@ -58,7 +62,9 @@ $TEMPLATE_BODY = "";
 			data: chart_data,
 			//legend: true,
 			width: "100%",
-			speed: 0.25
+			height: $(window).height()-150,
+			speed: 0.25,
+			sort: 'desc'
 		});
 		$("#graphBarStats").css("display","block");
 	});

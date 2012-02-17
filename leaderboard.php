@@ -27,7 +27,7 @@ function updateLeaderBoard($page){
 	while($qresult = mysql_fetch_assoc($query))
 		$ret[] = array(
 			"position" => $qresult["rownum"],
-			"level"=>$qresult["level"],
+			"level"=>intval($qresult["level"])-1,
 			"name" =>$qresult["user_fullname"]
 		);
 	return $ret;

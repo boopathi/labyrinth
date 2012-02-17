@@ -52,6 +52,7 @@ if(isset($_GET['update'])){
 	if(isset($_GET['curl'])){
 		header("Content-Type: text/plain");
 		echo insertIntoLeaderBoard();
+		exit(1);
 	}
 	else
 		echo "Update Status: ". insertIntoLeaderBoard();

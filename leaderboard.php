@@ -45,11 +45,17 @@ function updateLeaderBoard($page){
 }
 
 $numpagesArr=mysql_fetch_array(mysql_query("select count(*) from leaderboard"));
-$numpages = intval($numpagesArr[0])/30;
+$numpages = intval($numpagesArr[0])/30 + 1;
 $pagenum = isset($_GET['page'])?$_GET['page']:1;
 
-if(isset($_GET['update']))
-	echo "Update Status: ". insertIntoLeaderBoard();
+if(isset($_GET['update'])){
+	if(isset($_GET['curl'])){
+		header("Content-Type: text/plain");
+		echo insertIntoLeaderBoard();
+	}
+	else
+		echo "Update Status: ". insertIntoLeaderBoard();
+}
 
 ?>
 <html>
@@ -130,7 +136,9 @@ ROW;
 	<div class="pageination">
 	<?php
 	for($i=1;$i<=$numpages;$i++) {
-		echo "<a href='./leaderboard.php?page=$i'>$i</a> ";
+		if($pagenum == $i) $current="currentpage";
+		else $current="";
+		echo "<a class='$current' href='./leaderboard.php?page=$i'>$i</a> ";
 	}
 	?>
 	</div>

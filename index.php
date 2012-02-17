@@ -47,6 +47,11 @@ else
 
 $userid = $_SESSION["userId"];
 
+if($userid == 0){
+	echo "Some error occured with Pragyan Auth. Kindly report this issue to boopathi@live.com";
+	exit(1);
+}
+
 //Includes
 require_once("./config.inc.php");
 require_once("./common.lib.php");

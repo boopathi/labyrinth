@@ -23,8 +23,8 @@ function insertIntoLeaderBoard(){
 	
 	if(!$query) return false;
 
-	$now = date("F j, Y, g:i a");
-	$updateConf = mysql_query("update config set value='$now' where `key`='leaderboard_updatetime'") or die(mysql_error());
+	//$now = date("F j, Y, g:i a");
+	$updateConf = mysql_query("update config set value=NOW() where `key`='leaderboard_updatetime'") or die(mysql_error());
 	if($updateConf) return true;
 	return false;
 }

@@ -221,7 +221,7 @@ function getStats(){
 
 	if($allNodes):
 		while($nodeinfo = mysql_fetch_assoc($allNodes)):
-			$nodearray[] = array ("level"=>intval($nodeinfo['level'])-1,"solved"=>intval($nodeinfo['solved']) , "posX"=>intval($nodeinfo['posX']) , "posY"=>intval($nodeinfo['posY']));
+			$nodearray[] = array ("level"=>intval($nodeinfo['level'])-1,"solved"=>intval($nodeinfo['solved']));
 		endwhile;
 	endif;
 	

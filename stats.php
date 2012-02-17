@@ -84,7 +84,11 @@ ROW;
 
 	$(function(){
 		var chart_data = [];
-		for(i in stats_data[0]){
+		for(i=0;i<stats_data[0].length;i++){
+			//console.log(i);
+			//next_value= (typeof stats_data[0][i+1])==="undefined"?0:stats_data[0][i+1].solved;
+			//console.log(next_value);
+			//stats_data[0][i].solved = stats_data[0][i].solved - next_value;
 			chart_data.push([stats_data[0][i].solved, '' + stats_data[0][i].level, '#'+random(6)]);
 		}
 		$("#loaderr").ready(function(){
@@ -94,8 +98,8 @@ ROW;
 					//legend: true,
 					width: "100%",
 					height: $(window).height()-150,
-					speed: 0.25,
-					sort: 'desc'
+					speed: 0.25
+					//sort: 'desc'
 				});
 			}, 200);
 		});

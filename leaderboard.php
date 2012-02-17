@@ -21,8 +21,17 @@ function insertIntoLeaderBoard(){
 		return false;
 	$query = mysql_query("insert into pragyan12_laby.leaderboard (rownum, userid, level, attempts, user_email, user_fullname) select t3.rownum, t3.userid, t3.level, t3.attempts, t3.user_email, t3.user_fullname from (select @row:=@row+1 rownum, t2.userid, t2.level, t2.attempts, t2.user_email, t2.user_fullname from (select t1.userid, t1.attempts, t1.user_email, t1.user_fullname, t1.level from (select lu.userid, ua.attempts, cu.user_email, cu.user_fullname, lu.to level FROM pragyan12_laby.user_level lu, ( select att.userid, sum(att.attempts) attempts from pragyan12_laby.user_attempts att group by att.userid) ua, pragyan12_cms.pragyanV3_users cu WHERE lu.userid=cu.user_id AND lu.userid=ua.userid ORDER BY lu.to desc) t1 group by t1.userid order by t1.level desc, t1.attempts asc, t1.userid asc) t2, (select @row:=0) r) t3") or die(mysql_error());
 	
-	if($query) return true;
+	if(!$query) return false;
+
+	$now = date("F j, Y, g:i a");
+	$updateConf = mysql_query("update config set value='$now' where `key`='leaderboard_updatetime'") or die(mysql_error());
+	if($updateConf) return true;
 	return false;
+}
+
+function lastUpdatedTime() {
+	$arr = mysql_fetch_array(mysql_query("select `value` from config where `key`='leaderboard_updatetime'")) or die(mysql_error());
+	return $arr[0];
 }
 
 function updateLeaderBoard($page){
@@ -99,6 +108,7 @@ if(isset($_GET['update'])){
 	</head>
 	<body style="text-align:center;background: black;color: white; font-family: sans-serif;"> 
 	<h1>Labyrinth - LeaderBoard</h1>
+	<h6>Last Updated : <?php echo lastUpdatedTime();?></h6>
 	<div class="pageination">
 	<?php
         for($i=1;$i<=$numpages;$i++) {

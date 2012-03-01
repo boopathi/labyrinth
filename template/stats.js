@@ -92,8 +92,9 @@
 
 		//function to initialize the graph
 		var initGraph =  function (graph) {
-			
-					$(stats_data.nodearray).each(function(){
+			var nodePos = $(stats_data)[0], r = 0 , nodePath = $(stats_data)[1] , c = 0;
+			while( typeof nodePos[r] !== "undefined" ){
+					$(nodePos)[r].each(function(){
 						if(this.level !== 0){
 							createNode.apply(this,[{
 								graph: graph,
@@ -103,7 +104,10 @@
 							}]);
 						}
 					});
-					$(stats_data.patharray).each(function(){
+			    r++;
+			}		
+			while( typeof nodePath[c] !== "undefined" ){
+					$(nodePath)[c].each(function(){
 						var from = getNodePointer(this.from);
 						var to = getNodePointer(this.to);
 						createPath.apply(this,[{
@@ -118,6 +122,8 @@
 							}
 						}]);
 					});
+				c++;
+            }				
 				}
 			
 		

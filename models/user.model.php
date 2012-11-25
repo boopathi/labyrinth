@@ -58,6 +58,3 @@ class User {
     }
 }
 
-class Page {
-    public $pageid;
-}

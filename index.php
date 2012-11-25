@@ -13,21 +13,19 @@ if($conf !== "LABYRINTH"):
 	exit(1);
 endif;
 
-ini_set("session.name","PHPSESSID");
-ini_set("session.save_path", "/var/www/html/12/cms/uploads/sessions");
-
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-session_start();
-//TODO:
+//Authenticate Section
 
-if(!isset($_SESSION['userId'])){
-	header("Location: http://www.pragyan.org/12/events/brainwork/labyrinth/play+login");
-//	$_SESSION["userid"] = rand(5, 100);
+require_once("./auth.php");
+
+if($auth->auth == false){
+    
 }
+
 
 //Set the Constant LABYRINTH
 define("LABYRINTH_CONST", "LABYRINTH APPLICATION");

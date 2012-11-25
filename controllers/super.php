@@ -4,6 +4,8 @@
  * Controller.php
  */
 
+namespace Controller;
+
 class Controller {
     protected $model;
     protected $view;
@@ -14,9 +16,4 @@ class Controller {
     }
 }
 
-class Auth extends Controller {
-    public $user;
-    function __construct($model, $view) {
-        parent::__construct($model, $view);
-    }
-}
+
